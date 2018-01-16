@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style>
+/* 全局样式 */
 html,
 body,
 #app {
@@ -21,4 +22,7 @@ body,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.anchorBL{display:none;}
+
+.darkColor{color: rgb(139, 131, 131)}
 </style>

@@ -1,10 +1,18 @@
 <template>
-  <router-view/>
+<div>
+  <TopBar></TopBar>
+  <div class="content">
+    <router-view/>
+  </div>
+</div>
+  
 </template>
 
 <script>
+import TopBar from './top-bar'
 export default {
-  name: 'Main'
+  name: 'Main',
+  components: { TopBar }
 }
 </script>
 
@@ -12,5 +20,9 @@ export default {
 .router {
   flex: 1;
   overflow: auto;
+}
+.content {
+  padding: 20px;
+  flex: 1;
 }
 </style>

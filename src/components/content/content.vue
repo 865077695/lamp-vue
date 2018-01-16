@@ -9,7 +9,7 @@
 import LeftBar from './left-bar'
 import RightContent from './right-content'
 export default {
-  name: 'BroadcastAdmin',
+  name: 'Main',
   components: { LeftBar, RightContent }
 }
 </script>
@@ -22,5 +22,10 @@ export default {
 .leftBar {
   flex: 0 1 200px;
 }
-.RightContent{height: 100%}
+.RightContent {
+  flex: 1;
+  background: rgb(248, 246, 246);
+  display: flex;
+  flex-direction: column
+}
 </style>

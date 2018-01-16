@@ -41,8 +41,7 @@ export default {
   },
   methods: {
     changeMenu (path) {
-      console.log(this.$route)
-      this.$router.push({ path: path })
+      this.$router.push({ path })
     }
   }
 }
@@ -58,7 +57,10 @@ img {
   margin-bottom: 20px;
   padding-left: 20px;
 }
-.title{font-size: 16px;color:rgb(189, 186, 183);}
+.title {
+  font-size: 16px;
+  color: rgb(189, 186, 183);
+}
 .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
   background: #384054;
   color: #fff;
