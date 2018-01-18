@@ -9,7 +9,7 @@
           <Option v-for="item in controlTypes" :value="item.value" :key="item.value">{{ item.label }}</Option>
       </Select>
     </div>
-    <Button @click="doSearch" size="large" type="primary" style="width: 100px">查询</Button>
+    <Button @click="doSearch" size="large" type="success" style="width: 100px">查询</Button>
   </div>
   <Table class="table" border :loading="dataLoading" :columns="columns" :data="lampStreetList"></Table>
   <my-page @pageChange="pageChange" :_totalPage="totalPage"></my-page>
@@ -81,12 +81,11 @@ export default {
         {
           title: '操作',
           key: 'action',
-          width: 500,
+          width: 400,
           render: (h, params) => {
             return h('div', [
               h('Button', {
                 props: {
-                  type: 'primary',
                   size: 'small'
                 },
                 style: {
@@ -94,16 +93,8 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.show(params.index)
+                    this.$router.push({ path: '/street-edit', query: { id: params.row.streetId } })
                   }
-                }
-              }, '终端位置'),
-              h('Button', {
-                props: {
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '10px'
                 }
               }, '街道编辑'),
               h('Button', {
@@ -112,6 +103,11 @@ export default {
                 },
                 style: {
                   marginRight: '10px'
+                },
+                on: {
+                  click: () => {
+                    this.$router.push({ path: '/denggan-admin', query: { id: params.row.streetId } })
+                  }
                 }
               }, '灯杆管理'),
               h('Button', {
@@ -120,31 +116,28 @@ export default {
                 },
                 style: {
                   marginRight: '10px'
-                }
-              }, '照明设置'),
-              h('Button', {
-                props: {
-                  size: 'small'
                 },
-                style: {
-                  marginRight: '10px'
+                on: {
+                  click: () => {
+                    this.$router.push({ path: '/light-set', query: { id: params.row.streetName } })
+                  }
                 }
-              }, '分组设置')
+              }, '照明设置')
             ])
           }
         }
       ],
       lampStreetList: [
-        { streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
-        { streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
-        { streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
-        { streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
-        { streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
-        { streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
-        { streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
-        { streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
-        { streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
-        { streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' }
+        { streetId: 1, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
+        { streetId: 2, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
+        { streetId: 3, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
+        { streetId: 4, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
+        { streetId: 5, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
+        { streetId: 6, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
+        { streetId: 7, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
+        { streetId: 8, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
+        { streetId: 9, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' },
+        { streetId: 10, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' }
       ]
     }
   },

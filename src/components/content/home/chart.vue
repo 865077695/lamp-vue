@@ -1,5 +1,5 @@
 <template>
-  <div class="chart">
+  <div>
     <div v-for="item in chartData" class="box" :style="'background: url(/static/img/'+item.bgImg+'.png) top center/100% 100%'" :key="item.name">
       <p style="color: #e9eaec">{{item.name}}</p>
       <p style="color: #fff;font-size: 26px;letter-spacing: 2px">{{item.count}}</p>
@@ -36,27 +36,16 @@ export default {
 </script>
 
 <style scoped>
-.chart {
-  display: flex;
-  position: absolute;
-  padding-top: 50px;
-  margin-right: 30px;
-  right: 0;
-  top: 0;
-  width: 240px;
-  height: 100%;
-  flex-direction: column;
-  justify-content: flex-start;
-}
 .box {
   height: 120px;
-  width: 100%;
+  width: 240px;
   margin-bottom: 10px;
   border-radius: 5px;
   padding-left: 20px;
   padding-top: 20px;
 }
 .notify {
+  width: 240px;
   height: 240px;
   border-radius: 5px;
   color: #fff;

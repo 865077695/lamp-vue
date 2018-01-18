@@ -14,7 +14,7 @@
         <Button type="primary" size="large">搜索</Button>
       </Col>
     </Row>
-    <Box></Box>
+    <Box class="chart"></Box>
     <Modal
       v-model="modal"
       width="80%"
@@ -177,5 +177,17 @@ export default {
 }
 .ivu-modal-footer {
   border-top: 0;
+}
+.chart {
+  display: flex;
+  position: absolute;
+  padding-top: 50px;
+  margin-right: 30px;
+  right: 0;
+  top: 0;
+  width: 240px;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 </style>

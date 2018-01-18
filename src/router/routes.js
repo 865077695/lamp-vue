@@ -11,7 +11,7 @@ export const appRoutes = [
     title: '首页',
     icon: 'document-text',
     children: [
-      { path: '', name: 'home', title: '首页', component: resolve => { require(['@/components/content/home/home'], resolve) } }
+      { path: '', name: '首页', title: '首页', component: resolve => { require(['@/components/content/home/home'], resolve) } }
     ]
   },
   {
@@ -48,7 +48,9 @@ const otherRoutes = {
   redirect: '/home',
   component: Main,
   children: [
-    { path: 'denggan-admin', name: '灯杆管理', title: '灯杆管理', component: resolve => { require(['@/components/content/lamp/lamp-admin/denggan-admin'], resolve) } }
+    { path: 'denggan-admin', name: '灯杆管理', title: '灯杆管理', component: resolve => { require(['@/components/content/lamp/lamp-admin/denggan-admin'], resolve) } },
+    { path: 'street-edit', name: '街道信息编辑', title: '街道信息编辑', component: resolve => { require(['@/components/content/lamp/lamp-admin/street-edit'], resolve) } },
+    { path: 'light-set', name: '照明设置', title: '照明设置', component: resolve => { require(['@/components/content/lamp/lamp-admin/light-set'], resolve) } }
   ]
 }
 

@@ -1,7 +1,7 @@
 <template>
 <div>
   <TopBar></TopBar>
-  <div class="content">
+  <div class="container">
     <router-view/>
   </div>
 </div>
@@ -21,8 +21,10 @@ export default {
   flex: 1;
   overflow: auto;
 }
-.content {
+.container {
   padding: 20px;
   flex: 1;
+  margin: 20px;
+  background: #fff;
 }
 </style>
