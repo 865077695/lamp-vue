@@ -50,7 +50,10 @@ const otherRoutes = {
   children: [
     { path: 'denggan-admin', name: '灯杆管理', title: '灯杆管理', component: resolve => { require(['@/components/content/lamp/lamp-admin/denggan-admin'], resolve) } },
     { path: 'street-edit', name: '街道信息编辑', title: '街道信息编辑', component: resolve => { require(['@/components/content/lamp/lamp-admin/street-edit'], resolve) } },
-    { path: 'light-set', name: '照明设置', title: '照明设置', component: resolve => { require(['@/components/content/lamp/lamp-admin/light-set'], resolve) } }
+    { path: 'light-set', name: '照明设置', title: '照明设置', component: resolve => { require(['@/components/content/lamp/lamp-admin/light-set'], resolve) } },
+    { path: 'edit-group', name: '编辑分组', title: '编辑分组', component: resolve => { require(['@/components/content/lamp/lamp-admin/edit-group'], resolve) } },
+    { path: 'add-group', name: '新建分组', title: '新建分组', component: resolve => { require(['@/components/content/lamp/lamp-admin/add-group'], resolve) } },
+    { path: 'device-admin', name: '设备管理', title: '设备管理', component: resolve => { require(['@/components/content/lamp/lamp-admin/device-admin'], resolve) } }
   ]
 }
 

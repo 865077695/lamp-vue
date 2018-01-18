@@ -76,7 +76,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    // this.$router.push({ path: '/street-edit', query: { id: params.row.streetId } })
+                    this.$router.push({ path: '/edit-group', query: { id: params.row.groupId } })
                   }
                 }
               }, '编辑分组'),
@@ -101,9 +101,7 @@ export default {
   },
   methods: {
     addGroup () {
-      // 新建空的edit
-      this.edit = {}
-      this.editModal = true
+      this.$router.push({ path: '/add-group' })
     },
     sub () {
       this.editModal_loading = true

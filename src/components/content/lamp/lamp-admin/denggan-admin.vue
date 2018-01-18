@@ -108,7 +108,7 @@ export default {
         {
           title: '操作',
           key: 'action',
-          width: 150,
+          width: 240,
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -129,7 +129,7 @@ export default {
                     }, 1000)
                   }
                 }
-              }, '编辑'),
+              }, '灯杆编辑'),
               h('Button', {
                 props: {
                   size: 'small'
@@ -147,7 +147,22 @@ export default {
                     }, 1000)
                   }
                 }
-              }, '详情')
+              }, '详情'),
+              h('Button', {
+                props: {
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '10px'
+                },
+                on: {
+                  click: () => {
+                    let lampId = this.lampStreetList[params.index].lampIndex
+                    // 根据lampId获取灯杆详情
+                    this.$router.push({ path: '/device-admin', query: { id: lampId } })
+                  }
+                }
+              }, '设备管理')
             ])
           }
         }
