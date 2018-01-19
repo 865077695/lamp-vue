@@ -14,8 +14,6 @@
   <Table class="table" border :loading="dataLoading" :columns="columns" :data="lampStreetList"></Table>
   <my-page @pageChange="pageChange" :_totalPage="totalPage"></my-page>
 </div>
-
-  
 </template>
 
 <script>

@@ -10,19 +10,19 @@ import config from '../config'
 // 拦截器做错误信息处理
 axios.interceptors.response.use(function (res) {
   // 处理状态码
-  // let state = res.data.code
-  // console.log(code[`_${state}`])
-  if (res.data.invalidParams) {
-    console.log(res.data.invalidParams)
+  let status = res.data.code
+  if (status === 200) {  // 请求成功
+  } else {    // 请求失败
+    alert('失败请重试')
   }
-  return res.data
+  return res.data.data
 }, function (err) {
   console.log(err)
   return Promise.reject(err)
 })
 
 export default ({ url, method = 'GET', type = 'json', data = {}, params = {} }) => axios({
-  url: 'https://easy-mock.com/mock/5a4de5cfd15d983e1a86e4a9/anjian/user/logout',
+  url,
   baseURL: config.baseURL,
   method,
   responseType: type,

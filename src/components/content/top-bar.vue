@@ -6,10 +6,7 @@
 
 <script>
 export default {
-  name: 'topbar',
-  created () {
-    console.log(this.$route)
-  }
+  name: 'topbar'
 }
 </script>
 

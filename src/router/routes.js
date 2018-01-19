@@ -20,10 +20,10 @@ export const appRoutes = [
     name: 'lamp',
     title: '路灯管理',
     children: [
-      { path: 'lamp-admin', name: '路灯管理', title: '路灯管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/lamp-admin/lamp-admin'], resolve) } },
-      { path: 'broadcast-admin', name: '播报管理', title: '播报管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-admin'], resolve) } },
-      { path: 'audio-admin', name: '音频管理', title: '音频管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/audio-admin'], resolve) } },
-      { path: 'video-admin', name: '视频管理', title: '视频管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/video-admin'], resolve) } }
+      { path: 'street-admin', name: '路灯管理', title: '路灯管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/street-admin'], resolve) } },
+      { path: 'broadcast-admin', name: '播报设备管理', title: '播报设备管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-device/broadcast-device'], resolve) } },
+      { path: 'audio-admin', name: '播报资源管理', title: '播报资源管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-resource/broadcast-resource'], resolve) } },
+      { path: 'video-admin', name: '播报计划管理', title: '播报计划管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-plan/broadcast-plan'], resolve) } }
     ]
   },
   {
@@ -61,4 +61,3 @@ const otherRoutes = {
 const page404 = { path: '/*', name: 'error-404', title: '404-页面不存在', component: resolve => { require(['@/components/error-page/404.vue'], resolve) } }
 
 export const routes = [otherRoutes, signRouter, ...appRoutes, page404]
-console.log(routes)
