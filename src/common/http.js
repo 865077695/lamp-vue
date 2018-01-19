@@ -15,7 +15,7 @@ axios.interceptors.response.use(function (res) {
   } else {    // 请求失败
     alert('失败请重试')
   }
-  return res.data.data
+  return res.data
 }, function (err) {
   console.log(err)
   return Promise.reject(err)

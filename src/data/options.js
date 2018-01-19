@@ -24,3 +24,19 @@ export const dev = {
     { label: '失联', value: 20 }
   ]
 }
+
+export const broadcastPlan = {    // 播报计划相关
+  resourceType: [  // 播报类型
+    { label: '音频', value: 1 },
+    { label: '视频', value: 2 },
+    { label: '文字', value: 3 }
+  ],
+  iscycle: [ // 是否循环
+    { label: '是', value: 0 },
+    { label: '否', value: 1 }
+  ],
+  status: [ // 计划状态
+    { label: '开启', value: 1 },
+    { label: '关闭', value: 0 }
+  ]
+}

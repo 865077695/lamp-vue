@@ -8,51 +8,62 @@
  * 向上传递事件search，事件参数为表单值
  */
 <template>
-  <div>
-    <div class="g-search">
-      <div v-for="(item, index) in searchContent" :key="item.label" class="g-item">
-        <div class="g-label">
-          {{item.label}}：
-        </div>
-        <div class="g-ipt">
-          <template v-if="item.options">
-            <Select v-model="item.value" style="width:200px">
-                <Option v-for="option in item.options" :value="option.value" :key="option.value">{{ option.label }}</Option>
-            </Select>
-          </template>
-          <template v-else>
-            <Input v-model="item.value" :placeholder="item.placeholder" :style="'width:' + item.width"></Input>
-          </template>
-        </div>
+  <div class="g-search">
+    <div v-for="(item, index) in formItems" :key="item.label" class="g-item">
+      <div class="g-label">
+        {{item.label}}：
       </div>
-      <!-- <my-form  :searchContent="searchContent"></my-form> -->
-      <Button type="primary" @click="search">查找</Button>
-      <Button type="success" @click="addModal = true" style="margin-left: 20px;">新增</Button>
-
-      <Modal v-model="addModal" width="360">
-          <p slot="header">
-              <Icon type="information-circled"></Icon>
-              <span>新增</span>
-          </p>
-          <div style="text-align:center">
-              <!-- <my-form></my-form> -->
-          </div>
-          <div slot="footer" style="text-align: center">
-              <Button type="primary" size="large" :loading="modal_loading" @click="ok">确认</Button>
-              <Button size="large" :loading="modal_loading" @click="cancel">取消</Button>
-          </div>
-      </Modal>
+      <div class="g-ipt">
+        <template v-if="item.options">
+          <Select v-model="item.value" style="width:200px">
+              <Option v-for="option in item.options" :value="option.value" :key="option.value">{{ option.label }}</Option>
+          </Select>
+        </template>
+        <template v-else>
+          <Input v-model="item.value" :placeholder="item.placeholder" :style="'width:' + item.width"></Input>
+        </template>
+      </div>
     </div>
+    <Button type="primary" @click="search">查找</Button>
+    <Button type="success" @click="addModal = true" style="margin-left: 20px;">新增</Button>
+
+    <Modal v-model="addModal" width="360">
+        <p slot="header">
+            <Icon type="information-circled"></Icon>
+            <span>新增</span>
+        </p>
+        <div style="text-align:center">
+
+          <div v-for="(item, index) in addFormItems" :key="item.label" class="g-item">
+            <div class="g-label">
+              {{item.label}}：
+            </div>
+            <div class="g-ipt">
+              <template v-if="item.options">
+                <Select v-model="item.value" style="width:200px">
+                    <Option v-for="option in item.options" :value="option.value" :key="option.value">{{ option.label }}</Option>
+                </Select>
+              </template>
+              <template v-else>
+                <Input v-model="item.value" :placeholder="item.placeholder" :style="'width:' + item.width"></Input>
+              </template>
+            </div>
+          </div>
+
+        </div>
+        <div slot="footer" style="text-align: center">
+            <Button type="primary" size="large" :loading="modal_loading" @click="ok">确认</Button>
+            <Button size="large" :loading="modal_loading" @click="cancel">取消</Button>
+        </div>
+    </Modal>
   </div>
 </template>
 
 <script>
-// import MyForm from '@/template/form';
 export default {
   name: 'BroadcastDevice',
-  // components: { MyForm },
   props: {
-    searchContent: {
+    formItems: {
       type: Array,
       default: function () {
         return [
@@ -62,6 +73,15 @@ export default {
           { label: '', key: '', width: '', placeholder: '' }
         ]
       }
+    },
+    formData: {
+      type: Object
+    },
+    addFormItems: {
+      type: Array
+    },
+    addFormData: {
+      type: Object
     }
   },
   data () {
@@ -72,16 +92,17 @@ export default {
   },
   methods: {
     search () {
-      const params = {}
-      this.searchContent.map((item) => {
-        params[item.key] = item.value
+      this.formItems.map((item) => {
+        this.formData[item.key] = item.value
       })
-      console.log(params)
       // 向上传递事件
-      this.$emit('search', params)
+      this.$emit('search', this.formData)
     },
     ok () {
-      this.$emit('add')
+      this.addFormItems.map(item => {
+        this.addFormData[item.key] = item.value
+      })
+      this.$emit('add', this.addFormData)
       this.addModal = false
     },
     cancel () {
