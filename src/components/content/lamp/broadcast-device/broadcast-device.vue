@@ -17,7 +17,7 @@
         </div>
         <div slot="footer" style="text-align: center">
           <Button type="primary" size="large" :loading="adding" @click="ok">确认</Button>
-          <Button size="large" @click="devAddData={}">取消</Button>
+          <Button size="large" @click="cancel">取消</Button>
         </div>
     </Modal>
 
@@ -146,6 +146,10 @@ export default {
           }
           this.updateData()
         })
+    },
+    cancel () {
+      this.devAddData = {}
+      this.addModal = false
     },
     updateData () {
       this.tableLoading = true

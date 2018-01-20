@@ -12,14 +12,14 @@
             <span>新增</span>
         </p>
         <div style="text-align:center">
-          <my-form class="_form" :formItem="devResourceItem" :formData="resourceAddData" style="height: 180px;"></my-form>
+          <my-form class="_form" :formItem="devResourceAddItem" :formData="resourceAddData" style="height: 180px;"></my-form>
           <Upload action="//jsonplaceholder.typicode.com/posts/" @on-error="uploadError" @on-success="uploadSuccess" ref="upload" style="text-align:left">
               <Button type="ghost" icon="ios-cloud-upload-outline" style="width:100%;">上传文件</Button>
           </Upload>
         </div>
         <div slot="footer" style="text-align: center">
           <Button type="primary" size="large" :loading="adding" @click="ok">确认</Button>
-          <Button size="large" @click="devAddData={}">取消</Button>
+          <Button size="large" @click="cancel">取消</Button>
         </div>
     </Modal>
 
@@ -30,15 +30,12 @@
 
 <script>
 import MyForm from '@/template/form'
-import Search from '@/template/search'
 import Page from '@/template/page'
-import { dev} from '@/data/options'
-import { resourceSearchItem, devResourceItem } from '@/data/formItems'
-import { getStatusText } from '@/common/_func'
+import { resourceSearchItem, devResourceAddItem } from '@/data/formItems'
 import http from '@/common/http'
 export default {
   name: 'BroadcastResource',
-  components: { Search, Page, MyForm },
+  components: { Page, MyForm },
   data () {
     return {
       adding: false,        // 添加中
@@ -50,39 +47,24 @@ export default {
       searchParams: {                 // 存放请求参数
         currentPage: 1
       },
-      devResourceItem,         // 新增设备参数内容，用来生成form
+      devResourceAddItem,         // 新增设备参数内容，用来生成form
       resourceAddData: {},                 // 存放新增设备的参数
       resourceList: [],       // 存放设备列表
       columns: [            // 行
         { title: '资源id', key: 'id' },
         { title: '资源名称', key: 'name' },
-        { title: '资源地址', key: 'sn' },
-        { title: '创建人', key: 'pole_id' },
-        { title: '创建人姓名', key: 'pole_name' },
-        { title: '创建时间', key: 'pole_sn' },
+        { title: '资源地址', key: 'url' },
+        { title: '创建人', key: 'modifyId' },
+        { title: '创建人姓名', key: 'user_name' },
+        { title: '创建时间', key: 'modifyTime' },
+        // {
+        //   title: '资源类型',
+        //   key: 'typ',
+        //   render: (h, params) => {
+        //     return h('div', getStatusText(params.row.typ, dev.typeOptions))
+        //   }
+        // },
         {
-          title: '设备类型',
-          key: 'typ',
-          render: (h, params) => {
-            return h('div', getStatusText(params.row.typ, dev.typeOptions))
-          }
-        },
-        { title: '当前版本', key: 'version' },
-        {
-          title: '网络类型',
-          key: 'net_type',
-          render: (h, params) => {
-            return h('div', getStatusText(params.row.net_type, dev.netTypeOptions))
-          }
-        },
-        { title: '音量大小', key: 'volume' },
-        {
-          title: '设备状态',
-          key: 'status',
-          render: (h, params) => {
-            return h('div', getStatusText(params.row.status, dev.statusOptions))
-          }
-        }, {
           title: '操作',
           key: 'action',
           width: 150,
@@ -98,7 +80,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({ path: '/device-info', query: { row: JSON.stringify(params.row) } })
+                    this.$router.push({ path: '/resource-info', query: { row: JSON.stringify(params.row) } })
                   }
                 }
               }, '详情'),
@@ -110,10 +92,10 @@ export default {
                 on: {
                   click: () => {
                     this.tableLoading = true
-                    http({ url: '/devices/delete', params: { id: params.row.id } })
+                    http({ url: '/media/delete', params: { id: params.row.id, url: params.row.url } })
                       .then(res => {
                         if (res.code === 200) {
-                          this.$Message.success('删除设备成功')
+                          this.$Message.success('删除资源成功')
                           this.updateData()
                         } else {
                           this.$Message.warning('删除失败')
@@ -146,17 +128,21 @@ export default {
     },
     ok () {
       this.adding = true
-      http({ url: '/devices/add', params: this.devAddData })
+      http({ url: '/media/add', params: this.resourceAddData })
         .then(data => {
           this.adding = false
           this.addModal = false
           if (data.code === 200) {
-            this.$Message.success('添加设备成功')
+            this.$Message.success('添加资源成功')
           } else {
             this.$Message.warning('添加失败')
           }
           this.updateData()
         })
+    },
+    cancel () {
+      this.resourceAddData = {}
+      this.addModal = false
     },
     updateData () {
       this.tableLoading = true

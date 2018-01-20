@@ -24,7 +24,15 @@ export const resourceSearchItem = [ // 资源列表查询条件项
   { label: '资源名称', key: 'name', width: '100px' }
 ]
 
-export const devResourceItem = [  // 新增资源表单项
+export const devResourceAddItem = [  // 新增资源表单项
   { label: '资源名称', key: 'name', width: '100px' },
   { label: '资源类型', key: 'typ', width: '100px', options: broadcastPlan.resourceType }
+]
+
+export const planSearchItem = [ // 播报计划列表查询项
+
+]
+
+export const planAddItem = [  // 新增播报计划表单项
+
 ]

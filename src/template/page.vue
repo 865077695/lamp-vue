@@ -63,10 +63,10 @@ export default {
   },
   computed: {
     isFirst: function () {
-      return this._currentPage === 1
+      return this._currentPage <= 1
     },
     isLast: function () {
-      return this._currentPage === this._totalPage
+      return this._currentPage >= this._totalPage
     }
   }
 }
