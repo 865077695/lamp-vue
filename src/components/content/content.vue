@@ -18,14 +18,17 @@ export default {
 #content {
   height: 100%;
   display: flex;
+  overflow: hidden;
 }
 .leftBar {
-  flex: 0 1 200px;
+  width: 240px;
+  flex: 0 0 240px;
+  height: 100%;
 }
 .RightContent {
-  flex: 1;
   background: rgb(248, 246, 246);
   display: flex;
-  flex-direction: column
+  flex: 1 1 auto;
+  flex-direction: column;
 }
 </style>

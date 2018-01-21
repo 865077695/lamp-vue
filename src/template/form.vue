@@ -8,7 +8,6 @@
  * 2.用来存储表单数据
  * formData: Object
  * 参数说明：label为标签名，key为最终存放值的键名，width为ipt宽度，若属性包含options，则为下拉框。
- * 向上传递事件search，事件参数为表单值
  */
 <template>
   <div>

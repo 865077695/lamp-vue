@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import bus from '@/eventBus'
 import ResourceList from './resource-list'
 import http from '@/common/http'
 export default {
@@ -122,7 +121,6 @@ export default {
         })()
       }
       this.updateData()
-      bus.$emit('toggleTab', this.searchParams.typ)
     },
     search () {
       console.log(this.searchParams)

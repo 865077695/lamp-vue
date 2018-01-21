@@ -20,13 +20,12 @@ export const devAddItem = [ // 添加设备表单项
 ]
 
 export const resourceSearchItem = [ // 资源列表查询条件项
-  { label: '资源类型', key: 'typ', width: '100px', options: broadcastPlan.resourceType },
   { label: '资源名称', key: 'name', width: '100px' }
 ]
 
 export const devResourceAddItem = [  // 新增资源表单项
-  { label: '资源名称', key: 'name', width: '100px' },
-  { label: '资源类型', key: 'typ', width: '100px', options: broadcastPlan.resourceType }
+  { label: '资源名称', key: 'name', width: '300px' },
+  { label: '资源列表', key: 'resource', width: '300px', options: broadcastPlan.resourceType }
 ]
 
 export const planSearchItem = [ // 播报计划列表查询项

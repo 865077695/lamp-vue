@@ -22,8 +22,8 @@ export const appRoutes = [
     children: [
       { path: 'street-admin', name: '路灯管理', title: '路灯管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/street-admin'], resolve) } },
       { path: 'broadcast-admin', name: '播报设备管理', title: '播报设备管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-device/broadcast-device'], resolve) } },
-      { path: 'audio-admin', name: '播报资源管理', title: '播报资源管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-resource/broadcast-resource'], resolve) } },
-      { path: 'video-admin', name: '播报计划管理', title: '播报计划管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-plan/broadcast-plan'], resolve) } }
+      { path: 'broadcast-resource', name: '播报资源管理', title: '播报资源管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-resource/broadcast-resource'], resolve) } },
+      { path: 'broadcast-plan', name: '播报计划管理', title: '播报计划管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-plan/broadcast-plan'], resolve) } }
     ]
   },
   {
@@ -54,8 +54,7 @@ const otherRoutes = {
     { path: 'edit-group', name: '编辑分组', title: '编辑分组', component: resolve => { require(['@/components/content/lamp/lamp-admin/edit-group'], resolve) } },
     { path: 'add-group', name: '新建分组', title: '新建分组', component: resolve => { require(['@/components/content/lamp/lamp-admin/add-group'], resolve) } },
     { path: 'device-admin', name: '设备管理', title: '设备管理', component: resolve => { require(['@/components/content/lamp/lamp-admin/device-admin'], resolve) } },
-    { path: 'device-info', name: '设备详情', title: '设备详情', component: resolve => { require(['@/components/content/lamp/broadcast-device/device-info'], resolve) } },
-    { path: 'resource-info', name: '资源详情', title: '资源详情', component: resolve => { require(['@/components/content/lamp/broadcast-resource/resource-info'], resolve) } }
+    { path: 'device-info', name: '设备详情', title: '设备详情', component: resolve => { require(['@/components/content/lamp/broadcast-device/device-info'], resolve) } }
   ]
 }
 

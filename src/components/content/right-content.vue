@@ -1,6 +1,6 @@
 <template>
 <div>
-  <TopBar></TopBar>
+  <TopBar class="topbar"></TopBar>
   <div class="container">
     <router-view/>
   </div>
@@ -17,9 +17,13 @@ export default {
 </script>
 
 <style scoped>
-.router {
-  flex: 1;
-  overflow: auto;
+.topbar {
+  line-height: 50px;
+  border-bottom: 1px solid rgb(243, 241, 241);
+  padding-left: 20px;
+  font-size: 20px;
+  background: #fff;
+  flex: 0 1 50px;
 }
 .container {
   padding: 20px;
