@@ -35,8 +35,8 @@ export const appRoutes = [
       { path: 'energy-analysis', name: '能耗统计', title: '能耗统计', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/energy-analysis'], resolve) } },
       { path: 'log', name: '日志统计', title: '日志统计', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/log'], resolve) } },
       { path: 'add-account', name: '添加用户', title: '添加用户', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/add-account'], resolve) } },
-      { path: 'user-admin', name: '人员管理', title: '人员管理', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/user-admin'], resolve) } },
-      { path: 'area-admin', name: '区域管理', title: '区域管理', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/area-admin'], resolve) } }
+      { path: 'user-admin', name: '人员管理', title: '人员管理', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/user-admin'], resolve) } }
+      // { path: 'area-admin', name: '区域管理', title: '区域管理', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/area-admin'], resolve) } }
     ]
   }
 ]
