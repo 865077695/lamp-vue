@@ -31,7 +31,7 @@ export const audioColumns = [
           on: {
             click: () => {
               this.tableLoading = true
-              http({ url: '/media/delete', params: { id: params.row.id, url: params.row.url } })
+              http({ url: '/media/delete', method: 'POST', data: { id: params.row.id, url: params.row.url } })
                 .then(res => {
                   if (res.code === 200) {
                     this.$Message.success('删除资源成功')

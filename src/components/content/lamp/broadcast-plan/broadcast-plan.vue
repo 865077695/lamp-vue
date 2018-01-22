@@ -3,8 +3,8 @@
   <div>
     <div class="_search">
       <my-form class="_form" :formItem="planSearchItem" :formData="searchParams"></my-form>
-      <Button type="primary" @click="search" :disabled="tableLoading">查找</Button>
-      <Button type="success" @click="addModal = true" style="margin-left: 20px;" :disabled="tableLoading">新增</Button>
+      <Button type="primary" @click="search" :disabled="tableLoading" style="height: 32px">查找</Button>
+      <Button type="success" @click="addModal = true" style="margin-left: 20px; height: 32px" :disabled="tableLoading">新增</Button>
     </div>
     <Modal v-model="addModal" width="600">
         <p slot="header">
@@ -12,10 +12,7 @@
             <span>新增</span>
         </p>
         <div style="text-align:center">
-          <my-form class="_form" :formItem="planAddItem" :formData="planAddData" style="height: 180px;"></my-form>
-          <Upload action="//jsonplaceholder.typicode.com/posts/" @on-error="uploadError" @on-success="uploadSuccess" ref="upload" style="text-align:left">
-              <Button type="ghost" icon="ios-cloud-upload-outline" style="width:100%;">上传文件</Button>
-          </Upload>
+          <my-form class="_form" :formItem="planAddItem" :formData="planAddData" style="height: 360px;"></my-form>
         </div>
         <div slot="footer" style="text-align: center">
           <Button type="primary" size="large" :loading="adding" @click="ok">确认</Button>
@@ -43,7 +40,6 @@ export default {
       tableLoading: false,  // 表格加载
       totalPage: 10,        // 默认总页数
       planSearchItem,   // 查询设备参数内容，用来生成请求form
-      uploadList: [],
       searchParams: {                 // 存放请求参数
         currentPage: 1
       },
@@ -92,7 +88,7 @@ export default {
                 on: {
                   click: () => {
                     this.tableLoading = true
-                    http({ url: '/media/delete', params: { id: params.row.id, url: params.row.url } })
+                    http({ url: '/plan/delete', data: { id: params.row.id, url: params.row.url } })
                       .then(res => {
                         if (res.code === 200) {
                           this.$Message.success('删除资源成功')
@@ -118,17 +114,9 @@ export default {
     pageChange () {  // 页码修改时更新数据
       this.updateData()
     },
-    uploadSuccess (response, file, fileList) {
-      console.log(response)
-      this.planAddData.id = response.data.id
-      this.planAddData.url = response.data.url
-    },
-    uploadError (error, file, fileList) {
-      console.log(error)
-    },
     ok () {
       this.adding = true
-      http({ url: '/media/add', params: this.planAddData })
+      http({ url: '/plan/add', method: 'POST', data: this.planAddData })
         .then(data => {
           this.adding = false
           this.addModal = false
@@ -146,7 +134,7 @@ export default {
     },
     updateData () {
       this.tableLoading = true
-      http({ url: '/media/list', params: this.searchParams })
+      http({ url: '/plan/list', method: 'POST', data: this.searchParams })
         .then(data => {
           this.tableLoading = false
           this.planList = data.data.content
@@ -158,7 +146,6 @@ export default {
     this.updateData()
   },
   mounted () {
-    this.uploadList = this.$refs.upload.fileList
   }
 }
 </script>

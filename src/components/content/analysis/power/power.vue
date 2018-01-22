@@ -1,11 +1,11 @@
 <template>
   <div>
-    地区管理
+    能耗统计
   </div>
 </template>
 
 <script>
 export default {
-  name: 'area-admin'
+  name: 'Power'
 }
 </script>

@@ -3,148 +3,77 @@
     <div class="_search">
       <my-form class="_form" :formItem="resourceSearchItem" :formData="searchParams"></my-form>
       <Button type="primary" @click="search" :disabled="tableLoading">查找</Button>
-      <Button type="success" @click="addModal = true" style="margin-left: 20px;" :disabled="tableLoading">新增</Button>
-    </div>
-    <Modal v-model="addModal" width="600">
+      <Button type="success" @click="clickAdd" style="margin-left: 20px;" :disabled="tableLoading">新增</Button>
+
+      <Modal v-model="addModal" width="600">
         <p slot="header">
             <Icon type="information-circled"></Icon>
             <span>新增</span>
         </p>
         <div style="text-align:center">
-          <my-form class="_form" :formItem="devResourceAddItem" :formData="resourceAddData" style="height: 180px;"></my-form>
+          <my-form class="_form" :formItem="devResourceAddItem" :formData="resourceAddData" style="height: 100px;"></my-form>
         </div>
         <div slot="footer" style="text-align: center">
           <Button type="primary" size="large" :loading="adding" @click="ok">确认</Button>
           <Button size="large" @click="cancel">取消</Button>
         </div>
-    </Modal>
-
+      </Modal>
+    </div>
     <Table class="table" width="752" :loading="tableLoading" border :columns="columns" :data="resourceList"></Table>
-    <Page :_totalPage="totalPage" @pageChange="pageChange" :_currentPage.sync="searchParams.currentPage" style="width: 750px;"></Page>
-  
   </div>
 </template>
 
 <script>
+import bus from '@/eventBus'
+import http from '@/common/http'
 import MyForm from '@/template/form'
 import Page from '@/template/page'
 import { resourceSearchItem, devResourceAddItem } from '@/data/formItems'
-import http from '@/common/http'
 export default {
-  name: 'ResourceList',
-  components: { Page, MyForm },
+  name: 'ResourceList1',
   props: {
-    resourceList: {   // 存放资源列表
-      type: Array
-    }
+    searchParams: Object,
+    resourceList: Array,
+    resourceAddData: Object,
+    tableLoading: Boolean,
+    columns: Array,
+    adding: Boolean,
+    addModal: Boolean
   },
+  components: { Page, MyForm },
   data () {
     return {
-      adding: false,        // 添加中
-      addModal: false,      // 模态框显示状态
-      tableLoading: false,  // 表格加载
-      totalPage: 10,        // 默认总页数
-      resourceSearchItem,   // 查询设备参数内容，用来生成请求form
-      searchParams: {                 // 存放请求参数
-        currentPage: 1
-      },
-      devResourceAddItem,         // 新增设备参数内容，用来生成form
-      resourceAddData: {},                 // 存放新增设备的参数
-      columns: [            // 行
-        { title: '资源id', key: 'id', width: 100 },
-        { title: '资源名称', key: 'name', width: 200 },
-        { title: '资源地址', key: 'url', width: 300 },
-        // {
-        //   title: '资源类型',
-        //   key: 'typ',
-        //   render: (h, params) => {
-        //     return h('div', getStatusText(params.row.typ, dev.typeOptions))
-        //   }
-        // },
-        {
-          title: '操作',
-          key: 'action',
-          width: 150,
-          render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.$router.push({ path: '/resource-info', query: { row: JSON.stringify(params.row) } })
-                  }
-                }
-              }, '详情'),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-                },
-                on: {
-                  click: () => {
-                    this.tableLoading = true
-                    http({ url: '/media/delete', params: { id: params.row.id, url: params.row.url } })
-                      .then(res => {
-                        if (res.code === 200) {
-                          this.$Message.success('删除资源成功')
-                          this.updateData()
-                        } else {
-                          this.$Message.warning('删除失败')
-                        }
-                      })
-                  }
-                }
-              }, '删除')
-            ])
-          }
-        }
-      ]
+      resourceSearchItem,
+      devResourceAddItem
     }
   },
   methods: {
-    search () {           // 点击搜索时更新数据
-      this.searchParams.currentPage = 1
-      this.updateData()
+    clickAdd () {
+      this.$emit('clickAdd')
     },
-    pageChange () {  // 页码修改时更新数据
-      this.updateData()
+    search () {
+      this.$emit('search')
     },
     ok () {
-      this.adding = true
-      http({ url: '/media/add', params: this.resourceAddData })
-        .then(data => {
-          this.adding = false
-          this.addModal = false
-          if (data.code === 200) {
-            this.$Message.success('添加资源成功')
-          } else {
-            this.$Message.warning('添加失败')
-          }
-          this.updateData()
-        })
+      this.$emit('ok')
     },
     cancel () {
-      this.resourceAddData = {}
-      this.addModal = false
+      this.$emit('cancel')
     },
-    updateData () {
-      this.tableLoading = true
-      http({ url: '/media/list', params: this.searchParams })
+    getResourceList (typ) {    // 获取待添加资源列表作为options
+      console.log(typ)
+      http({ url: '/media/list', methods: 'POST', data: { typ: typ } })
         .then(data => {
-          this.tableLoading = false
-          this.resourceList = data.data.content
-          this.totalPage = data.data.totalPage
+          this.devResourceAddItem[1].options = data.data.resourceList
         })
     }
   },
   created () {
-    this.updateData()
+    console.log('信息')
+    this.getResourceList(this.searchParams.typ)
+    bus.$on('toggleTab', (typ) => {
+      this.getResourceList(typ)
+    })
   }
 }
 </script>

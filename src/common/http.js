@@ -10,11 +10,7 @@ import config from '../config'
 // 拦截器做错误信息处理
 axios.interceptors.response.use(function (res) {
   // 处理状态码
-  let status = res.data.code
-  if (status === 200) {  // 请求成功
-  } else {    // 请求失败
-    alert('失败请重试')
-  }
+
   return res.data
 }, function (err) {
   console.log(err)
@@ -29,6 +25,7 @@ export default ({ url, method = 'GET', type = 'json', data = {}, params = {} }) 
   data,
   params,
   timeout: 3000,
+  withCredentials: true,
   headers: {
     'Content-type': 'application/json'
   }

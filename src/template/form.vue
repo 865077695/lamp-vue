@@ -16,13 +16,24 @@
           {{item.label}}：
         </div>
         <div class="g-ipt">
-          <template v-if="item.options">
+          <template v-if="item.typ === 'opt'">
             <Select v-model="formData[item.key]" :style="'width:' + item.width">
                 <Option v-for="option in item.options" :value="option.value" :key="option.value">{{ option.label }}</Option>
             </Select>
           </template>
-          <template v-else>
+          <template v-else-if="item.typ==='ipt'">
             <Input v-model="formData[item.key]" :placeholder="item.placeholder" :style="'width:' + item.width"></Input>
+          </template>
+          <template v-else-if="item.typ === 'date'">
+            <DatePicker v-model="formData['_'+item.key]" type="datetime" @on-change="dateChange($event,item.key)" format="yyyy-MM-dd" :placeholder="item.placeholder" :style="'width:' + item.width"></DatePicker>
+          </template>
+          <template v-else-if="item.typ === 'time'">
+            <TimePicker v-model="formData[item.key]" format="HH:mm:ss" :placeholder="item.placeholder" :style="'width:' + item.width"></TimePicker>
+          </template>
+          <template v-else-if="item.typ === 'radio'">
+            <RadioGroup v-model="formData[item.key]" :style="'line-height: 32px;width:' + item.width">
+              <Radio :label="opt.fileName" v-for="opt in options" :key="opt.fileName"></Radio>
+            </RadioGroup>
           </template>
         </div>
       </div>
@@ -30,11 +41,27 @@
 </template>
 
 <script>
+import bus from '@/eventBus'
 export default {
   name: 'Form',
   props: {
     formItem: Array,
     formData: Object
+  },
+  data () {
+    return {
+      options: null
+    }
+  },
+  created () {
+    bus.$on('getOptions', options => {
+      this.options = options
+    })
+  },
+  methods: {
+    dateChange ($event, key) {
+      this.formData[key] = $event
+    }
   }
 }
 </script>
@@ -42,10 +69,9 @@ export default {
 <style scoped>
 .g-item {
   display: flex;
-  justify-content: flex-start;
 }
 .g-label {
-  width: 100px;
+  width: 60px;
   line-height: 32px;
 }
 .g-ipt {

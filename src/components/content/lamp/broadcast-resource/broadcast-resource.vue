@@ -4,36 +4,20 @@
      <Tabs type="card" @on-click="toggleTab">
         <TabPane label="音频" name="audio" icon="music-note">
           <resource-list
-           :resourceList="resourceList" 
-           :searchParams="searchParams" 
-           @search="search" 
-           @ok="ok"
-           @cancel="cancel"
-           @clickAdd="clickAdd"
-           :tab="tab"
+           :mediaList="mediaList" 
+           :resourceSearchItem="resourceSearchItem"
+           :searchParams="searchParams"
+           :totalPage="totalPage"
            :resourceAddData="resourceAddData"
-           :tableLoading="tableLoading"
-           :adding="adding"
-           :addModal="addModal"
-           :columns="columns"
+           :devResourceAddItem="devResourceAddItem"
+           @search="search"
+           @pageChange="pageChange"
+           @add="add"
+           @ok="ok"
            ></resource-list>
         </TabPane>
-        <TabPane label="视频" name="video" icon="videocamera">
-          <resource-list
-           :resourceList="resourceList" 
-           :searchParams="searchParams" 
-           @search="search" 
-           @ok="ok"
-           @cancel="cancel"
-           @clickAdd="clickAdd"
-           :tab="tab"
-           :resourceAddData="resourceAddData"
-           :tableLoading="tableLoading"
-           :adding="adding"
-           :addModal="addModal"
-           :columns="columns"
-           ></resource-list>
-        </TabPane>
+        <!-- <TabPane label="视频" name="video" icon="videocamera">
+        </TabPane> -->
     </Tabs>
   </div>
 </template>
@@ -42,70 +26,25 @@
 import bus from '@/eventBus'
 import ResourceList from './resource-list'
 import http from '@/common/http'
+import { resourceSearchItem, devResourceAddItem } from '@/data/formItems'
 export default {
   name: 'BroadcastResource',
   components: { ResourceList },
   data () {
     return {
-      tableLoading: false,
-      addModal: false,
-      adding: false,
-      resourceList: [],
-      searchParams: {
+      mediaList: [],      // 用来储存表格数据（媒体资源列表）
+      totalPage: 10,      // 总页数
+      resourceSearchItem, // 搜索表单项
+      devResourceAddItem, // 添加表单项
+      searchParams: {     // 搜索参数初始化，类型为1（音频），储存搜索表单数据
         currentPage: 1,
         typ: 1
       },
-      tab: 'audio',
-      resourceAddData: {},
-      columns: [
-        { title: '资源id', key: 'id', width: 100 },
-        { title: '资源名称', key: 'name', width: 200 },
-        { title: '资源地址', key: 'url', width: 300 },
-        {
-          title: '操作',
-          key: 'action',
-          width: 150,
-          render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.addModal = true
-                    this.resourceAddData = params.row
-                  }
-                }
-              }, '编辑'),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-                },
-                on: {
-                  click: () => {
-                    this.tableLoading = true
-                    http({ url: '/media/delete', params: { id: params.row.id, url: params.row.url } })
-                      .then(res => {
-                        if (res.code === 200) {
-                          this.$Message.success('删除资源成功')
-                          this.updateData()
-                        } else {
-                          this.$Message.warning('删除失败')
-                        }
-                      })
-                  }
-                }
-              }, '删除')
-            ])
-          }
-        }
-      ]
+      tab: 'audio',         // 当前面板状态
+      resourceAddData: {    // 储存添加资源表单数据
+        typ: 1,
+        url: ''
+      }
     }
   },
   methods: {
@@ -125,26 +64,35 @@ export default {
       bus.$emit('toggleTab', this.searchParams.typ)
     },
     search () {
-      console.log(this.searchParams)
+      this.searchParams.currentPage = 1
       this.updateData()
+    },
+    pageChange () {
+      this.updateData()
+    },
+    add () {
+      console.log('add')
+      http({ url: '/media/templist' })
+        .then(res => {
+          this.devResourceAddItem[1].options = [{ fileName: 'a' }, { fileName: 'b' }]
+          bus.$emit('getOptions', this.devResourceAddItem[1].options)
+        })
     },
     clickAdd () {
       this.addModal = true
     },
     ok () {
-      this.adding = true
-      http({ url: '/media/add', params: this.resourceAddData })
+      bus.$emit('addBegin')
+      http({ url: '/media/add', method: 'POST', data: this.resourceAddData })
         .then(data => {
+          bus.$emit('addEnd')
           if (data.code === 200) {
-            this.adding = false
-            this.addModal = false
             this.$Message.success('新增成功')
             this.resourceAddData = {}
           }
         })
     },
     cancel () {
-      this.addModal = false
       this.resourceAddData = {}
       this.$Message.info('取消新增')
     },
@@ -152,18 +100,22 @@ export default {
       console.log(222)
     },
     updateData () {
-      this.tableLoading = true
-      http({ url: '/media/list', params: this.searchParams })
+      bus.$emit('updateBegin')
+      console.log(this.searchParams)
+      http({ url: '/media/list', method: 'POST', data: this.searchParams })
         .then(data => {
-          this.tableLoading = false
-          this.resourceList = data.data.content
+          bus.$emit('updateEnd')
+          this.mediaList = data.data.content
           this.totalPage = data.data.totalPage
         })
     }
   },
   created () {
-    console.log(this.columns)
     this.updateData()
+    bus.$on('edit', () => {
+      // console.log()
+    })
+    console.log(this.devResourceAddItem)
   }
 }
 </script>

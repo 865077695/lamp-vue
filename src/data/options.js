@@ -40,3 +40,9 @@ export const broadcastPlan = {    // 播报计划相关
     { label: '关闭', value: 0 }
   ]
 }
+
+export const adminType = [
+  { label: '超级管理员', value: 0 },
+  { label: '管理员', value: 1 },
+  { label: '普通用户', value: 2 }
+]
