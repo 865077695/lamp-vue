@@ -88,20 +88,6 @@ export default {
                   }
                 }
               }, '编辑')
-              // h('Button', {
-              //   props: {
-              //     type: 'error',
-              //     size: 'small'
-              //   },
-              //   style: {
-              //     marginRight: '5px'
-              //   },
-              //   on: {
-              //     click: () => {
-              //       console.log(111)
-              //     }
-              //   }
-              // }, '删除')
             ])
           }
         }
@@ -137,9 +123,20 @@ export default {
             } else {
               this.$Message.warning('失败')
             }
+            this.update()
           })
       } else if (this.modalTitle === '编辑') {
-        http({ url: '/admin/users/usersEdit', method: 'POST', data: this.adminUserAddData })
+        let data = {
+          id: this.adminUserAddData.id,
+          name: this.adminUserAddData.name,
+          mobile: this.adminUserAddData.mobile,
+          address: this.adminUserAddData.address,
+          // password: this.adminUserAddData.password,
+          // confirmPassword: this.adminUserAddData.confirmPassword,
+          typ: this.adminUserAddData.typ
+        }
+        console.log(data)
+        http({ url: '/admin/users/usersEdit', method: 'POST', data })
           .then(res => {
             this.adding = false
             console.log(res)
@@ -149,9 +146,9 @@ export default {
             } else {
               this.$Message.warning('失败')
             }
+            this.update()
           })
       }
-
     },
     cancel () {
       this.addModal = false

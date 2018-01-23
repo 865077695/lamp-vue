@@ -3,15 +3,9 @@
     <ECharts style='width:100%;height:100%' :options='pole' :auto-resize="true" @click="handleClick"></ECharts>
     <Row class="notice" :gutter="16">
       <Col span="6">
-        <Select v-model="city" style="width:100%" size="large">
-          <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        <Select v-model="street" @on-change="streetChange" style="width:100%" size="large">
+          <Option v-for="item in streetList" :value="item.id" :key="item.id">{{ item.name }}</Option>
         </Select>
-      </Col>
-      <Col span="5">
-        <Input v-model="searchParam" size="large" placeholder="搜索路灯关键词"></Input>
-      </Col>
-      <Col span="2">
-        <Button type="primary" size="large">搜索</Button>
       </Col>
     </Row>
     <Box class="chart"></Box>
@@ -43,7 +37,7 @@ import 'echarts/lib/component/title'
 import 'echarts/lib/component/visualMap'
 import 'echarts/lib/component/markPoint'
 
-import { cityList } from '../../../data/cityList'
+import http from '@/common/http'
 import Box from './chart'
 import ModalContent from './modal-content'
 export default {
@@ -54,14 +48,51 @@ export default {
       console.log(a.data[2])
       this.modal = true
       this.lamp = a.data[2]
+    },
+    streetChange (street) {
+      this.getPolesList(street)
+    },
+    getPolesList (streetId = 1) {
+      http({ url: '/index/polesList', data: { streetId } })
+        .then(res => {
+          this.poleList = []    // 重置poleList
+          if (res.code === 200) {
+            res.data.polesList.map(item => {
+              let pole = []
+              pole[0] = item.longitude
+              pole[1] = item.latitude
+              pole[2] = item
+              pole[3] = item.status
+              console.log(pole)
+              this.poleList.push(pole)
+            })
+            console.log(this.poleList)
+          } else if (res.code === 500) {
+            this.$router.push({ path: '/sign' })
+          }
+        })
+    },
+    updateMap () {
+
     }
   },
   data () {
     return {
       bmap: bmap,
-      cityList,
-      city: '',
-      searchParam: '',
+      streetList: [],
+      street: '',
+      poleList: [   // 数组前两项为经纬度，最后一项为状态标识，第三项为id
+        ['113.614435', '22.756782', { name: '大门右侧', id: '#a', status: 0 }, 0],
+        ['113.614274', '22.753782', { name: '大门左侧', id: '#b', status: 1 }, 1],
+        ['113.614247', '22.754749', { name: '南街东侧', id: '#c', status: -1 }, -1],
+        ['113.61519', '22.753824', { name: '南街中侧', id: '#d', status: 1 }, 1],
+        ['113.616286', '22.753824', { name: '南街西侧', id: '#e', status: 2 }, 2],
+        ['113.617157', '22.753891', { name: '北街东侧', id: '#f', status: 1 }, 1],
+        ['113.617148', '22.755032', { name: '北街西侧', id: '#g', status: 2 }, 2],
+        ['113.61722', '22.755924', { name: '北街中侧', id: '#h', status: -1 }, -1],
+        ['113.617166', '22.756757', { name: '东街北侧', id: '#i', status: -1 }, -1],
+        ['113.6157112', '22.756815', { name: '东街中侧', id: '#j', status: -1 }, -1]
+      ],
       modal: false,
       lamp: { id: '', name: '' },
       pole: {
@@ -72,13 +103,6 @@ export default {
             color: 'darkred'
           }
         },
-        // tooltip: {
-        //   hideDelay: 1000,
-        //   trigger: 'item',
-        //   enterable: true,
-        //   showContent: true,
-        //   extraCssText: 'border-radius: 1px;background:red;padding:10px 10px;'
-        // },
         action: {
           tooltip: {
             // showTip:
@@ -111,53 +135,22 @@ export default {
           name: '路灯',
           type: 'scatter',                  // 散点图
           coordinateSystem: 'bmap',         // 使用百度地图坐标系
-          // markPoint: { // 数据全是markPoint
-          //   symbol: 'rect',
-          //   symbolSize: 20,
-          //   symbolOffset: ['100%', '0'],
-          //   itemStyle: {
-          //     normal: {
-          //       borderWidth: 1,    // 标注边线线宽,默认为1
-          //       color: 'green',
-          //       label: {
-          //         show: false
-          //       }
-          //     },
-          //     emphasis: {
-          //       borderColor: '#1e90ff',
-          //       borderWidth: 5,
-          //       label: {
-          //         show: false
-          //       }
-          //     }
-          //   },
-          //   effect: {
-          //     show: true,
-          //     shadowBlur: 0
-          //   },
-          //   data: [
-          //     { coord: ['113.614435', '22.756782'], value: 1 },
-          //     { coord: ['113.614274', '22.753782'] }
-          //   ]
-          // },
-          data: [   // 数组前两项为经纬度，最后一项为状态标识，第三项为id
-            ['113.614435', '22.756782', { name: '大门右侧', id: '#a', status: 0 }, 0],
-            ['113.614274', '22.753782', { name: '大门左侧', id: '#b', status: 1 }, 1],
-            ['113.614247', '22.754749', { name: '南街东侧', id: '#c', status: -1 }, -1],
-            ['113.61519', '22.753824', { name: '南街中侧', id: '#d', status: 1 }, 1],
-            ['113.616286', '22.753824', { name: '南街西侧', id: '#e', status: 2 }, 2],
-            ['113.617157', '22.753891', { name: '北街东侧', id: '#f', status: 1 }, 1],
-            ['113.617148', '22.755032', { name: '北街西侧', id: '#g', status: 2 }, 2],
-            ['113.61722', '22.755924', { name: '北街中侧', id: '#h', status: -1 }, -1],
-            ['113.617166', '22.756757', { name: '东街北侧', id: '#i', status: -1 }, -1],
-            ['113.6157112', '22.756815', { name: '东街中侧', id: '#j', status: -1 }, -1]
-          ],                       // 数据格式跟在 geo 坐标系上一样，每一项都是 [经度，纬度，数值大小，其它维度...]
+          data: this.poleList,              // 灯杆列表数据
           symbolSize: 20
         }]
       }
     }
   },
   created () {
+    http({ url: '/index/streetsList' }) // 获取街道列表
+      .then(res => {
+        if (res.code === 200) {
+          console.log(res.data)
+          this.streetList = res.data.streetsList
+        } else if (res.code === 500) {
+          this.$router.push({ path: '/sign' })
+        }
+      })
   }
 }
 </script>

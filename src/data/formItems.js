@@ -1,4 +1,4 @@
-import { dev, broadcastPlan, adminType } from './options'
+import { dev, broadcastPlan, adminType, lampStatus } from './options'
 export const devSearchItem = [  // 播报设备列表查询条件项
   { label: '灯杆Id', key: 'pole_id', width: '100px', placeholder: '灯杆Id', typ: 'ipt' },
   { label: '设备Id', key: 'id', width: '100px', placeholder: '设备Id', typ: 'ipt' },
@@ -71,3 +71,132 @@ export const adminUserAddItem = [   // 新增管理员表单项
   { label: '确认密码', key: 'confirmPassword', width: '300px', typ: 'ipt', placeholder: '确认密码' },
   { label: '用户类型', key: 'typ', width: '300px', typ: 'opt', placeholder: '用户类型', options: adminType }
 ]
+
+// 分割线 //
+// 查询街道列表查询项
+export const streetListSearchItem = [
+  { label: '街道名称', key: 'name', width: 100, typ: 'ipt', placeholder: '输入关键词' }
+]
+
+// 添加街道表单数据项
+export const addStreetItem = [
+  { label: '街道名称', key: 'name', width: 100, typ: 'ipt', placeholder: '输入街道名' },
+  { label: '心跳间隔', key: 'heartbeat', width: 100, typ: 'ipt', placeholder: '单位秒' },
+  { label: '纬度', key: 'latitude', width: 100, typ: 'ipt', placeholder: '纬度' },
+  { label: '经度', key: 'longitude', width: 100, typ: 'ipt', placeholder: '经度' },
+  { label: '能耗上报时间', key: 'reporttime', width: 100, typ: 'time', placeholder: '能耗上报时间' },
+  // { label: '控制类型', key: 'typ', width: 100, typ: 'opt', placeholder: '' },
+  { label: '定损功率', key: 'power', width: 100, typ: 'ipt', placeholder: '单位：瓦' }
+]
+
+// 添加街道表单验证规则
+export const addStreetFormRule = {
+  name: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  heartbeat: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  latitude: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  longitude: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  reporttime: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  power: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ]
+}
+
+// 查询灯杆列表查询项
+export const lampListSearchItem = [
+  { label: '灯杆编号', key: 'poleSn', width: 100, typ: 'ipt', placeholder: '灯杆编号' },
+  { label: '灯杆名称', key: 'name', width: 100, typ: 'ipt', placeholder: '灯杆名称' },
+  { label: '灯杆状态', key: 'status', width: 100, typ: 'opt', placeholder: '灯杆状态', options: lampStatus }
+]
+
+// 添加灯杆表单数据项
+export const addLampItem = [
+  { label: '灯杆编号', key: 'poleSn', width: 100, typ: 'ipt', placeholder: '' },
+  { label: '灯杆名称', key: 'name', width: 100, typ: 'ipt', placeholder: '' },
+  { label: '纬度', key: 'latitude', width: 100, typ: 'ipt', placeholder: '' },
+  { label: '状态', key: 'status', width: 100, typ: 'opt', placeholder: '', options: lampStatus },
+  { label: '经度', key: 'longitude', width: 100, typ: 'ipt', placeholder: '' }
+]
+
+// 添加灯杆表单验证数据项
+export const addLampFormRule = {
+  poleSn: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  name: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  latitude: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  longitude: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  status: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator (rule, value, callback, source, options) {
+        var errors = []
+        if (value.length === 0) {
+          // eslint-disable-next-line
+          callback('请输入参考价格')
+        }
+        callback(errors)
+      }
+    }
+  ]
+}
+
+// 查询灯杆分组列表查询项
+export const lampGroupSearchItem = [
+  { label: '', key: '', width: 100, typ: 'ipt', placeholder: '' }
+]
+
+// 添加分组设置表单数据项
+export const addLampGroupItem = [
+  { label: '分组名称', key: 'name', width: 100, typ: 'ipt', placeholder: '分组名称' },
+  { label: '开灯时间', key: 'timeOn', width: 100, typ: 'time', placeholder: '开灯时间' },
+  { label: '关灯时间', key: 'timeOff', width: 100, typ: 'time', placeholder: '关灯时间' },
+  { label: '备注', key: 'notes', width: 100, typ: 'text', placeholder: '备注' },
+  { label: '所控灯杆', key: 'poles', width: 100, typ: 'asynCheckbox', placeholder: '所控灯杆' }
+]
+
+// 添加分组表单验证数据项
+export const addLampGroupFormRule = {
+  name: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  timeOn: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  timeOff: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  notes: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  poles: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator (rule, value, callback, source, options) {
+        var errors = []
+        if (value.length === 0) {
+          // eslint-disable-next-line
+          callback('请输入参考价格')
+        }
+        callback(errors)
+      }
+    }
+  ]
+}

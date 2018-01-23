@@ -1,14 +1,14 @@
-// 路灯管理、一级入口。内容为街道列表。可通过此页面进行街道编辑、查看、删除、新增
-// 可通过此页面跳转到对应街道的灯杆管理和照明管理（包括分组设置）
+// 灯杆列表
 <template>
   <div>
+    街道：{{$route.query.id}}
     <!-- 搜索 -->
     <div class="search">
       <my-form
       class="searchForm"
         ref="searchForm"
-        :formItems="streetListSearchItem"
-        :formData="streetSearchParams" 
+        :formItems="lampListSearchItem"
+        :formData="lampSearchParams" 
         @validaok="searchOk"
         ></my-form>
       <Button @click="doValida('searchForm')" type="primary" style="height: 32px;">搜索</Button>
@@ -17,14 +17,14 @@
     
       <Modal v-model="addModal" width="360">
         <p slot="header">
-            <span>新增</span>
+            <span>{{addText}}</span>
         </p>
         <div style="height: 400px;">
           <my-form 
             ref="addForm"
-            :formItems="addStreetItem"
-            :formData="addStreetData"
-            :formRule="addStreetFormRule"
+            :formItems="addLampItem"
+            :formData="addLampData"
+            :formRule="addLampFormRule"
             @validaok="addOk"
           ></my-form>
         </div>
@@ -33,15 +33,18 @@
             <Button type="default" size="large" @click="cancel">取消</Button>
         </div>
       </Modal>
-      <Table class="table" :loading="tableLoading" border :columns="columns" :data="streetsList"></Table>
-      <my-page :_totalPage="totalPage" @pageChange="pageChange" :_currentPage.sync="streetSearchParams.currentPage"></my-page>
+
+      <Table class="table" :loading="tableLoading" border :columns="columns" :data="lampsList"></Table>
+      <my-page :_totalPage="totalPage" @pageChange="pageChange" :_currentPage.sync="lampSearchParams.currentPage"></my-page>
   </div>
 </template>
 
 <script>
 import MyForm from '@/template/my-form'
 import MyPage from '@/template/page'
-import { streetListSearchItem, addStreetItem, addStreetFormRule } from '@/data/formItems'
+import { lampStatus } from '@/data/options'
+import { getStatusText } from '@/common/_func'
+import { lampListSearchItem, addLampItem, addLampFormRule } from '@/data/formItems'
 import http from '@/common/http'
 export default {
   name: 'StreetAdmin',
@@ -51,25 +54,43 @@ export default {
       tableLoading: false,
       addModal: false,
       adding: false,
-      streetListSearchItem,
-      addStreetItem,
-      addStreetFormRule,
+      lampListSearchItem,
+      addLampItem,
+      addLampFormRule,
       totalPage: null,
-      streetSearchParams: {
+      addText: '新增',
+      lampSearchParams: {
         name: null,
-        currentPage: 1
+        currentPage: 1,
+        streetId: this.$route.query.id,   // 灯杆id
+        status: null,
+        poleSn: null
       },
-      addStreetData: {
-        typ: 1
+      addLampData: {
+        streetId: this.$route.query.id,
+        poleSn: null,
+        name: null,
+        latitude: null,
+        status: null,
+        longitude: null
       },
-      streetsList: [],
+      lampsList: [],
       columns: [
-        { title: '街道名称', key: 'name' },
-        { title: '心跳间隔', key: 'heartbeat' },
-        { title: '上报时间', key: 'reporttime' },
+        { title: '灯杆Id', key: 'id' },
+        { title: '灯杆编号', key: 'poleSn' },
+        { title: '灯杆名称', key: 'name' },
         { title: '经度', key: 'longitude' },
         { title: '纬度', key: 'latitude' },
-        { title: '定损功率', key: 'power' },
+        {
+          title: '灯杆状态',
+          key: 'status',
+          render: (h, params) => {
+            let text = getStatusText(params.row.status, lampStatus)
+            return text
+          }
+        },
+        { title: '修改人', key: 'modifyId' },
+        { title: '修改时间', key: 'modifyTime' },
         {
           title: '操作',
           key: 'action',
@@ -83,8 +104,10 @@ export default {
                 },
                 on: {
                   click: () => {
+                    this.addText = '修改'
                     console.log(params.row)
-                    this.$router.push({ path: '/street-edit', query: { ...params.row } })
+                    this.addLampData = params.row
+                    this.add()
                   }
                 }
               }, '编辑'),
@@ -98,11 +121,11 @@ export default {
                 },
                 on: {
                   click: () => {
-                    console.log(params.row.id)
-                    this.$router.push({ path: '/lamp-admin', query: { id: params.row.id } })
+                    console.log(params.row)
+                    this.$router.push({ path: '/lamp-group', query: { ...params.row } })
                   }
                 }
-              }, '灯杆管理')
+              }, '分组设置')
             ])
           }
         }
@@ -110,29 +133,49 @@ export default {
     }
   },
   created () {
-    this.getStreetsList()
+    this.getlampsList()
   },
   methods: {
     doValida (formName) { // 触发对应formName的子组件进行表单验证，验证成功之后会调用@valida绑定的函数
       this.$refs[formName].handleValida()
     },
     searchOk () { // 搜索数据格式验证通过
-      this.streetSearchParams.currentPage = 1 // 搜索时重置页码为1
-      this.getStreetsList()
+      this.lampSearchParams.currentPage = 1 // 搜索时重置页码为1
+      this.getlampsList()
     },
     addOk () {  // 添加数据格式验证通过
-      console.log(this.addStreetData)
+      console.log(this.addLampData)
       this.adding = true
-      http({ url: 'street/streetsAdd', method: 'POST', data: this.addStreetData })
+      let url = ''
+      let data = {}
+      if (this.addText === '新增') {
+        url = 'pole/polesAdd'
+        data = this.addLampData
+      } else if (this.addText === '修改') {
+        url = 'pole/polesEdit'
+        data.streetId = this.addLampData.streetId
+        data.id = this.addLampData.id
+        data.poleSn = this.addLampData.poleSn
+        data.name = this.addLampData.name
+        data.latitude = this.addLampData.latitude
+        data.status = this.addLampData.status
+        data.longitude = this.addLampData.longitude
+      }
+      http({ url, method: 'POST', data })
         .then(res => {
           if (res.code === 200) {
             this.adding = false
             this.addModal = false
             this.$Message.success('添加成功')
-            this.addStreetData = {
-              typ: 1
+            this.addLampData = {  // 初始化添加项
+              streetId: this.$route.query.id,
+              poleSn: null,
+              name: null,
+              latitude: null,
+              status: null,
+              longitude: null
             }
-            this.getStreetsList()
+            this.getlampsList()
           }
         })
     },
@@ -140,20 +183,27 @@ export default {
       this.addModal = true
     },
     cancel () { // 取消添加
-      this.addStreetData = { typ: 1 }
+      this.addLampData = {  // 初始化添加项
+        streetId: this.$route.query.id,
+        poleSn: null,
+        name: null,
+        latitude: null,
+        status: null,
+        longitude: null
+      }
       this.addModal = false
     },
     pageChange () {
-      this.getStreetsList()
+      this.getlampsList()
     },
-    getStreetsList () { // 获取街道列表
+    getlampsList () { // 获取街道列表
       this.tableLoading = true
-      http({ url: 'street/streetsList', method: 'POST', data: this.streetSearchParams })
+      http({ url: '/pole/polesList', method: 'POST', data: this.lampSearchParams })
         .then(res => {
           this.tableLoading = false
           console.log(res)
           if (res.code === 200) {
-            this.streetsList = res.data.streetsList
+            this.lampsList = res.data.polesList
             this.totalPage = res.data.totalPage
           } else {
             this.$router.push({ path: '/sign' })

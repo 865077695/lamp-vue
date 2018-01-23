@@ -46,3 +46,12 @@ export const adminType = [
   { label: '管理员', value: 1 },
   { label: '普通用户', value: 2 }
 ]
+
+// 分割线 //
+// 灯杆状态配置
+export const lampStatus = [
+  { label: '未使用', value: -1 },
+  { label: '正常', value: 1 },
+  { label: '故障', value: 10 },
+  { label: '失联', value: 20 }
+]

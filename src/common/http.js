@@ -6,11 +6,15 @@
  */
 import axios from 'axios'
 import config from '../config'
+import router from '@/router'
 
 // 拦截器做错误信息处理
 axios.interceptors.response.use(function (res) {
   // 处理状态码
-
+  let status = res.data.code
+  if (status === 5000) {  // 未登录
+    router.push({ path: '/sign' })
+  }
   return res.data
 }, function (err) {
   console.log(err)
