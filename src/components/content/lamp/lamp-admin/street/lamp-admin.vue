@@ -94,7 +94,7 @@ export default {
         {
           title: '操作',
           key: 'action',
-          width: 200,
+          width: 260,
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -111,6 +111,20 @@ export default {
                   }
                 }
               }, '编辑'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginLeft: '20px'
+                },
+                on: {
+                  click: () => {
+                    this.$router.push({ path: '/device-admin', query: { ...params.row } })
+                  }
+                }
+              }, '设备管理'),
               h('Button', {
                 props: {
                   type: 'primary',
@@ -166,7 +180,7 @@ export default {
           if (res.code === 200) {
             this.adding = false
             this.addModal = false
-            this.$Message.success('添加成功')
+            this.$Message.success('成功')
             this.addLampData = {  // 初始化添加项
               streetId: this.$route.query.id,
               poleSn: null,

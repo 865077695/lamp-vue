@@ -1,36 +1,70 @@
 <template>
   <div>
-    <div v-for="item in chartData" class="box" :style="'background: url(/static/img/'+item.bgImg+'.png) top center/100% 100%'" :key="item.name">
+    <div v-for="item in chartData" class="box" :style="'background: url(/static/img/'+item.bgImg+'.png) top center/100% 100%'" :key="item.status">
       <p style="color: #e9eaec">{{item.name}}</p>
       <p style="color: #fff;font-size: 26px;letter-spacing: 2px">{{item.count}}</p>
     </div>
-    <div class="notify">
-      <p v-for="item in notifyData" :key="item.id">{{ item.notifyMsg }}</p>
-    </div>
+    
+    <Card class="notify">
+        <p slot="title">
+            <Icon type="information-circled"></Icon>
+            报警通知
+        </p>
+        <a href="#" slot="extra" @click.prevent="changeLimit">
+            <Icon type="more"></Icon>
+        </a>
+        <ul>
+            <li v-for="item in notifyData" :key="item.id">
+                <Alert type="success">{{item.content}}</Alert>
+            </li>
+        </ul>
+    </Card>
+    <!-- <div class="notify">
+      <p v-for="item in notifyData" :key="item.id">灯杆{{item.poleName}}：{{item.content}}</p>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { chartData, notifyData } from './chartdata'
+import bus from '@/eventBus'
+import { chartData } from '@/data/options'
 export default {
   name: 'chart',
   data () {
     return {
-      notifyData: notifyData
+      notifyData: [
+        { id: 'a' }
+      ],
+      chartData,
+      value2: 0
     }
   },
-  computed: {
-    chartData: () => {
-      let _chartData = [...chartData]
-      // _chartData.map(item => {
-      //   if (item.count.length > 3) {
-      //     item.count = item.count.split('')
-      //     item.count.splice(-3, 0, ',')
-      //     item.count = item.count.join('')
-      //   }
-      // })
-      return _chartData
+  methods: {
+    changeLimit () {
+      this.$router.push({ path: '/user-analysis/alert-notice' })
     }
+  },
+  created () {
+    bus.$on('setChart', (params) => {
+      let total = 0
+      params.map(item => {
+        total += item.cou
+      })
+      this.chartData.map(item => {
+        if (item.status === 0) {
+          item.count = total
+        } else {
+          params.map(i => {
+            if (i.status === item.status) {
+              item.count = i.cou
+            }
+          })
+        }
+      })
+    })
+    bus.$on('setNotice', (params) => {
+      this.notifyData = params
+    })
   }
 }
 </script>
@@ -46,11 +80,7 @@ export default {
 }
 .notify {
   width: 240px;
-  height: 240px;
-  border-radius: 5px;
-  color: #fff;
-  font-size: 16px;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.5);
+  min-height: 230px;
+  max-height: 250px;
 }
 </style>

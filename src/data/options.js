@@ -55,3 +55,18 @@ export const lampStatus = [
   { label: '故障', value: 10 },
   { label: '失联', value: 20 }
 ]
+
+// 首页灯杆状态统计配置
+export const chartData = [
+  { count: 0, name: '路灯总数', bgImg: 'box01', bg: '#1c2438', status: 0 },
+  { count: 0, name: '路灯开启数', bgImg: 'box02', bg: '#0e77d0', status: 1 },
+  { count: 0, name: '路灯关闭数', bgImg: 'box03', bg: '#19be6b', status: -1 },
+  { count: 0, name: '路灯损坏数', bgImg: 'box04', bg: '#da932c', status: 10 },
+  { count: 0, name: '路灯失联数', bgImg: 'box05', bg: '#d65b4a', status: 20 }
+]
+
+// 消息类型
+export const msgStatus = [
+  { label: '已看', value: 1 },
+  { label: '未看', value: 0 }
+]

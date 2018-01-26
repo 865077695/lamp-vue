@@ -21,7 +21,7 @@ export const appRoutes = [
     title: '路灯管理',
     children: [
       { path: 'street-admin', name: '路灯管理', title: '路灯管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/street-admin'], resolve) } },
-      { path: 'broadcast-admin', name: '播报设备管理', title: '播报设备管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-device/broadcast-device'], resolve) } },
+      // { path: 'broadcast-admin', name: '播报设备管理', title: '播报设备管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-device/broadcast-device'], resolve) } },
       { path: 'broadcast-resource', name: '播报资源管理', title: '播报资源管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-resource/broadcast-resource'], resolve) } },
       { path: 'broadcast-plan', name: '播报计划管理', title: '播报计划管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-plan/broadcast-plan'], resolve) } }
     ]
@@ -34,6 +34,7 @@ export const appRoutes = [
     children: [
       { path: 'power', name: '能耗统计', title: '能耗统计', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/power/power'], resolve) } },
       { path: 'log', name: '日志统计', title: '日志统计', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/log/log'], resolve) } },
+      { path: 'alert-notice', name: '报警消息', title: '报警消息', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/alert-notice/alert-notice'], resolve) } },
       { path: 'user-admin', name: '人员管理', title: '人员管理', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/user-admin/user-admin'], resolve) } }
       // { path: 'area-admin', name: '区域管理', title: '区域管理', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/area-admin'], resolve) } }
     ]
@@ -48,11 +49,10 @@ const otherRoutes = {
   component: Main,
   children: [
     { path: 'lamp-admin', name: '灯杆管理', title: '灯杆管理', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/lamp-admin'], resolve) } },
+    { path: 'device-admin', name: '设备管理', title: '设备管理', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/device-admin'], resolve) } },
     { path: 'street-edit', name: '街道信息编辑', title: '街道信息编辑', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/street-edit'], resolve) } },
     { path: 'lamp-group', name: '分组设置', title: '分组设置', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/lamp-group'], resolve) } },
-    { path: 'edit-group', name: '编辑分组', title: '编辑分组', component: resolve => { require(['@/components/content/lamp/lamp-admin/edit-group'], resolve) } },
-    { path: 'add-group', name: '新建分组', title: '新建分组', component: resolve => { require(['@/components/content/lamp/lamp-admin/add-group'], resolve) } },
-    { path: 'device-admin', name: '设备管理', title: '设备管理', component: resolve => { require(['@/components/content/lamp/lamp-admin/device-admin'], resolve) } },
+    { path: 'plan-info', name: '计划详情', title: '计划详情', component: resolve => { require(['@/components/content/lamp/broadcast-plan/plan-info'], resolve) } },
     { path: 'device-info', name: '设备详情', title: '设备详情', component: resolve => { require(['@/components/content/lamp/broadcast-device/device-info'], resolve) } }
   ]
 }

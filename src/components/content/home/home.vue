@@ -1,6 +1,6 @@
 <template>
   <div class="map-view">
-    <ECharts style='width:100%;height:100%' :options='pole' :auto-resize="true" @click="handleClick"></ECharts>
+    <ECharts style='width:100%;height:100%' :options='polar' :auto-resize="true" @click="handleClick"></ECharts>
     <Row class="notice" :gutter="16">
       <Col span="6">
         <Select v-model="street" @on-change="streetChange" style="width:100%" size="large">
@@ -8,10 +8,10 @@
         </Select>
       </Col>
     </Row>
-    <Box class="chart"></Box>
+    <Box class="chart"  :polesCountsList="polesCountsList"></Box>
     <Modal
       v-model="modal"
-      width="80%"
+      width="1000"
       class-name="vertical-center-modal">
       <ModalContent :lamp="lamp"></ModalContent>
       <div class="footer" slot="footer"></div>
@@ -38,6 +38,7 @@ import 'echarts/lib/component/visualMap'
 import 'echarts/lib/component/markPoint'
 
 import http from '@/common/http'
+import bus from '@/eventBus'
 import Box from './chart'
 import ModalContent from './modal-content'
 export default {
@@ -47,55 +48,67 @@ export default {
     handleClick (a) {
       console.log(a.data[2])
       this.modal = true
-      this.lamp = a.data[2]
+      this.lamp = a.data[2]   // TODO 通过a.data[2].id请求灯杆弹窗具体信息（定时器请求具体信息，关闭modal时清除定时器，将获取到的信息，使用eventBus传递入ModalContent）
     },
-    streetChange (street) {
+    streetChange (street) { // 街道切换时，重新获取该街道的灯杆列表和数据统计
+      if (this.s) {
+        clearInterval(this.s)
+      }
       this.getPolesList(street)
+      this.getPolesCount(street)
+      this.s = setInterval(() => {
+        this.getPolesList(street)
+        this.getPolesCount(street)
+      }, 10000)
     },
-    getPolesList (streetId = 1) {
+    getPolesList (streetId = 1) { // 获取灯杆列表
+      let seletctedStreet = this.streetList.filter(item => {
+        return streetId === item.id
+      })
       http({ url: '/index/polesList', data: { streetId } })
         .then(res => {
-          this.poleList = []    // 重置poleList
+          let poleList = []
           if (res.code === 200) {
-            res.data.polesList.map(item => {
-              let pole = []
-              pole[0] = item.longitude
-              pole[1] = item.latitude
-              pole[2] = item
-              pole[3] = item.status
-              console.log(pole)
-              this.poleList.push(pole)
+            res.data.polesList.map(item => {    // 将灯杆列表数据拼接为地图展示所需要的数据格式
+              let pole = [item.longitude, item.latitude, item, item.status]
+              poleList.push(pole)
             })
-            console.log(this.poleList)
+            this.polar.series[0].data = poleList  // 更新地图显示信息
+            this.polar.bmap.center = [seletctedStreet[0].longitude, seletctedStreet[0].latitude]
           } else if (res.code === 500) {
             this.$router.push({ path: '/sign' })
           }
         })
     },
-    updateMap () {
-
+    getPolesCount (streetId = 1) {          // 获取街道灯杆统计数据
+      http({ url: 'pole/polesCount', params: { streetId } })
+        .then(res => {
+          if (res.code === 200) {
+            this.polesCountsList = res.data.polesCountsList
+            bus.$emit('setChart', this.polesCountsList) // 统计数据获取完成之后，通知组件开始渲染
+          }
+        })
+      http({ url: '/device/queryMessageList', method: 'POST', data: { streetId, pageSize: 4 } })
+        .then(res => {
+          console.log(res)
+          if (res.code === 200) {
+            this.noticeList = res.data.result || []
+            console.log(this.noticeList)
+            bus.$emit('setNotice', this.noticeList)
+          }
+        })
     }
   },
   data () {
     return {
+      s: null,
       bmap: bmap,
-      streetList: [],
-      street: '',
-      poleList: [   // 数组前两项为经纬度，最后一项为状态标识，第三项为id
-        ['113.614435', '22.756782', { name: '大门右侧', id: '#a', status: 0 }, 0],
-        ['113.614274', '22.753782', { name: '大门左侧', id: '#b', status: 1 }, 1],
-        ['113.614247', '22.754749', { name: '南街东侧', id: '#c', status: -1 }, -1],
-        ['113.61519', '22.753824', { name: '南街中侧', id: '#d', status: 1 }, 1],
-        ['113.616286', '22.753824', { name: '南街西侧', id: '#e', status: 2 }, 2],
-        ['113.617157', '22.753891', { name: '北街东侧', id: '#f', status: 1 }, 1],
-        ['113.617148', '22.755032', { name: '北街西侧', id: '#g', status: 2 }, 2],
-        ['113.61722', '22.755924', { name: '北街中侧', id: '#h', status: -1 }, -1],
-        ['113.617166', '22.756757', { name: '东街北侧', id: '#i', status: -1 }, -1],
-        ['113.6157112', '22.756815', { name: '东街中侧', id: '#j', status: -1 }, -1]
-      ],
+      streetList: [], // 街道列表
+      street: '',     // 当前所选街道
       modal: false,
-      lamp: { id: '', name: '' },
-      pole: {
+      lamp: {},     // 灯杆详情信息
+      polesCountsList: [],  // 路灯统计数据列表
+      polar: {
         title: {
           text: '路灯实时状态监测',
           left: 'center',
@@ -135,7 +148,7 @@ export default {
           name: '路灯',
           type: 'scatter',                  // 散点图
           coordinateSystem: 'bmap',         // 使用百度地图坐标系
-          data: this.poleList,              // 灯杆列表数据
+          data: [],              // 灯杆列表数据
           symbolSize: 20
         }]
       }
@@ -145,12 +158,16 @@ export default {
     http({ url: '/index/streetsList' }) // 获取街道列表
       .then(res => {
         if (res.code === 200) {
-          console.log(res.data)
           this.streetList = res.data.streetsList
+          this.street = this.streetList[0].id     // 设置街道为第一个，会自动触发streetChange
         } else if (res.code === 500) {
           this.$router.push({ path: '/sign' })
         }
       })
+  },
+  beforeDestroy () {
+    console.log(11)
+    clearInterval(this.s)
   }
 }
 </script>
@@ -174,7 +191,7 @@ export default {
 .chart {
   display: flex;
   position: absolute;
-  padding-top: 50px;
+  padding-top: 20px;
   margin-right: 30px;
   right: 0;
   top: 0;

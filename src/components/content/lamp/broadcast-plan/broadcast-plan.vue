@@ -1,69 +1,124 @@
-// 播报计划，首屏为计划列表，增删改查计划。可为每个计划设置该计划包含的灯杆
+// 计划列表
 <template>
   <div>
-    <div class="_search">
-      <my-form class="_form" :formItem="planSearchItem" :formData="searchParams"></my-form>
-      <Button type="primary" @click="search" :disabled="tableLoading" style="height: 32px">查找</Button>
-      <Button type="success" @click="addModal = true" style="margin-left: 20px; height: 32px" :disabled="tableLoading">新增</Button>
+    街道：{{$route.query.id}}
+    <!-- 搜索 -->
+    <div class="search">
+      <my-form
+      class="searchForm"
+        ref="searchForm"
+        :formItems="planListSearchItem"
+        :formData="planSearchParams" 
+        @validaok="searchOk"
+        ></my-form>
+      <Button @click="doValida('searchForm')" type="primary" style="height: 32px;">搜索</Button>
+      <Button @click="add" type="success" style="height: 32px; margin-left: 10px">添加</Button>
     </div>
-    <Modal v-model="addModal" width="600">
+    
+      <Modal v-model="addModal" width="360">
         <p slot="header">
-            <Icon type="information-circled"></Icon>
-            <span>新增</span>
+            <span>{{addText}}</span>
         </p>
-        <div style="text-align:center">
-          <my-form class="_form" :formItem="planAddItem" :formData="planAddData" style="height: 360px;"></my-form>
+        <div style="height: 400px;">
+          <my-form 
+            ref="addForm"
+            :formItems="addPlanItem"
+            :formData="addPlanData"
+            :formRule="addPlanFormRule"
+            @validaok="addOk"
+          ></my-form>
         </div>
-        <div slot="footer" style="text-align: center">
-          <Button type="primary" size="large" :loading="adding" @click="ok">确认</Button>
-          <Button size="large" @click="cancel">取消</Button>
+        <div slot="footer">
+            <Button type="primary" size="large" :loading="adding" @click="doValida('addForm')">提交</Button>
+            <Button type="default" size="large" @click="cancel">取消</Button>
         </div>
-    </Modal>
+      </Modal>
 
-    <Table class="table" :loading="tableLoading" border :columns="columns" :data="planList"></Table>
-    <Page :_totalPage="totalPage" @pageChange="pageChange" :_currentPage.sync="searchParams.currentPage"></Page>
+      <Table class="table" :loading="tableLoading" border :columns="columns" :data="planList"></Table>
+      <my-page :_totalPage="totalPage" @pageChange="pageChange" :_currentPage.sync="planSearchParams.currentPage"></my-page>
   </div>
 </template>
 
 <script>
-import MyForm from '@/template/form'
-import Page from '@/template/page'
-import { planSearchItem, planAddItem } from '@/data/formItems'
+import MyForm from '@/template/my-form'
+import MyPage from '@/template/page'
+import { broadcastPlan } from '@/data/options'
+import { getStatusText } from '@/common/_func'
+import { planListSearchItem, addPlanItem, addPlanFormRule } from '@/data/formItems'
 import http from '@/common/http'
 export default {
-  name: 'Broadcastplan',
-  components: { Page, MyForm },
+  name: 'StreetAdmin',
+  components: { MyForm, MyPage },
   data () {
     return {
-      adding: false,        // 添加中
-      addModal: false,      // 模态框显示状态
-      tableLoading: false,  // 表格加载
-      totalPage: 10,        // 默认总页数
-      planSearchItem,   // 查询设备参数内容，用来生成请求form
-      searchParams: {                 // 存放请求参数
-        currentPage: 1
+      tableLoading: false,
+      addModal: false,
+      adding: false,
+      planListSearchItem,
+      addPlanItem,
+      addPlanFormRule,
+      totalPage: null,
+      addText: '新增',
+      planSearchParams: {
+        name: null,
+        currentPage: 1,
+        startDate: null,
+        endDate: null,
+        playBegin: null,
+        playEnd: null,
+        typ: null,
+        iscycle: null,
+        status: null
       },
-      planAddItem,         // 新增设备参数内容，用来生成form
-      planAddData: {},                 // 存放新增设备的参数
-      planList: [],       // 存放设备列表
-      columns: [            // 行
-        { title: '资源id', key: 'id' },
-        { title: '资源名称', key: 'name' },
-        { title: '资源地址', key: 'url' },
-        { title: '创建人', key: 'modifyId' },
-        { title: '创建人姓名', key: 'user_name' },
-        { title: '创建时间', key: 'modifyTime' },
-        // {
-        //   title: '资源类型',
-        //   key: 'typ',
-        //   render: (h, params) => {
-        //     return h('div', getStatusText(params.row.typ, dev.typeOptions))
-        //   }
-        // },
+      addPlanData: {
+        name: null,
+        startDate: null,
+        endDate: null,
+        playBegin: null,
+        playEnd: null,
+        typ: null,
+        iscycle: null,
+        status: null
+      },
+      planList: [],
+      columns: [
+        { title: '计划id', key: 'id' },
+        { title: '计划名称', key: 'name' },
+        { title: '开始日期', key: 'startDate' },
+        { title: '结束日期', key: 'endDate' },
+        { title: '开始时间', key: 'playBegin' },
+        { title: '结束时间', key: 'playEnd' },
+        { title: '描述', key: 'notes' },
+        {
+          title: '状态',
+          key: 'status',
+          render: (h, params) => {
+            let text = getStatusText(params.row.status, broadcastPlan.status)
+            return text
+          }
+        },
+        {
+          title: '循环',
+          key: 'iscycle',
+          render: (h, params) => {
+            let text = getStatusText(params.row.iscycle, broadcastPlan.iscycle)
+            return text
+          }
+        },
+        {
+          title: '播报类型',
+          key: 'typ',
+          render: (h, params) => {
+            let text = getStatusText(params.row.typ, broadcastPlan.resourceType)
+            return text
+          }
+        },
+        { title: '修改人', key: 'modifyId' },
+        { title: '修改时间', key: 'modifyTime' },
         {
           title: '操作',
           key: 'action',
-          width: 150,
+          width: 260,
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -71,98 +126,141 @@ export default {
                   type: 'primary',
                   size: 'small'
                 },
-                style: {
-                  marginRight: '5px'
-                },
                 on: {
                   click: () => {
-                    this.$router.push({ path: '/plan-info', query: { row: JSON.stringify(params.row) } })
+                    this.$router.push({ path: '/plan-info', query: { id: params.row.id } })   // 传递计划id
                   }
                 }
-              }, '详情'),
-              h('Button', {
+              }, '编辑'),
+              h('Poptip', {
+                props: {
+                  confirm: true,
+                  title: '您确定要删除这条数据吗?',
+                  transfer: true
+                },
+                on: {
+                  'on-ok': () => {
+                    this.deletePlan(params.row.id)
+                  }
+                }
+              }, [h('Button', {
+                style: {
+                  margin: '0 10px'
+                },
                 props: {
                   type: 'error',
+                  placement: 'top',
                   size: 'small'
-                },
-                on: {
-                  click: () => {
-                    this.tableLoading = true
-                    http({ url: '/plan/delete', data: { id: params.row.id, url: params.row.url } })
-                      .then(res => {
-                        if (res.code === 200) {
-                          this.$Message.success('删除资源成功')
-                          this.updateData()
-                        } else {
-                          this.$Message.warning('删除失败')
-                        }
-                      })
-                  }
                 }
-              }, '删除')
+              }, '删除')])
             ])
           }
         }
       ]
     }
   },
+  created () {
+    this.getplanList()
+  },
   methods: {
-    search () {           // 点击搜索时更新数据
-      this.searchParams.currentPage = 1
-      this.updateData()
+    doValida (formName) { // 触发对应formName的子组件进行表单验证，验证成功之后会调用@valida绑定的函数
+      this.$refs[formName].handleValida()
     },
-    pageChange () {  // 页码修改时更新数据
-      this.updateData()
+    searchOk () { // 搜索数据格式验证通过
+      this.planSearchParams.currentPage = 1 // 搜索时重置页码为1
+      this.getplanList()
     },
-    ok () {
+    addOk () {  // 添加数据格式验证通过
+      console.log(this.addPlanData)
       this.adding = true
-      http({ url: '/plan/add', method: 'POST', data: this.planAddData })
-        .then(data => {
-          this.adding = false
-          this.addModal = false
-          if (data.code === 200) {
-            this.$Message.success('添加资源成功')
-          } else {
-            this.$Message.warning('添加失败')
+      let url = ''
+      let data = {}
+      if (this.addText === '新增') {
+        url = 'plan/add'
+        data = this.addPlanData
+      } else if (this.addText === '修改') {
+        url = 'pole/update'
+        data.streetId = this.addPlanData.streetId
+        data.id = this.addPlanData.id
+        data.poleSn = this.addPlanData.poleSn
+        data.name = this.addPlanData.name
+        data.latitude = this.addPlanData.latitude
+        data.status = this.addPlanData.status
+        data.longitude = this.addPlanData.longitude
+      }
+      http({ url, method: 'POST', data })
+        .then(res => {
+          if (res.code === 200) {
+            this.adding = false
+            this.addModal = false
+            this.$Message.success('成功')
+            this.addPlanData = {    // 初始化添加选项数据
+              name: null,
+              startDate: null,
+              endDate: null,
+              playBegin: null,
+              playEnd: null,
+              typ: null,
+              iscycle: null,
+              status: null
+            }
+            this.getplanList()
           }
-          this.updateData()
         })
     },
-    cancel () {
-      this.planAddData = {}
+    add () {  // 点击添加按钮
+      this.addModal = true
+    },
+    cancel () { // 取消添加
+      this.addPlanData = {  // 初始化添加选项数据
+        name: null,
+        startDate: null,
+        endDate: null,
+        playBegin: null,
+        playEnd: null,
+        typ: null,
+        iscycle: null,
+        status: null
+      }
       this.addModal = false
     },
-    updateData () {
+    pageChange () {
+      this.getplanList()
+    },
+    getplanList () { // 获取街道列表
       this.tableLoading = true
-      http({ url: '/plan/list', method: 'POST', data: this.searchParams })
-        .then(data => {
+      http({ url: '/plan/list', method: 'POST', data: this.planSearchParams })
+        .then(res => {
           this.tableLoading = false
-          this.planList = data.data.content
-          this.totalPage = data.data.totalPage
+          console.log(res)
+          if (res.code === 200) {
+            this.planList = res.data.content
+            this.totalPage = res.data.totalPage
+          } else {
+            this.$router.push({ path: '/sign' })
+          }
+        })
+    },
+    deletePlan (id) {
+      http({ url: 'plan/delete', method: 'POST', data: { id } })
+        .then(res => {
+          if (res.code === 200) {
+            this.$Message.success('删除成功')
+            this.getplanList()
+          }
         })
     }
-  },
-  created () {
-    this.updateData()
-  },
-  mounted () {
   }
 }
 </script>
+
 
 <style scoped>
 .table {
   margin-top: 20px;
 }
-._search {
+.search {
   display: flex;
   justify-content: flex-start;
-}
-._form {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  align-content: space-between;
 }
 </style>
-

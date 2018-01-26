@@ -11,13 +11,22 @@
               <Input v-model="formData[item.key]" :placeholder="item.placeholder" :style="`width:${item.width}px;`"></Input>
           </FormItem>
         </template>
+        <!-- 数值 -->
+        <template v-if="item.typ === 'num'">
+          <FormItem 
+            :label="item.label" 
+            :prop="item.key"
+            >
+              <InputNumber :max="100" :min="0" v-model="formData[item.key]" :placeholder="item.placeholder" :style="`width:${item.width}px;`"></InputNumber>
+          </FormItem>
+        </template>
         <!-- 下拉框 -->
         <template v-if="item.typ === 'opt'">
           <FormItem 
             :label="item.label" 
             :prop="item.key"
             >
-              <Select v-model="formData[item.key]" :placeholder="item.placeholder" :style="`width:${item.width}px;`">
+              <Select v-model="formData[item.key]" :placeholder="item.placeholder" @on-change="changeOpt" :style="`width:${item.width}px;`">
                 <Option v-for="option in item.options" :key="option.value" :value="option.value">{{option.label}}</Option>
             </Select>
           </FormItem>
@@ -29,8 +38,26 @@
             :prop="item.key"
             >
               <CheckboxGroup v-model="formData[item.key]" @on-change="radioChange($event, item.key)">
-                <Checkbox v-for="opt in polesListOptions1" :label="opt.value" :key="opt.value"></Checkbox>
+                <Checkbox v-for="opt in polesListOptions1" :label="opt.value" :key="opt.value">{{opt.label}}</Checkbox>
               </CheckboxGroup>
+          </FormItem>
+        </template>
+         <!-- 日期选择器 -->
+        <template v-if="item.typ === 'date'">
+          <FormItem 
+            :label="item.label" 
+            :prop="item.key"
+            >
+              <DatePicker :value="formData[item.key]" @on-change="onChange($event, item.key)" :style="`width:${item.width}px;`" :placeholder="item.placeholder" style="width: 100px" format="yyyy-MM-dd"></DatePicker>
+          </FormItem>
+        </template>
+         <!-- 日期选择器(年月日-时分秒) -->
+        <template v-if="item.typ === 'date1'">
+          <FormItem 
+            :label="item.label" 
+            :prop="item.key"
+            >
+              <DatePicker :value="formData[item.key]" @on-change="onChange($event, item.key)" :style="`width:${item.width}px;`" :placeholder="item.placeholder" style="width: 100px" format="yyyy-MM-dd HH:mm:ss"></DatePicker>
           </FormItem>
         </template>
         <!-- 时间选择器 -->
@@ -40,6 +67,15 @@
             :prop="item.key"
             >
               <TimePicker :value="formData[item.key]" @on-change="onChange($event, item.key)" :style="`width:${item.width}px;`" :placeholder="item.placeholder" style="width: 100px" format="HH:mm"></TimePicker>（时：分）
+          </FormItem>
+        </template>
+        <!-- 时间选择器 (时分秒)-->
+        <template v-if="item.typ === 'time1'">
+          <FormItem 
+            :label="item.label" 
+            :prop="item.key"
+            >
+              <TimePicker :value="formData[item.key]" @on-change="onChange($event, item.key)" :style="`width:${item.width}px;`" :placeholder="item.placeholder" style="width: 100px" format="HH:mm:ss"></TimePicker>（时：分）
           </FormItem>
         </template>
         <!-- 文本框 -->
@@ -52,59 +88,6 @@
           </FormItem>
         </template>
       </div>
-     
-        <!-- <FormItem :label="formItems[0].label" :prop="formItems[0].key">
-          <Input v-model="formData.name" placeholder="Enter your name"></Input>
-        </FormItem> -->
-        <!-- <FormItem label="Name" prop="name">
-            <Input v-model="formValidate.name" placeholder="Enter your name"></Input>
-        </FormItem>
-        <FormItem label="E-mail" prop="mail">
-            <Input v-model="formValidate.mail" placeholder="Enter your e-mail"></Input>
-        </FormItem>
-        <FormItem label="City" prop="city">
-            <Select v-model="formValidate.city" placeholder="Select your city">
-                <Option value="beijing">New York</Option>
-                <Option value="shanghai">London</Option>
-                <Option value="shenzhen">Sydney</Option>
-            </Select>
-        </FormItem>
-        <FormItem label="Date">
-            <Row>
-                <Col span="11">
-                    <FormItem prop="date">
-                        <DatePicker type="date" placeholder="Select date" v-model="formValidate.date"></DatePicker>
-                    </FormItem>
-                </Col>
-                <Col span="2" style="text-align: center">-</Col>
-                <Col span="11">
-                    <FormItem prop="time">
-                        <TimePicker type="time" placeholder="Select time" v-model="formValidate.time"></TimePicker>
-                    </FormItem>
-                </Col>
-            </Row>
-        </FormItem>
-        <FormItem label="Gender" prop="gender">
-            <RadioGroup v-model="formValidate.gender">
-                <Radio label="male">Male</Radio>
-                <Radio label="female">Female</Radio>
-            </RadioGroup>
-        </FormItem>
-        <FormItem label="Hobby" prop="interest">
-            <CheckboxGroup v-model="formValidate.interest">
-                <Checkbox label="Eat"></Checkbox>
-                <Checkbox label="Sleep"></Checkbox>
-                <Checkbox label="Run"></Checkbox>
-                <Checkbox label="Movie"></Checkbox>
-            </CheckboxGroup>
-        </FormItem>
-        <FormItem label="Desc" prop="desc">
-            <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
-        </FormItem>
-        <FormItem>
-        </FormItem> -->
-        <!-- <Button type="primary" @click="handleSearch('formData')">搜索</Button>
-        <Button type="success" @click="handleAdd('formData')">新增</Button> -->
     </Form>
   </div>
 </template>
@@ -206,11 +189,12 @@ export default {
       this.formData[key] = $event
       console.log(this.formData)
     },
+    changeOpt ($event) {
+      console.log(this.formData)
+      console.log($event)
+    },
     radioChange ($event, key) {
       console.log($event)
-      console.log(key)
-      this.formData[key].push({ id: $event })
-      console.log(this.formData)
     }
   }
 }

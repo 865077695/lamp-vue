@@ -128,7 +128,7 @@ export default {
           if (res.code === 200) {
             this.adding = false
             this.addModal = false
-            this.$Message.success('添加成功')
+            this.$Message.success('成功')
             this.addStreetData = {
               typ: 1
             }

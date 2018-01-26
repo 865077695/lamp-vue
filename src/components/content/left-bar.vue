@@ -12,7 +12,6 @@
       <MenuItem v-for="item in items.children" :key="item.path" :name="items.path+'/'+item.path">
         <Icon :type="item.icon"></Icon>
         {{item.title}}
-        <Badge count="10" style="float: right;"></Badge>
       </MenuItem>
     </MenuGroup>
     <div class="avatar" style="color:#fff">

@@ -4,14 +4,14 @@
     街道：{{$route.query.id}}
     <!-- 搜索 -->
     <div class="search">
-      <my-form
+      <!-- <my-form
       class="searchForm"
         ref="searchForm"
         :formItems="lampGroupSearchItem"
         :formData="lampGroupSearchParams" 
         @validaok="searchOk"
         ></my-form>
-      <Button @click="doValida('searchForm')" type="primary" style="height: 32px;">搜索</Button>
+      <Button @click="doValida('searchForm')" type="primary" style="height: 32px;">搜索</Button> -->
       <Button @click="add" type="success" style="height: 32px; margin-left: 10px">添加</Button>
     </div>
     
@@ -42,8 +42,6 @@
 <script>
 import MyForm from '@/template/my-form'
 import MyPage from '@/template/page'
-import { lampStatus } from '@/data/options'
-import { getStatusText } from '@/common/_func'
 import { lampGroupSearchItem, addLampGroupItem, addLampGroupFormRule } from '@/data/formItems'
 import http from '@/common/http'
 import bus from '@/eventBus'
@@ -74,19 +72,12 @@ export default {
       },
       lightGroupList: [],
       columns: [
-        { title: '灯杆Id', key: 'id' },
-        { title: '灯杆编号', key: 'poleSn' },
-        { title: '灯杆名称', key: 'name' },
-        { title: '经度', key: 'longitude' },
-        { title: '纬度', key: 'latitude' },
-        {
-          title: '灯杆状态',
-          key: 'status',
-          render: (h, params) => {
-            let text = getStatusText(params.row.status, lampStatus)
-            return text
-          }
-        },
+        { title: '分组id', key: 'id' },
+        { title: '分组名称', key: 'name' },
+        { title: '开灯时间', key: 'timeOn' },
+        { title: '关灯时间', key: 'timeOff' },
+        { title: '备注', key: 'notes' },
+        { title: '所属街道', key: 'streetId' },
         { title: '修改人', key: 'modifyId' },
         { title: '修改时间', key: 'modifyTime' },
         {
@@ -103,27 +94,22 @@ export default {
                 on: {
                   click: () => {
                     this.addText = '修改'
-                    console.log(params.row)
-                    this.addLampGroupData = params.row
-                    this.add()
+                    console.log(params.row.id)
+                    http({ url: 'poleGroup/poleGroupsInfo', params: { id: params.row.id } })
+                      .then(res => {
+                        console.log(res)
+                        if (res.code === 200) {
+                          this.addLampGroupData = res.data.lightGroups
+                          this.addLampGroupData.poles = this.addLampGroupData.poles.map(item => {
+                            return item.id
+                          })
+                          this.add()
+                          console.log(this.addLampGroupData)
+                        }
+                      })
                   }
                 }
-              }, '编辑'),
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginLeft: '20px'
-                },
-                on: {
-                  click: () => {
-                    console.log(params.row)
-                    this.$router.push({ path: '/lamp-group', query: { ...params.row } })
-                  }
-                }
-              }, '分组设置')
+              }, '编辑')
             ])
           }
         }
@@ -131,7 +117,8 @@ export default {
     }
   },
   created () {
-    this.getlampsList()
+    this.getlampGroupsList()
+    console.log(this.lightGroupList)
     http({
       url: '/pole/polesList',
       method: 'POST',
@@ -148,7 +135,6 @@ export default {
           })
           this.addLampGroupItem[3].options = options
           bus.$emit('setPolesListOptions1', this.addLampGroupItem[3].options)
-          console.log(this.addLampGroupItem)
         } else {
           this.$router.push({ path: '/sign' })
         }
@@ -160,15 +146,18 @@ export default {
     },
     searchOk () { // 搜索数据格式验证通过
       this.lampGroupSearchParams.currentPage = 1 // 搜索时重置页码为1
-      this.getlampsList()
+      this.getlampGroupsList()
     },
     addOk () {  // 添加数据格式验证通过
-      console.log(this.addLampGroupData)
       this.adding = true
       let url = ''
       let data = {}
       if (this.addText === '新增') {
         url = 'poleGroup/poleGroupsAdd'
+        this.addLampGroupData.poles = this.addLampGroupData.poles.map(item => {
+          return { id: item }
+        })
+        console.log(this.addLampGroupData)
         data = this.addLampGroupData
       } else if (this.addText === '修改') {
         url = 'poleGroup/poleGroupsEdit'
@@ -178,19 +167,20 @@ export default {
         data.timeOff = this.addLampGroupData.timeOff
         data.notes = this.addLampGroupData.notes
         data.streetId = this.addLampGroupData.streetId
-        data.poles = this.addLampGroupData.poles
+        data.poles = this.addLampGroupData.poles.map(item => {
+          return { id: item }
+        })
       }
       http({ url, method: 'POST', data })
         .then(res => {
           if (res.code === 200) {
             this.adding = false
             this.addModal = false
-            this.$Message.success('添加成功')
+            this.$Message.success('成功')
             this.addLampGroupData = {
-              currentPage: 1,
               streetId: this.$route.query.id   // 灯杆id
             }
-            this.getlampsList()
+            this.getlampGroupsList()
           }
         })
     },
@@ -199,27 +189,29 @@ export default {
     },
     cancel () { // 取消添加
       this.addLampGroupData = {
-        currentPage: 1,
         streetId: this.$route.query.id   // 灯杆id
       }
       this.addModal = false
     },
     pageChange () {
-      this.getlampsList()
+      this.getlampGroupsList()
     },
-    getlampsList () { // 获取分组设置列表
+    getlampGroupsList () { // 获取分组设置列表
       this.tableLoading = true
       http({ url: 'poleGroup/poleGroupsList', method: 'POST', data: this.lampGroupSearchParams })
         .then(res => {
           this.tableLoading = false
           console.log(res)
           if (res.code === 200) {
-            this.lightGroupList = res.data.polesList
+            this.lightGroupList = res.data.lightGroupList
             this.totalPage = res.data.totalPage
           } else {
             this.$router.push({ path: '/sign' })
           }
         })
+    },
+    getlampGroupInfo () {   // 获取某个分组详情
+      // http({ url: 'poleGroup/poleGroupsInfo' ,params: })
     }
   }
 }

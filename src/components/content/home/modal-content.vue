@@ -1,6 +1,6 @@
 <template>
   <div class="modal-content">
-    <p style="font-size: 24px;">{{lamp.id}}&nbsp;&nbsp;{{lamp.name}}灯杆</p>
+    <p style="font-size: 24px;">灯杆名称：{{lamp.name}}（#{{lamp.id}}）</p>
     <p>设备状态：
       <span v-if="lamp.status === 0">失联</span>
       <span v-else-if="lamp.status === 1">关闭</span>
@@ -8,8 +8,7 @@
       <span v-else-if="lamp.status === -1">损坏</span>
     </p>
     <Row :gutter="8">
-      <i-col span="18">
-        <video src="" style="height: 400px;background: #000"></video>
+        <div id="player" style="width:720px; height:480px;"></div>
         <div>
           <i-col span="3">云台控制：</i-col>
           <i-col class="turnCamera" span="8">
@@ -28,11 +27,8 @@
             <div class="left">
               <p>路灯开关</p>
               <p>
-                <i-switch @on-change="change" v-model="status"></i-switch>
                 <span style="color:#0e77d0;margin-left: 20px">
                   当前：
-                  <span v-if="status">开启</span>
-                  <span v-else>关闭</span>
                 </span>
               </p>
             </div>
@@ -43,9 +39,7 @@
             </div>
           </i-col>
         </div>
-      </i-col>
-      <i-col span="6">
-        <img src="@/assets/img/screen.png" height="400" alt="">
+        <!-- <img src="@/assets/img/screen.png" height="400" alt=""> -->
         <div style="padding: 20px 0 0 10px">
           <div>当前视频</div>
           <div style="color: #0e77d0">拳霸天下(我行我素).MP4</div>
@@ -54,13 +48,12 @@
           <div>当前音频</div>
           <div style="color: #0e77d0">太阳西下.MP3</div>
         </div>
-      </i-col>
     </Row>
   </div>
 </template>
 
 <script>
-import { lampData } from './modalData'
+import { lampData } from './modalData'    // TODO ： 这个文件删除。数据根据lamp的id获取。
 export default {
   name: 'model',
   props: {
@@ -81,20 +74,20 @@ export default {
       lampData
     }
   },
-  methods: {
-    change (status) {
-      this.lamp.status = status
-    }
+  created () {
+    console.log(this.lamp)
   },
-  computed: {
-    status: {   // 因为报错 status not setter，所以暂时使用这种写法避免bug（应该是版本问题）
-      get: function () {
-        return this.lamp.status === 2
-      },
-      set: function (val) {
-
-      }
-    }
+  mounted () {
+    /* eslint-disable */
+    var player = new TcPlayer('player', {
+      'rtmp': 'rtmp://192.168.2.132/hyipc/livestream',
+      // 'm3u8': 'http://2157.liveplay.myqcloud.com/2157_358535a.m3u8',
+      // 'flv': 'http://2157.liveplay.myqcloud.com/live/2157_358535a.flv', // 增加了一个flv的播放地址，用于PC平台的播放 请替换成实际可用的播放地址
+      'autoplay': true,
+      // 'coverpic': 'http://www.test.com/myimage.jpg',
+      'width': '720',
+      'height': '480'
+    })
   }
 }
 </script>

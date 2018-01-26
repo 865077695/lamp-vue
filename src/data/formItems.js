@@ -1,12 +1,4 @@
-import { dev, broadcastPlan, adminType, lampStatus } from './options'
-export const devSearchItem = [  // 播报设备列表查询条件项
-  { label: '灯杆Id', key: 'pole_id', width: '100px', placeholder: '灯杆Id', typ: 'ipt' },
-  { label: '设备Id', key: 'id', width: '100px', placeholder: '设备Id', typ: 'ipt' },
-  { label: '设备类型', key: 'typ', width: '100px', placeholder: '请选择', options: dev.typeOptions, typ: 'opt' },
-  { label: '网络类型', key: 'net_type', width: '100px', placeholder: '请选择', options: dev.netTypeOptions, typ: 'opt' },
-  { label: '设备状态', key: 'status', width: '100px', placeholder: '请选择', options: dev.statusOptions, typ: 'opt' },
-  { label: '设备名称', key: 'name', width: '100px', placeholder: '设备名称', typ: 'ipt' }
-]
+import { dev, broadcastPlan, adminType, lampStatus, msgStatus } from './options'
 
 export const devAddItem = [ // 添加设备表单项
   { label: '灯杆Id', key: 'pole_id', width: '100px', typ: 'ipt' },
@@ -123,8 +115,8 @@ export const addLampItem = [
   { label: '灯杆编号', key: 'poleSn', width: 100, typ: 'ipt', placeholder: '' },
   { label: '灯杆名称', key: 'name', width: 100, typ: 'ipt', placeholder: '' },
   { label: '纬度', key: 'latitude', width: 100, typ: 'ipt', placeholder: '' },
-  { label: '状态', key: 'status', width: 100, typ: 'opt', placeholder: '', options: lampStatus },
-  { label: '经度', key: 'longitude', width: 100, typ: 'ipt', placeholder: '' }
+  { label: '经度', key: 'longitude', width: 100, typ: 'ipt', placeholder: '' },
+  { label: '状态', key: 'status', width: 100, typ: 'opt', placeholder: '', options: lampStatus }
 ]
 
 // 添加灯杆表单验证数据项
@@ -186,6 +178,174 @@ export const addLampGroupFormRule = {
     { required: true, message: '该项为必填项', trigger: 'blur' }
   ],
   poles: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator (rule, value, callback, source, options) {
+        var errors = []
+        if (value.length === 0) {
+          // eslint-disable-next-line
+          callback('请输入参考价格')
+        }
+        callback(errors)
+      }
+    }
+  ]
+}
+
+// 查询设备列表查询项
+export const devSearchItem = [
+  { label: '', key: '', width: 100, typ: 'ipt', placeholder: '' }
+]
+
+// 添加设备表单项
+export const addDevItem = [
+  { label: '设备类型', key: 'typ', width: 100, typ: 'opt', placeholder: '设备类型', options: dev.typeOptions },
+  { label: '设备名称', key: 'name', width: 100, typ: 'ipt', placeholder: '设备名称' },
+  // { label: '网络类型', key: 'net_type', width: 100, typ: 'opt', placeholder: '网络类型' },
+  { label: '设备状态', key: 'status', width: 100, typ: 'opt', placeholder: '设备状态', options: dev.statusOptions },
+  { label: '设备编号', key: 'sn', width: 100, typ: 'ipt', placeholder: '设备编号' },
+  { label: '音量大小', key: 'volume', width: 100, typ: 'num', placeholder: '音量大小' },
+  { label: '设备版本', key: 'version', width: 100, typ: 'ipt', placeholder: '设备版本' },
+  { label: '视频流url', key: 'url', width: 100, typ: 'ipt', placeholder: '视频流url' }
+]
+
+// 添加设备表单验证数据项
+export const addDevFormRule = {
+  typ: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator (rule, value, callback, source, options) {
+        var errors = []
+        if (value.length === 0) {
+          // eslint-disable-next-line
+          callback('请输入参考价格')
+        }
+        callback(errors)
+      }
+    }
+  ],
+  name: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  status: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator (rule, value, callback, source, options) {
+        var errors = []
+        if (value.length === 0) {
+          // eslint-disable-next-line
+          callback('请输入参考价格')
+        }
+        callback(errors)
+      }
+    }
+  ],
+  sn: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ]
+}
+
+// 查询消息列表查询项
+export const msgListSearchItem = [
+  { label: '开始时间', key: 'beginTime', width: 100, typ: 'date', placeholder: '' },
+  { label: '结束时间', key: 'endTime', width: 100, typ: 'date', placeholder: '' },
+  { label: '街道id', key: 'streetId', width: 100, typ: 'ipt', placeholder: '' },
+  { label: '灯杆编号', key: 'poleSn', width: 100, typ: 'ipt', placeholder: '' },
+  { label: '灯杆名称', key: 'poleName', width: 100, typ: 'ipt', placeholder: '' },
+  { label: '消息类型', key: 'typ', width: 100, typ: 'opt', placeholder: '', options: msgStatus },
+  { label: '设备类型', key: 'deviceTyp', width: 100, typ: 'opt', placeholder: '', options: dev.typeOptions },
+  { label: '消息状态', key: 'status', width: 100, typ: 'ipt', placeholder: '' }
+]
+
+// 查询时间段能耗查询项
+export const powerSearchItem = [
+  { label: '开始时间', key: 'beginTime', width: 200, typ: 'date', placeholder: '' },
+  { label: '结束时间', key: 'endTime', width: 200, typ: 'date', placeholder: '' },
+  { label: '街道Id', key: 'street_id', width: 100, typ: 'opt', placeholder: '' },
+  { label: '灯杆Id', key: 'pole_id', width: 100, typ: 'opt', placeholder: '' }
+]
+
+// 查询媒体列表查询项
+export const mediaListSearchItem = [
+  { label: '名字', key: 'name', width: 100, typ: 'ipt', placeholder: '资源名称' }
+]
+
+// 查询计划列表查询项
+export const planListSearchItem = [
+  { label: '计划名称', key: 'name', width: 100, typ: 'ipt', placeholder: '计划名称' },
+  { label: '开始日期', key: 'startDate', width: 140, typ: 'date', placeholder: '开始日期' },
+  { label: '结束日期', key: 'endDate', width: 140, typ: 'date', placeholder: '结束日期' },
+  { label: '开始时间', key: 'playBegin', width: 100, typ: 'time', placeholder: '开始时间' },
+  { label: '结束时间', key: 'playEnd', width: 100, typ: 'time', placeholder: '结束时间' },
+  { label: '播报类型', key: 'typ', width: 100, typ: 'opt', placeholder: '播报类型', options: broadcastPlan.resourceType },
+  { label: '是否循环', key: 'iscycle', width: 100, typ: 'opt', placeholder: '是否循环', options: broadcastPlan.iscycle },
+  { label: '状态', key: 'status', width: 100, typ: 'opt', placeholder: '状态', options: broadcastPlan.status }
+]
+
+// 新增计划表单项
+export const addPlanItem = [
+  { label: '计划名称', key: 'name', width: 200, typ: 'ipt', placeholder: '计划名称' },
+  { label: '开始日期', key: 'startDate', width: 200, typ: 'date1', placeholder: '开始日期' },
+  { label: '结束日期', key: 'endDate', width: 200, typ: 'date1', placeholder: '结束日期' },
+  { label: '开始时间', key: 'playBegin', width: 200, typ: 'time1', placeholder: '开始时间' },
+  { label: '结束时间', key: 'playEnd', width: 200, typ: 'time1', placeholder: '结束时间' },
+  { label: '播报类型', key: 'typ', width: 200, typ: 'opt', placeholder: '播报类型', options: broadcastPlan.resourceType },
+  { label: '是否循环', key: 'iscycle', width: 200, typ: 'opt', placeholder: '是否循环', options: broadcastPlan.iscycle },
+  { label: '描述', key: 'notes', width: 200, typ: 'text', placeholder: '描述' },
+  { label: '状态', key: 'status', width: 200, typ: 'opt', placeholder: '状态', options: broadcastPlan.status }
+]
+
+export const addPlanFormRule = {
+  name: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  startDate: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  endDate: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  playBegin: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  playEnd: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  typ: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator (rule, value, callback, source, options) {
+        var errors = []
+        if (value.length === 0) {
+          // eslint-disable-next-line
+          callback('请输入参考价格')
+        }
+        callback(errors)
+      }
+    }
+  ],
+  iscycle: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator (rule, value, callback, source, options) {
+        var errors = []
+        if (value.length === 0) {
+          // eslint-disable-next-line
+          callback('请输入参考价格')
+        }
+        callback(errors)
+      }
+    }
+  ],
+  notes: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  status: [
     {
       required: true,
       trigger: 'blur',

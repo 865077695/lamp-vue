@@ -12,3 +12,13 @@ export const getStatusText = (typ, options) => {    // 传入当前类型和类�
   })
   return label
 }
+
+export const formmatDate = (date) => {    // 格式化日期格式
+  let time = new Date(date)
+  return `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDay()} ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`
+}
+
+export const formmatTime = (date) => {    // 格式化时间格式
+  let time = new Date(date)
+  return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`
+}
