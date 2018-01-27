@@ -143,18 +143,29 @@ export default {
           }
         },
         action: {
-          tooltip: {
-            // showTip:
+        },
+        tooltip: {
+          trigger: 'item'
+        },
+        formatter: function (params) {
+          if (params.data[3] === 10) {
+            return '损坏'
+          } else if (params.data[3] === 20) {
+            return '失联'
+          } else if (params.data[3] === -1) {
+            return '关闭'
+          } else if (params.data[3] === 1) {
+            return '开启'
           }
         },
         // 对不同状态路灯设置不同图标样式
         visualMap: {
           type: 'piecewise',  // 定义为分段型
           pieces: [
-            { gt: -2, lt: 0, label: '损坏', color: '#da932c' },     // -1 损坏
-            { gt: -1, lt: 1, label: '失联', color: '#d65b4a' },     // 0 失联
-            { gt: 0, lt: 2, label: '关闭', color: '#19be6b' },     // 1 关闭
-            { gt: 1, lt: 3, label: '开启', color: '#0e77d0' }     // 2 开启
+            { value: 10, label: '损坏', color: '#da932c' },     // 10 损坏
+            { value: 20, label: '失联', color: '#d65b4a' },     // 20 失联
+            { value: -1, label: '关闭', color: '#0e77d0' },     // -1 关闭
+            { value: 1, label: '开启', color: '#19be6b' }     // 1 开启
           ],
           calculable: true,
           textStyle: {
