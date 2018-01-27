@@ -111,12 +111,12 @@ export default {
               'url': 'rtmp://192.168.2.132/hyipc/livestream'
             },
             {
-              "id": 5,
-              "sn": "666",
-              "name": "充电桩",
-              "status": 1,
-              "typ": 4,
-              "url": ""
+              'id': 5,
+              'sn': '666',
+              'name': '充电桩',
+              'status': 1,
+              'typ': 4,
+              'url': ''
             }
           ]
         }
