@@ -56,7 +56,7 @@ export default {
       this.getPoleInfo(lampId)
       this.s1 = setInterval(() => {
         this.getPoleInfo(lampId)
-      }, 3000)
+      }, 180000)
     },
     closeModal () {
       clearInterval(this.s1)
@@ -70,7 +70,7 @@ export default {
       this.s = setInterval(() => {
         this.getPolesList(street)
         this.getPolesCount(street)
-      }, 10000)
+      }, 180000)
     },
     getPolesList (streetId = 1) { // 获取灯杆列表
       let seletctedStreet = this.streetList.filter(item => {
@@ -209,7 +209,7 @@ export default {
   box-sizing: border-box;
 }
 .notice {
-  position: absolute;
+  position: absolute !important;
   top: 0;
   left: 0;
   width: 100%;
