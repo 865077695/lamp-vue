@@ -198,6 +198,7 @@ export default {
   },
   beforeDestroy () {
     clearInterval(this.s)
+    clearInterval(this.s1)
   }
 }
 </script>
