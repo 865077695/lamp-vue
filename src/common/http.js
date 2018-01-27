@@ -12,7 +12,7 @@ import router from '@/router'
 axios.interceptors.response.use(function (res) {
   // 处理状态码
   let status = res.code
-  if (status === 5000) {  // 未登录
+  if (status === 5000 || status === 500) {  // 未登录
     router.push({ path: '/sign' })
   }
   return res.data
