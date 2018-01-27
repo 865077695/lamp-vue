@@ -21,7 +21,7 @@ const createLintingRule = () => ({
 
 module.exports = {
   externals: {
-    'TcPlayer': 'TcPlayer'
+    'TcPlayer': 'window.TcPlayer'
   },
   context: path.resolve(__dirname, '../'),
   entry: {

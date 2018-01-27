@@ -33,7 +33,7 @@
       </div>
     </Modal>
     <Table class="table" :loading="tableLoading" border :columns="columns" :data="mediaList"></Table>
-    <my-page :_totalPage="totalPage" @pageChange="pageChange" :_currentPage.sync="addMediaParams.currentPage"></my-page>
+    <my-page :_totalPage="totalPage" @pageChange="pageChange" :_currentPage.sync="queryMediaParams.currentPage"></my-page>
   </div>
 </template>
 
@@ -152,7 +152,7 @@ export default {
       this.tableLoading = true
       let data = {
         typ: this.typ,
-        currentPage: this.currentPage,
+        currentPage: this.queryMediaParams.currentPage,
         name: this.queryMediaParams.name
       }
       http({ url: 'media/list', method: 'POST', data: { ...data, ...params } })
