@@ -13,12 +13,18 @@ export const getStatusText = (typ, options) => {    // 传入当前类型和类�
   return label
 }
 
+const add0 = function (val) {
+  if (val < 10) {
+    val = '0' + val
+  }
+  return val
+}
 export const formmatDate = (date) => {    // 格式化日期格式
   let time = new Date(date)
-  return `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDay()} ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`
+  return `${time.getFullYear()}-${add0(time.getMonth() + 1)}-${add0(time.getDay())} ${add0(time.getHours())}:${add0(time.getMinutes())}:${add0(time.getSeconds())}`
 }
 
 export const formmatTime = (date) => {    // 格式化时间格式
   let time = new Date(date)
-  return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`
+  return `${add0(time.getHours())}:${add0(time.getMinutes())}:${add0(time.getSeconds())}`
 }

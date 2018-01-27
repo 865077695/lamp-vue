@@ -83,7 +83,6 @@ export default {
                 },
                 on: {
                   click: () => {
-                    console.log(params.row)
                     this.$router.push({ path: '/street-edit', query: { ...params.row } })
                   }
                 }
@@ -98,7 +97,6 @@ export default {
                 },
                 on: {
                   click: () => {
-                    console.log(params.row.id)
                     this.$router.push({ path: '/lamp-admin', query: { id: params.row.id } })
                   }
                 }
@@ -121,7 +119,6 @@ export default {
       this.getStreetsList()
     },
     addOk () {  // 添加数据格式验证通过
-      console.log(this.addStreetData)
       this.adding = true
       http({ url: 'street/streetsAdd', method: 'POST', data: this.addStreetData })
         .then(res => {
@@ -151,7 +148,6 @@ export default {
       http({ url: 'street/streetsList', method: 'POST', data: this.streetSearchParams })
         .then(res => {
           this.tableLoading = false
-          console.log(res)
           if (res.code === 200) {
             this.streetsList = res.data.streetsList
             this.totalPage = res.data.totalPage

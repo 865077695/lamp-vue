@@ -83,7 +83,7 @@ export default {
       http({ url: 'devices/monthPower', params: this.powerSearchParams })
         .then(res => {
           if (res.code === 200) {
-            this.powerData = res.data.powerData || this.randomData()            // TODO:先用我自己造的数据, 后台数据设置好之后去掉||this.randomData()
+            this.powerData = res.data
             this.polar.xAxis.data = this.setxAxis(this.powerData.length)
             this.polar.series[0].data = this.powerData.map(item => {
               return item.light_energy
@@ -111,18 +111,6 @@ export default {
         month = 12
       }
       return `${year}-${month}`
-    },
-    randomData () {       // TODO ： 此方法用于生成能耗数据，后台正常返回值之后删除
-      let data = []
-      for (var i = 0; i < 31; i++) {
-        data.push({
-          'light_energy': 0,
-          'belong_date': i + 1,
-          'streetid': 1,
-          'name': 1
-        })
-      }
-      return data
     },
     setxAxis (length) {
       let xAxis = []

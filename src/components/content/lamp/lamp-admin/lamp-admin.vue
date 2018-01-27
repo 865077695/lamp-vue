@@ -143,10 +143,8 @@ export default {
     doSearch () {
     },
     show (index) {
-      console.log(index)
     },
     pageChange (page) {
-      console.log(page)
       this.dataLoading = true
       // 发送http请求刷新数据
       setTimeout(() => {

@@ -173,7 +173,6 @@ export default {
   },
   methods: {
     handleValida () {
-      console.log(this.formData)
       this.$refs.formData.validate((valid) => {
         if (valid) {
           this.$emit('validaok')
@@ -187,14 +186,10 @@ export default {
     },
     onChange ($event, key) {
       this.formData[key] = $event
-      console.log(this.formData)
     },
     changeOpt ($event) {
-      console.log(this.formData)
-      console.log($event)
     },
     radioChange ($event, key) {
-      console.log($event)
     }
   }
 }

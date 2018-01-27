@@ -110,13 +110,11 @@ export default {
       this.adminUserAddData = {}
     },
     ok () {
-      console.log(this.adminUserAddData)
       this.adding = true
       if (this.modalTitle === '新建') {
         http({ url: '/admin/users/usersAdd', method: 'POST', data: this.adminUserAddData })
           .then(res => {
             this.adding = false
-            console.log(res)
             this.addModal = false
             if (res.code === 200) {
               this.$Message.success('新建成功')
@@ -135,11 +133,9 @@ export default {
           // confirmPassword: this.adminUserAddData.confirmPassword,
           typ: this.adminUserAddData.typ
         }
-        console.log(data)
         http({ url: '/admin/users/usersEdit', method: 'POST', data })
           .then(res => {
             this.adding = false
-            console.log(res)
             this.addModal = false
             if (res.code === 200) {
               this.$Message.success('修改成功')
@@ -168,7 +164,6 @@ export default {
         .then(res => {
           this.tableLoading = false
           if (res.code === 200) {
-            console.log(res.data)
             this.userList = res.data.result
             this.totalPage = res.data.totalPage
           }

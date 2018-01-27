@@ -1,15 +1,17 @@
 <template>
   <div id="a">
-    播报计划详情
-    {{$route.query.id}}
+    <Tag checkable color="green" style="margin-bottom: 10px;">{{title}}</Tag>
+    <div v-if="$route.query.id !== null">
+      计划id: {{$route.query.id}}
+    </div>
     <Row :gutter="8">
+      <Form ref="planInfo" :model="planInfo" :rules="ruleValidate" :label-width="80">
       <Col :span="8">
-        <Card>
+        <Card style="height:600px;">
             <p slot="title">
               <Icon type="information-circled"></Icon>
               基本信息
           </p>
-            <Form ref="planInfo" :model="planInfo" :rules="ruleValidate" :label-width="80">
               <FormItem label="计划名称" prop="name">
                   <Input v-model="planInfo.name" placeholder="计划名称"></Input>
               </FormItem>
@@ -64,31 +66,65 @@
               <FormItem label="计划描述" prop="notes">
                   <Input v-model="planInfo.notes" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="计划描述"></Input>
               </FormItem>
-              <FormItem>
-                  <Button type="primary" :loading="submiting" @click="handleSubmit('planInfo')">提交</Button>
-                  <Button type="ghost" @click="handleReset('planInfo')" style="margin-left: 8px">重置</Button>
-              </FormItem>
-          </Form>
         </Card>
       </Col>
       <Col :span="8">
-        <Card>
+        <Card style="height:600px;">
             <p slot="title">
               <Icon type="information-circled"></Icon>
               播报资源
-              <!-- <p>已选资源：{{}}</p> -->
           </p>
+          <!-- <p>已选资源：{{}}</p> -->
+            <RadioGroup v-model="typ" @on-change="mediaTypeChange">
+              <Radio :label="1">音频</Radio>
+              <Radio :label="2">视频</Radio>
+            </RadioGroup>
+            <Card style="margin-top: 20px;max-height: 400px;overflow:auto">
+              <p slot="title">
+                <Icon type="ios-folder-outline"></Icon>
+                资源列表
+              </p>
+              <div>
+                <div v-if="sourceList.length === 0">请先在上方选择资源类型</div>
+                <FormItem prop="mediaids" label="媒体资源" v-if="sourceList.length>0">
+                  <RadioGroup v-model="planInfo.mediaids">
+                    <Radio :label="item.id" v-for="item in sourceList" :key="item.id">{{item.name}}</Radio>
+                  </RadioGroup>
+                </FormItem>
+              </div>
+              
+            </Card>
         </Card>
       </Col>
       <Col :span="8">
-        <Card>
+        <Card style="height:600px;">
             <p slot="title">
               <Icon type="information-circled"></Icon>
-              设备
+              播报设备
           </p>
+          <div v-if="deviceList.length === 0"></div>
+          <template>
+            <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;overflow:auto;max-height:450px;">
+                <Checkbox
+                    :indeterminate="indeterminate"
+                    :value="checkAll"
+                    @click.prevent.native="handleCheckAll">全选</Checkbox>
+            </div>
+            <CheckboxGroup v-model="planInfo.deviceids" @on-change="checkAllGroupChange">
+                <Checkbox v-for="item in allDevices" :key="item.id" :label="item.id" style="display: block">{{item.name}}</Checkbox>
+            </CheckboxGroup>
+          </template>
 
         </Card>
       </Col>
+      <Col :offset="18" :span="6" style="text-align: right;margin-top: 20px">
+          <FormItem>
+              <Button type="primary" :loading="submiting" @click="handleSubmit('planInfo')">提交</Button>
+              <Button type="ghost" @click="handleReset('planInfo')" style="margin-left: 8px">重置</Button>
+          </FormItem>
+      </Col>
+              
+    </Form>
     </Row>
      
   </div>
@@ -103,54 +139,58 @@ export default {
     return {
       submiting: false,
       id: this.$route.query.id,
-      mediaList: [],
-      deviceList: [],
-      audioList: [],
-      videoList: [],
-      allDevices: [],
+      typ: null,          // 资源类型
+      mediaList: [],      // 已选媒体资源
+      deviceList: [],     // 已选设备
+      allDevices: [],     // 所有设备(接收后台数据，包含各种字段)
+      sourceList: [],     // 所有资源（两种类型都存在此字段内）
       planInfo: {
+        id: null,
+        name: null,
         iscycle: null,
-        notes: null,
         startDate: null,
         endDate: null,
         playBegin: null,
         playEnd: null,
-        name: null
+        status: null,
+        typ: null,
+        notes: null,
+        mediaids: null,
+        deviceids: []
       },
+      indeterminate: false,
+      checkAll: false,
       backupInfo: {},
       ruleValidate: {
         name: [
-          { required: true, message: 'The name cannot be empty', trigger: 'blur' }
+          { required: true, message: '该项为必填项', trigger: 'blur' }
         ],
         startDate: [
-          { required: true, type: 'date', message: 'Please select the date', trigger: 'change' }
+          { required: true, type: 'date', message: '该项为必填项', trigger: 'change' }
         ],
         endDate: [
-          { required: true, type: 'date', message: 'Please select time', trigger: 'change' }
+          { required: true, type: 'date', message: '该项为必填项', trigger: 'change' }
         ],
         playBegin: [
-          { required: true, type: 'date', message: 'Please select time', trigger: 'change' }
+          { required: true, type: 'date', message: '该项为必填项', trigger: 'change' }
         ],
         playEnd: [
-          { required: true, type: 'date', message: 'Please select time', trigger: 'change' }
-        ],
-        desc: [
-          { required: true, message: 'Please enter a personal introduction', trigger: 'blur' }
+          { required: true, type: 'date', message: '该项为必填项', trigger: 'change' }
         ]
       }
     }
   },
   created () {
-    this.getPlanInfo()        // 获取计划详情
-    this.getMediaList()       // 获取计划已选媒体资源列表
-    this.getDeviceList()      // 获取计划已选设备列表
-    this.getSourceList(1)     // 获取全部音频资源列表
-    this.getSourceList(2)     // 获取全部视频资源列表
+    // this.$route.query.id = null
+    if (this.$route.query.id !== null) {
+      this.getPlanInfo()        // 获取计划详情
+      this.getMediaList()       // 获取计划已选媒体资源列表
+      this.getDeviceList()      // 获取计划已选设备列表
+    }
     this.getAllDevices()      // 获取全部设备
   },
   methods: {
     handleSubmit (name) {
-      console.log(this.planInfo)
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.planUpdate()
@@ -159,12 +199,40 @@ export default {
         }
       })
     },
+    handleCheckAll () {
+      if (this.indeterminate) {
+        this.checkAll = false
+      } else {
+        this.checkAll = !this.checkAll
+      }
+      this.indeterminate = false
+
+      if (this.checkAll) {
+        this.planInfo.deviceids = this._allDevices
+      } else {
+        this.planInfo.deviceids = []
+      }
+    },
+    checkAllGroupChange (data) {
+      if (data.length === this._allDevices.length) {
+        this.indeterminate = false
+        this.checkAll = true
+      } else if (data.length > 0) {
+        this.indeterminate = true
+        this.checkAll = false
+      } else {
+        this.indeterminate = false
+        this.checkAll = false
+      }
+    },
     handleReset (name) {
       this.planInfo = JSON.parse(JSON.stringify(this.backupInfo))
     },
-    dateChange ($event, key) {
-      console.log($event)
+    dateChange ($event, key) {    // 格式化日期时间
       this.planInfo[key] = $event
+    },
+    mediaTypeChange () {            // 修改/添加资源时切换资源类型
+      this.getSourceList(this.typ)
     },
     getPlanInfo () {    // 获取计划详情
       http({ url: 'plan/info', method: 'POST', data: { id: this.id } })
@@ -195,13 +263,7 @@ export default {
       http({ url: 'media/list', method: 'POST', data: { typ } })
         .then(res => {
           if (res.code === 200) {
-            if (typ === 1) {
-              this.audioList = res.data.content
-              console.log(this.audioList)
-            } else if (typ === 2) {
-              this.videoList = res.data.content
-              console.log(this.videoList)
-            }
+            this.sourceList = res.data.content
           }
         })
     },
@@ -224,7 +286,7 @@ export default {
     planUpdate () {     // 提交基本信息修改
       this.submiting = true
       let data = {
-        id: this.id,
+        // id: this.id,
         name: this.planInfo.name,
         iscycle: this.planInfo.iscycle,
         startDate: formmatDate(this.planInfo.startDate),
@@ -233,9 +295,14 @@ export default {
         playEnd: formmatTime(this.planInfo.playEnd),
         status: this.planInfo.status,
         typ: this.planInfo.typ,
-        notes: this.planInfo.notes
+        notes: this.planInfo.notes,
+        mediaids: String(this.planInfo.mediaids),
+        deviceids: String(this.planInfo.deviceids)
       }
-      http({ url: 'plan/update', method: 'POST', data })
+      if (this.$route.query.id !== null) {      // 如果不是新增,
+        data.id = this.id
+      }
+      http({ url: 'plan/addplanbysource', method: 'POST', data })
         .then(res => {
           this.submiting = false
           if (res.code === 200) {   // 提交成功将backupInfo重置
@@ -243,6 +310,20 @@ export default {
             this.backupInfo = JSON.parse(JSON.stringify(this.planInfo))
           }
         })
+    }
+  },
+  computed: {
+    _allDevices () {
+      return this.allDevices.map(item => {
+        return item.id
+      })
+    },
+    title () {
+      if (this.$route.query.id !== null) {
+        return '播报计划修改'
+      } else {
+        return '播报计划新增'
+      }
     }
   }
 }

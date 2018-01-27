@@ -19,7 +19,6 @@ export const audioColumns = [
           },
           on: {
             click: () => {
-              console.log(params)
             }
           }
         }, '编辑'),

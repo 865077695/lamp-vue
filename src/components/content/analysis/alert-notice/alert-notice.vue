@@ -64,7 +64,6 @@ export default {
           title: '消息状态',
           key: 'status',
           render: (h, params) => {
-            console.log(params.row.status)
             return h('i-switch', {
               props: {
                 size: 'large',
@@ -115,7 +114,6 @@ export default {
       http({ url: '/device/queryMessageList', method: 'POST', data: this.msgSearchParams })
         .then(res => {
           this.tableLoading = false
-          console.log(res)
           if (res.code === 200) {
             this.msgList = res.data.result || []
             this.totalPage = res.data.totalPage

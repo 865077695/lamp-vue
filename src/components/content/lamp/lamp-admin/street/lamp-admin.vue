@@ -105,7 +105,6 @@ export default {
                 on: {
                   click: () => {
                     this.addText = '修改'
-                    console.log(params.row)
                     this.addLampData = params.row
                     this.add()
                   }
@@ -135,7 +134,6 @@ export default {
                 },
                 on: {
                   click: () => {
-                    console.log(params.row)
                     this.$router.push({ path: '/lamp-group', query: { ...params.row } })
                   }
                 }
@@ -158,7 +156,6 @@ export default {
       this.getlampsList()
     },
     addOk () {  // 添加数据格式验证通过
-      console.log(this.addLampData)
       this.adding = true
       let url = ''
       let data = {}
@@ -215,7 +212,6 @@ export default {
       http({ url: '/pole/polesList', method: 'POST', data: this.lampSearchParams })
         .then(res => {
           this.tableLoading = false
-          console.log(res)
           if (res.code === 200) {
             this.lampsList = res.data.polesList
             this.totalPage = res.data.totalPage

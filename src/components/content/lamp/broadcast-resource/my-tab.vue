@@ -73,7 +73,7 @@ export default {
       mediaInfo: null,             // 媒体资源详细信息
       columns: [
         { title: '资源id', key: 'id' },
-        { title: '文件名称', key: 'name' },   // TODO: 修改文件名
+        { title: '文件名称', key: 'name' },   // TODO: 需要加入修改文件名功能
         { title: '文件url', key: 'url' },
         { title: '创建人', key: 'user_name' },
         {
@@ -159,7 +159,6 @@ export default {
         .then(res => {
           this.tableLoading = false
           if (res.code === 200) {
-            console.log(res.data)
             this.mediaList = res.data.content
             this.totalPage = res.data.totalPage
           } else if (res.code === 400) {
@@ -203,15 +202,8 @@ export default {
       http({ url: 'media/templist', method: 'GET' })
         .then(res => {
           if (res.code === 200) {
-            // this.templist = res.data ||
-            this.templist = [
-              { fileName: 'a.file' },
-              { fileName: 'b.file' },
-              { fileName: 'c.file' },
-              { fileName: 'd.file' }
-            ]
+            this.templist = res.data
           }
-          console.log(this.templist)
         })
     },
     getMediaInfo (ids) {     // 获取媒体资源详情信息

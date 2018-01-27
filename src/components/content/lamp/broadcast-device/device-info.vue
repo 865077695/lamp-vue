@@ -46,7 +46,6 @@ export default {
   created () {
     http({ url: 'devices/plan' })
       .then(res => {
-        console.log(res)
         this.planList = res.data
       })
   }

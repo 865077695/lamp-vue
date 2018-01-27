@@ -8,12 +8,16 @@
         </Select>
       </Col>
     </Row>
-    <Box class="chart"  :polesCountsList="polesCountsList"></Box>
+    <Box class="chart"  
+    :polesCountsList="polesCountsList"
+    ></Box>
     <Modal
       v-model="modal"
-      width="1000"
+      width="920"
       class-name="vertical-center-modal">
-      <ModalContent :lamp="lamp"></ModalContent>
+      <!-- :lampInfo="lampInfo"   TODO: 这一行需要下移一行，暂时不传props，数据写死测试 -->
+      <ModalContent 
+      ></ModalContent>
       <div class="footer" slot="footer"></div>
     </Modal>
   </div>
@@ -46,9 +50,9 @@ export default {
   components: { ECharts, Box, ModalContent },
   methods: {
     handleClick (a) {
-      console.log(a.data[2])
       this.modal = true
-      this.lamp = a.data[2]   // TODO 通过a.data[2].id请求灯杆弹窗具体信息（定时器请求具体信息，关闭modal时清除定时器，将获取到的信息，使用eventBus传递入ModalContent）
+      let lampId = a.data[2].id
+      this.getPoleInfo(lampId)
     },
     streetChange (street) { // 街道切换时，重新获取该街道的灯杆列表和数据统计
       if (this.s) {
@@ -80,6 +84,22 @@ export default {
           }
         })
     },
+    getPoleInfo (lampId) {                // 获取灯杆详细信息
+      http({ url: '/index/poleInfo', params: { id: lampId } })
+        .then(res => {
+          if (res.code === 200) {
+            this.lampInfo = res.data
+          }
+        })
+    },
+    ipcMove (data) {
+      http({ url: 'index/ipcMove', method: 'POST', data })
+        .then(res => {
+          if (res.code === 200) {
+            this.$Message.success('操作成功')
+          }
+        })
+    },
     getPolesCount (streetId = 1) {          // 获取街道灯杆统计数据
       http({ url: 'pole/polesCount', params: { streetId } })
         .then(res => {
@@ -90,10 +110,8 @@ export default {
         })
       http({ url: '/device/queryMessageList', method: 'POST', data: { streetId, pageSize: 4 } })
         .then(res => {
-          console.log(res)
           if (res.code === 200) {
             this.noticeList = res.data.result || []
-            console.log(this.noticeList)
             bus.$emit('setNotice', this.noticeList)
           }
         })
@@ -106,7 +124,7 @@ export default {
       streetList: [], // 街道列表
       street: '',     // 当前所选街道
       modal: false,
-      lamp: {},     // 灯杆详情信息
+      lampInfo: {},     // 灯杆详情信息
       polesCountsList: [],  // 路灯统计数据列表
       polar: {
         title: {
@@ -159,14 +177,18 @@ export default {
       .then(res => {
         if (res.code === 200) {
           this.streetList = res.data.streetsList
-          this.street = this.streetList[0].id     // 设置街道为第一个，会自动触发streetChange
+          this.street = this.streetList[11].id     // TODO： 暂时默认设置街道为第22个（南沙区），会自动触发streetChange
         } else if (res.code === 500) {
           this.$router.push({ path: '/sign' })
         }
       })
+
+    // 监听子组件moveIpc事件
+    bus.$on('moveIpc', data => {
+      this.ipcMove(data)
+    })
   },
   beforeDestroy () {
-    console.log(11)
     clearInterval(this.s)
   }
 }

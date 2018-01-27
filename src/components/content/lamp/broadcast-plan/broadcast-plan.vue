@@ -171,7 +171,6 @@ export default {
       this.getplanList()
     },
     addOk () {  // 添加数据格式验证通过
-      console.log(this.addPlanData)
       this.adding = true
       let url = ''
       let data = {}
@@ -209,7 +208,8 @@ export default {
         })
     },
     add () {  // 点击添加按钮
-      this.addModal = true
+      // this.addModal = true
+      this.$router.push({ path: '/plan-info', query: { id: null } })
     },
     cancel () { // 取消添加
       this.addPlanData = {  // 初始化添加选项数据
@@ -232,12 +232,11 @@ export default {
       http({ url: '/plan/list', method: 'POST', data: this.planSearchParams })
         .then(res => {
           this.tableLoading = false
-          console.log(res)
           if (res.code === 200) {
             this.planList = res.data.content
             this.totalPage = res.data.totalPage
           } else {
-            this.$router.push({ path: '/sign' })
+            this.$router.push({ path: '/plan-info/, query: {id: nullsign' })
           }
         })
     },

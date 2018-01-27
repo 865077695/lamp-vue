@@ -109,7 +109,6 @@ export default {
                 },
                 on: {
                   click: () => {
-                    console.log(params.row)
                     this.addText = '修改'
                     this.addDevData = params.row
                     this.add()
@@ -150,7 +149,6 @@ export default {
   },
   created () {
     this.getdevList()
-    console.log(this.devList)
   },
   methods: {
     doValida (formName) { // 触发对应formName的子组件进行表单验证，验证成功之后会调用@valida绑定的函数
@@ -162,7 +160,6 @@ export default {
       let data = {}
       if (this.addText === '新增') {
         url = 'devices/add'
-        console.log(this.addDevData)
         data = this.addDevData
       } else if (this.addText === '修改') {
         url = 'devices/update'
@@ -203,7 +200,6 @@ export default {
       http({ url: 'devices/list', method: 'POST', data: this.devSearchParams })
         .then(res => {
           this.tableLoading = false
-          console.log(res)
           if (res.code === 200) {
             this.devList = res.data.content
           } else {

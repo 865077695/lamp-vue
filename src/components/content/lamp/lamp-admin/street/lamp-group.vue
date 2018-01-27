@@ -94,17 +94,14 @@ export default {
                 on: {
                   click: () => {
                     this.addText = '修改'
-                    console.log(params.row.id)
                     http({ url: 'poleGroup/poleGroupsInfo', params: { id: params.row.id } })
                       .then(res => {
-                        console.log(res)
                         if (res.code === 200) {
                           this.addLampGroupData = res.data.lightGroups
                           this.addLampGroupData.poles = this.addLampGroupData.poles.map(item => {
                             return item.id
                           })
                           this.add()
-                          console.log(this.addLampGroupData)
                         }
                       })
                   }
@@ -118,7 +115,6 @@ export default {
   },
   created () {
     this.getlampGroupsList()
-    console.log(this.lightGroupList)
     http({
       url: '/pole/polesList',
       method: 'POST',
@@ -157,7 +153,6 @@ export default {
         this.addLampGroupData.poles = this.addLampGroupData.poles.map(item => {
           return { id: item }
         })
-        console.log(this.addLampGroupData)
         data = this.addLampGroupData
       } else if (this.addText === '修改') {
         url = 'poleGroup/poleGroupsEdit'
@@ -201,7 +196,6 @@ export default {
       http({ url: 'poleGroup/poleGroupsList', method: 'POST', data: this.lampGroupSearchParams })
         .then(res => {
           this.tableLoading = false
-          console.log(res)
           if (res.code === 200) {
             this.lightGroupList = res.data.lightGroupList
             this.totalPage = res.data.totalPage

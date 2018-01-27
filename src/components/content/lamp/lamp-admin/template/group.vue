@@ -100,7 +100,6 @@ export default {
       }
     },
     save () {
-      console.log(this.group)
     }
   }
 }
