@@ -1,5 +1,6 @@
 <template>
   <div class="modal-content">
+    {{devInfo.url}}
     <p style="font-size: 24px;">灯杆名称：{{lampInfoPoles.name}}（#{{lampInfoPoles.id}}）</p>
     <p style="color:#878383">灯杆状态：
       <span v-if="lampInfoPoles.status === 0"><Tag color="red">失联</Tag></span>

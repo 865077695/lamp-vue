@@ -14,7 +14,8 @@
     <Modal
       v-model="modal"
       width="920"
-      class-name="vertical-center-modal">
+      class-name="vertical-center-modal"
+      @on-cancel="closeModal">
       <!-- :lampInfo="lampInfo"   TODO: 这一行需要下移一行，暂时不传props，数据写死测试 -->
       <ModalContent 
       ></ModalContent>
@@ -53,6 +54,12 @@ export default {
       this.modal = true
       let lampId = a.data[2].id
       this.getPoleInfo(lampId)
+      this.s1 = setInterval(() => {
+        this.getPoleInfo(lampId)
+      }, 3000)
+    },
+    closeModal () {
+      clearInterval(this.s1)
     },
     streetChange (street) { // 街道切换时，重新获取该街道的灯杆列表和数据统计
       if (this.s) {
@@ -119,7 +126,8 @@ export default {
   },
   data () {
     return {
-      s: null,
+      s: null,        // 定时器
+      s1: null,       // modal框数据定时器
       bmap: bmap,
       streetList: [], // 街道列表
       street: '',     // 当前所选街道
