@@ -99,14 +99,6 @@ export default {
           }
         })
     },
-    ipcMove (data) {
-      http({ url: 'index/ipcMove', method: 'POST', data })
-        .then(res => {
-          if (res.code === 200) {
-            this.$Message.success('操作成功')
-          }
-        })
-    },
     getPolesCount (streetId = 1) {          // 获取街道灯杆统计数据
       http({ url: 'pole/polesCount', params: { streetId } })
         .then(res => {
@@ -197,15 +189,10 @@ export default {
         if (res.code === 200) {
           this.streetList = res.data.streetsList
           this.street = this.streetList[11].id     // TODO： 暂时默认设置街道为第22个（南沙区），会自动触发streetChange
-        } else if (res.code === 500) {
+        } else {
           this.$router.push({ path: '/sign' })
         }
       })
-
-    // 监听子组件moveIpc事件
-    bus.$on('moveIpc', data => {
-      this.ipcMove(data)
-    })
   },
   beforeDestroy () {
     clearInterval(this.s)

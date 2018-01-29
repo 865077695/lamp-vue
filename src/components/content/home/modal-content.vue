@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import bus from '@/eventBus'
+import http from '@/common/http'
 export default {
   name: 'model',
   props: {
@@ -138,7 +138,14 @@ export default {
   },
   methods: {
     moveIpc (direction) {
-      bus.$emit('moveIpc', { direction, id: this.lampInfoPoles.id })
+      console.log('emitMoveIpc')
+      http({ url: 'index/ipcMove', method: 'POST', data: { direction, id: this.lampInfoPoles.id } })
+        .then(res => {
+          console.log('index/ipcMove')
+          if (res.code === 200) {
+            this.$Message.success('操作成功')
+          }
+        })
     }
   },
   mounted () {
@@ -208,7 +215,7 @@ export default {
   border-radius: 5px;
 }
 .item-label {
-  font-size: 14px
+  font-size: 14px;
 }
 </style>
 

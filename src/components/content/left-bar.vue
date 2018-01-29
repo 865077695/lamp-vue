@@ -20,7 +20,7 @@
         <p>科技园物业</p>
         <p>135****5678</p>
       </div>
-      <div class="quit">
+      <div class="quit" @click="quit">
         <Icon type="power"></Icon>
       </div>
     </div>
@@ -29,6 +29,7 @@
 
 <script>
 import { appRoutes } from '../../router/routes'
+import http from '@/common/http'
 export default {
   name: 'LeftBar',
   computed: {
@@ -41,6 +42,14 @@ export default {
   methods: {
     changeMenu (path) {
       this.$router.push({ path })
+    },
+    quit () {
+      http({ url: '/users/logout' })
+        .then(res => {
+          if (res.code === 200) {
+            this.$router.push({ path: '/sign' })
+          }
+        })
     }
   }
 }
@@ -75,5 +84,6 @@ img {
 }
 .quit {
   align-self: center;
+  cursor: pointer;
 }
 </style>
