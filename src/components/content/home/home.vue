@@ -16,8 +16,8 @@
       width="920"
       class-name="vertical-center-modal"
       @on-cancel="closeModal">
-      <!-- :lampInfo="lampInfo"   TODO: 这一行需要下移一行，暂时不传props，数据写死测试 -->
       <ModalContent 
+      :lampInfo="lampInfo"   
       ></ModalContent>
       <div class="footer" slot="footer"></div>
     </Modal>
@@ -96,6 +96,7 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.lampInfo = res.data
+            console.log(this.lampInfo)
           }
         })
     },
@@ -124,7 +125,10 @@ export default {
       streetList: [], // 街道列表
       street: '',     // 当前所选街道
       modal: false,
-      lampInfo: {},     // 灯杆详情信息
+      lampInfo: {     // 灯杆详情信息
+        poles: {},
+        deviceDataDTOList: []
+      },
       polesCountsList: [],  // 路灯统计数据列表
       polar: {
         title: {
@@ -140,14 +144,15 @@ export default {
           trigger: 'item'
         },
         formatter: function (params) {
+          let name = params.data[2].name
           if (params.data[3] === 10) {
-            return '损坏'
+            return `${name}：损坏`
           } else if (params.data[3] === 20) {
-            return '失联'
+            return `${name}：失联`
           } else if (params.data[3] === -1) {
-            return '关闭'
+            return `${name}：关闭`
           } else if (params.data[3] === 1) {
-            return '开启'
+            return `${name}:开启`
           }
         },
         // 对不同状态路灯设置不同图标样式
@@ -166,7 +171,7 @@ export default {
         },
         bmap: {
           center: [113.615657, 22.7552],   // 百度地图中心经纬度
-          zoom: 18,                         // 百度地图缩放
+          zoom: 20,                         // 百度地图缩放
           roam: true,                       // 是否开启拖拽缩放，可以只设置 'scale' 或者 'move'
           mapStyle: {                       // 百度地图的自定义样式，见 http://developer.baidu.com/map/jsdevelop-11.htm
             styleJson: [
@@ -178,7 +183,7 @@ export default {
           type: 'scatter',                  // 散点图
           coordinateSystem: 'bmap',         // 使用百度地图坐标系
           data: [],              // 灯杆列表数据
-          symbolSize: 20
+          symbolSize: 10
         }]
       }
     }
@@ -188,7 +193,7 @@ export default {
       .then(res => {
         if (res.code === 200) {
           this.streetList = res.data.streetsList
-          this.street = this.streetList[11].id     // TODO： 暂时默认设置街道为第22个（南沙区），会自动触发streetChange
+          this.street = this.streetList[0].id     // 默认为第一个街道
         } else {
           this.$router.push({ path: '/sign' })
         }
