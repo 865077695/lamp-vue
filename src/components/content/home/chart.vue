@@ -46,6 +46,8 @@ export default {
   },
   created () {
     bus.$on('setChart', (params) => {
+      console.log(params)
+      console.log(this.chartData)
       let total = 0
       params.map(item => {
         total += item.cou
