@@ -1,14 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <script src="http://api.map.baidu.com/api?v=2.0&ak=dylVOdomryCLAeLDPMmMjMPTcR5Rc07D"></script>
-    <script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer.js" charset="utf-8"></script>
-    <title>智能灯杆管理系统</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <script>
+    //兼容 transfer-dom.js中 使用了 dataset 的问题
+
+    if (window.HTMLElement) {
+      if (Object.getOwnPropertyNames(HTMLElement.prototype).indexOf('dataset') === -1) {
+        Object.defineProperty(HTMLElement.prototype, 'dataset', {
+          get: function () {
+            var attributes = this.attributes; //获取节点的所有属性
+            var name = [],
+              value = []; //定义两个数组保存属性名和属性值
+            var obj = {}; //定义一个空对象
+            for (var i = 0; i < attributes.length; i++) { //遍历节点的所有属性
+              if (attributes[i].nodeName.slice(0, 5) == 'data-') { //如果属性名的前面5个字符符合"data-"
+                // 取出属性名的"data-"的后面的字符串放入name数组中
+                name.push(attributes[i].nodeName.slice(5));
+                //取出对应的属性值放入value数组中
+                value.push(attributes[i].nodeValue);
+              }
+            }
+            for (var j = 0; j < name.length; j++) { //遍历name和value数组
+              obj[name[j]] = value[j]; //将属性名和属性值保存到obj中
+            }
+            return obj; //返回对象
+          }
+        });
+      }
+    }
+  </script>
+  <script src="http://api.map.baidu.com/api?v=2.0&ak=dylVOdomryCLAeLDPMmMjMPTcR5Rc07D"></script>
+  <script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer.js" charset="utf-8"></script>
+  <title>智能灯杆管理系统</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
 </html>
