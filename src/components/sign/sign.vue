@@ -13,7 +13,7 @@
             </Input>
         </FormItem>
         <FormItem>
-            <Button type="primary" @click="handleSubmit('userData')" long>登录</Button>
+            <Button type="primary" @click="handleSubmit('userData')" :loading="loading" long>登录</Button>
         </FormItem>
     </Form>
   </div>
@@ -26,6 +26,7 @@ export default {
   name: 'sign',
   data () {
     return {
+      loading: false,
       userData: {
         name: '',
         password: ''
@@ -44,13 +45,16 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.loading = true
           let data = JSON.parse(JSON.stringify(this.userData))
           data.password = md5(data.password)
           http({ url: '/users/login', method: 'POST', data })
             .then(res => {
+              this.loading = false
               if (res.code === 200) {   // 登录成功，跳转至首页
                 this.$router.push({ path: '/' })
               } else {
+                this.$Message.error('登录失败！')
               }
             })
         } else {
