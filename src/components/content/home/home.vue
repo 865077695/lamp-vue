@@ -170,20 +170,16 @@ export default {
           }
         },
         bmap: {
-          center: [113.615657, 22.7552],   // 百度地图中心经纬度
+          center: [113.617966, 22.755533],   // 百度地图中心经纬度
           zoom: 24,                         // 百度地图缩放
-          roam: true,                       // 是否开启拖拽缩放，可以只设置 'scale' 或者 'move'
-          mapStyle: {                       // 百度地图的自定义样式，见 http://developer.baidu.com/map/jsdevelop-11.htm
-            styleJson: [
-            ]
-          }
+          roam: true
         },
         series: [{
           name: '路灯',
           type: 'scatter',                  // 散点图
           coordinateSystem: 'bmap',         // 使用百度地图坐标系
           data: [],              // 灯杆列表数据
-          symbolSize: 10
+          symbolSize: 16
         }]
       }
     }
