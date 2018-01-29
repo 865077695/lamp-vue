@@ -25,7 +25,8 @@ module.exports = {
   },
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+    // app: './src/main.js'
+    app: ["babel-polyfill", "./src/main.js"]    // npm install --save-dev babel-polyfill，兼容ie
   },
   output: {
     path: config.build.assetsRoot,
