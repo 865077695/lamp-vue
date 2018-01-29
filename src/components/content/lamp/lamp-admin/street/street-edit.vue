@@ -65,7 +65,7 @@ export default {
   mounted () {
     /* eslint-disable */
     let map = new BMap.Map('allmap')
-    map.centerAndZoom(new BMap.Point(this.streetInfo.longitude || 116.404, this.streetInfo.latitude || 39.915), 18)  // 初始化地图,设置中心点坐标和地图级别
+    map.centerAndZoom(new BMap.Point(this.streetInfo.longitude || 116.404, this.streetInfo.latitude || 39.915), 20)  // 初始化地图,设置中心点坐标和地图级别
     map.enableScrollWheelZoom(true)
     map.addEventListener('click', (e) => {
       this.streetInfo.longitude = e.point.lng
