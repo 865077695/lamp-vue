@@ -1,11 +1,12 @@
 <template>
   <div class="modal-content">
-    <p style="font-size: 24px;">灯杆名称：{{lampInfoPoles.name}}（#{{lampInfoPoles.id}}）</p>
+    <p style="font-size: 24px;">灯杆名称：{{lampInfoPoles.name?lampInfoPoles.name:'-'}}（#{{lampInfoPoles.id?lampInfoPoles.id:'-'}}）</p>
     <p style="color:#878383">灯杆状态：
       <span v-if="lampInfoPoles.status === 0"><Tag color="red">失联</Tag></span>
       <span v-else-if="lampInfoPoles.status === 1"><Tag color="blue">关闭</Tag></span>
       <span v-else-if="lampInfoPoles.status === 2"><Tag color="green">开启</Tag></span>
       <span v-else-if="lampInfoPoles.status === -1"><Tag color="yellow">损坏</Tag></span>
+      <span v-else><Tag color="yellow">未知</Tag></span>
     </p>
     <div class="content">
       <div id="player" style="width:640px; height:480px;"></div>
@@ -28,6 +29,7 @@
           <span v-else-if="devInfo.status === 1"><Tag color="green">开启</Tag></span>
           <span v-else-if="devInfo.status === 10"><Tag color="yellow">故障</Tag></span>
           <span v-else-if="devInfo.status === 20"><Tag color="red">失联</Tag></span>
+          <span v-else><Tag color="red">未知</Tag></span>
         </div>
         <div class="item">
           <span class="item-label">充电桩：</span>
@@ -35,16 +37,18 @@
           <span v-else-if="devInfo.power === 1"><Tag color="green">开启</Tag></span>
           <span v-else-if="devInfo.power === 10"><Tag color="yellow">故障</Tag></span>
           <span v-else-if="devInfo.power === 20"><Tag color="red">失联</Tag></span>
+          <span v-else><Tag color="red">未知</Tag></span>
         </div>
-        <div class="item"><span class="item-label">Pm10：</span>{{devInfo.pm10}}</div>
-        <div class="item"><span class="item-label">Pm25： </span>{{devInfo.pm25}}</div>
+        <div class="item"><span class="item-label">Pm10：</span>{{devInfo.pm10?devInfo.pm10: '-'}}</div>
+        <div class="item"><span class="item-label">Pm25： </span>{{devInfo.pm25?devInfo.pm25: '-'}}</div>
         <div class="item"><span class="item-label">广播状态：</span>
           <span v-if="devInfo.broadcastStatus === 0"><Tag color="blue">关闭</Tag></span>
           <span v-else-if="devInfo.broadcastStatus === 1"><Tag color="green">开启</Tag></span>
           <span v-else-if="devInfo.broadcastStatus === 10"><Tag color="yellow">故障</Tag></span>
           <span v-else-if="devInfo.broadcastStatus === 20"><Tag color="red">失联</Tag></span>
+          <span v-else><Tag color="red">未知</Tag></span>
         </div>
-        <div class="item"><span class="item-label">当前播报计划：</span><br><Tag color="blue">{{devInfo.broadcastCurrentPlan}}</Tag></div>
+        <div class="item"><span class="item-label">当前播报计划：</span><br><Tag color="blue">{{devInfo.broadcastCurrentPlan?devInfo.broadcastCurrentPlan:'无'}}</Tag></div>
       </div>
     </div>
   </div>
@@ -133,6 +137,7 @@ export default {
     }
   },
   created () {
+    console.log(this.lampInfo)
     this.lampInfoPoles = this.lampInfo.poles
     this.lampDevInfo = this.lampInfo.deviceDataDTOList
   },
@@ -172,7 +177,11 @@ export default {
       'autoplay': true,
       // 'coverpic': 'http://www.test.com/myimage.jpg',
       'width': '640',
-      'height': '480'
+      'height': '480',
+      'wording': {
+        '2032': '失败，请重试',
+        '2048': '失败，请重试'
+      }
     })
   }
 }
