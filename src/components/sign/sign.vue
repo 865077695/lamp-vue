@@ -1,6 +1,6 @@
 <template>
   <div class="sign">
-    <h2 style="text-align: center;line-height: 50px;">登录您的主页</h2>
+    <h2 style="text-align: center;line-height: 50px;">欢迎登录智能路灯管理系统</h2>
     <Form ref="userData" :model="userData" :rules="ruleInline">
         <FormItem prop="name">
             <Input type="text" v-model="userData.name" placeholder="Username">

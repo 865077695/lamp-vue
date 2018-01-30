@@ -16,9 +16,9 @@
     </MenuGroup>
     <div class="avatar" style="color:#fff">
       <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="large"/>
-      <div>
-        <p>科技园物业</p>
-        <p>135****5678</p>
+      <div style="text-align:center;padding-right: 20px;">
+        <p>{{userInfo.name}}</p>
+        <p style="color: #aaa">{{userInfo.mobile}}</p>
       </div>
       <div class="quit" @click="quit">
         <Icon type="power"></Icon>
@@ -32,6 +32,15 @@ import { appRoutes } from '../../router/routes'
 import http from '@/common/http'
 export default {
   name: 'LeftBar',
+  data () {
+    return {
+      userInfo: {
+        name: null,
+        address: null,
+        mobile: null
+      }
+    }
+  },
   computed: {
     leftBarItems: () => {
       return appRoutes.filter(item => {
@@ -39,9 +48,22 @@ export default {
       })
     }
   },
+  created () {
+    this.getUserInfo()
+  },
   methods: {
     changeMenu (path) {
       this.$router.push({ path })
+    },
+    getUserInfo () {
+      http({ url: '/users/userselfInfo' })
+        .then(res => {
+          if (res.code === 200) {
+            this.userInfo = res.data
+          } else {
+            this.$Message.error('获取用户数据失败')
+          }
+        })
     },
     quit () {
       http({ url: '/users/logout' })
