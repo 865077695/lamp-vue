@@ -22,6 +22,14 @@ export const dev = {
     { label: '开启', value: 1 },
     { label: '故障', value: 10 },
     { label: '失联', value: 20 }
+  ],
+  powerStatus: [    // 充电桩状态
+    { label: '待机', value: 1 },
+    { label: '充电', value: 2 },
+    { label: '充满', value: 3 },
+    { label: '故障', value: 4 },
+    { label: '预约', value: 5 },
+    { label: '离线', value: 6 }
   ]
 }
 
