@@ -2,9 +2,15 @@
 <template>
   <div>
     <div class="_search">
-      <my-form class="_form" :formItem="userSearchItem" :formData="searchParams"></my-form>
-      <Button type="primary" @click="search" :disabled="tableLoading" style="height: 32px">查找</Button>
-      <Button type="success" @click="add" :disabled="tableLoading" style="height: 32px;margin-left: 20px">新建</Button>
+      <my-form
+      class="searchForm"
+        ref="searchForm"
+        :formItems="userSearchItem"
+        :formData="searchParams"
+        @validaok="searchOk"
+        ></my-form>
+      <Button @click="doValida('searchForm')" type="primary" style="height: 32px;">搜索</Button>
+      <Button @click="add" type="success" style="height: 32px; margin-left: 10px">添加</Button>
     </div>
     <div class="table">
       <Table class="table" :loading="tableLoading" border :columns="columns" :data="userList"></Table>
@@ -17,12 +23,18 @@
           <Icon type="information-circled"></Icon>
           <span>{{modalTitle}}</span>
       </p>
-      <div>
-        <my-form class="_form" :formItem="adminUserAddItem" :formData="adminUserAddData" style="height: 230px;"></my-form>
+      <div style="height:400px">
+        <my-form
+            :formRule="adminUserFromRule"
+            ref="addForm"
+            :formItems="adminUserAddItem"
+            :formData="adminUserAddData"
+            @validaok="addOk"
+          ></my-form>
       </div>
       <div slot="footer" style="text-align: center">
-        <Button type="primary" size="large" :loading="adding" @click="ok">确认</Button>
-        <Button size="large" @click="cancel">取消</Button>
+        <Button type="primary" size="large" :loading="adding" @click="doValida('addForm')">提交</Button>
+        <Button type="default" size="large" @click="cancel">取消</Button>
       </div>
     </Modal>
 
@@ -31,12 +43,13 @@
 </template>
 
 <script>
-import { userSearchItem, adminUserAddItem } from '@/data/formItems'
+import { userSearchItem, adminUserAddItem, adminUserFromRule } from '@/data/formItems'
 import { getStatusText } from '@/common/_func'
 import { adminType } from '@/data/options'
-import MyForm from '@/template/form'
+import MyForm from '@/template/my-form'
 import MyPage from '@/template/page'
 import http from '@/common/http'
+import md5 from 'blueimp-md5'
 export default {
   name: 'UserAdmin',
   components: { MyForm, MyPage },
@@ -47,13 +60,24 @@ export default {
       tableLoading: false,
       userSearchItem,
       totalPage: null,
+      adminUserFromRule,
       modalTitle: '新增',
       searchParams: {
-        currentPage: 1
+        currentPage: 1,
+        name: null,
+        mobile: null,
+        address: null
       },
       adminUserAddItem,
-      adminUserAddData: {},
       userList: [],
+      adminUserAddData: {
+        name: null,
+        mobile: null,
+        address: null,
+        password: null,
+        confirmPassword: null,
+        typ: null
+      },
       columns: [
         { title: '用户id', key: 'id', width: 100 },
         { title: '账号', key: 'name', width: 100 },
@@ -91,8 +115,6 @@ export default {
             ])
           }
         }
-        // { title: '智能单灯数', key: 'single' },
-        // { title: '回路终端数', key: 'loop' }
       ]
     }
   },
@@ -100,6 +122,16 @@ export default {
     this.update()
   },
   methods: {
+    searchOk () { // 搜索数据格式验证通过
+      this.searchParams.currentPage = 1 // 搜索时重置页码为1
+      this.update()
+    },
+    addOk () {
+      this.ok()
+    },
+    doValida (formName) { // 触发对应formName的子组件进行表单验证，验证成功之后会调用@valida绑定的函数
+      this.$refs[formName].handleValida()
+    },
     search () {
       this.searchParams.currentPage = 1
       this.update()
@@ -111,8 +143,16 @@ export default {
     },
     ok () {
       this.adding = true
+      let data = {
+        name: this.adminUserAddData.name,
+        mobile: this.adminUserAddData.mobile,
+        address: this.adminUserAddData.address,
+        password: md5(this.adminUserAddData.password),
+        confirmPassword: md5(this.adminUserAddData.confirmPassword),
+        typ: this.adminUserAddData.typ
+      }
       if (this.modalTitle === '新建') {
-        http({ url: '/admin/users/usersAdd', method: 'POST', data: this.adminUserAddData })
+        http({ url: '/admin/users/usersAdd', method: 'POST', data })
           .then(res => {
             this.adding = false
             this.addModal = false
@@ -124,15 +164,7 @@ export default {
             this.update()
           })
       } else if (this.modalTitle === '编辑') {
-        let data = {
-          id: this.adminUserAddData.id,
-          name: this.adminUserAddData.name,
-          mobile: this.adminUserAddData.mobile,
-          address: this.adminUserAddData.address,
-          // password: this.adminUserAddData.password,
-          // confirmPassword: this.adminUserAddData.confirmPassword,
-          typ: this.adminUserAddData.typ
-        }
+        data.id = this.adminUserAddData.id
         http({ url: '/admin/users/usersEdit', method: 'POST', data })
           .then(res => {
             this.adding = false

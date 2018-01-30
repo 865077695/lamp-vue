@@ -49,21 +49,6 @@ export const logSearchItem = [  // 日志列表查询参数项
   { label: '结束日期', key: 'endTime', width: '200px', typ: 'date' }
 ]
 
-export const userSearchItem = [ // 管理员查询名下用户参数项
-  { label: '账号', key: 'name', width: '100px', typ: 'ipt', placeholder: '账号' },
-  { label: '手机', key: 'mobile', width: '100px', typ: 'ipt', placeholder: '手机' },
-  { label: '地址', key: 'address', width: '100px', typ: 'ipt', placeholder: '地址' }
-]
-
-export const adminUserAddItem = [   // 新增管理员表单项
-  { label: '用户名', key: 'name', width: '300px', typ: 'ipt', placeholder: '用户名' },
-  { label: '手机号', key: 'mobile', width: '300px', typ: 'ipt', placeholder: '手机号' },
-  { label: '地址', key: 'address', width: '300px', typ: 'ipt', placeholder: '地址' },
-  { label: '密码', key: 'password', width: '300px', typ: 'ipt', placeholder: '密码' },
-  { label: '确认密码', key: 'confirmPassword', width: '300px', typ: 'ipt', placeholder: '确认密码' },
-  { label: '用户类型', key: 'typ', width: '300px', typ: 'opt', placeholder: '用户类型', options: adminType }
-]
-
 // 分割线 //
 // 查询街道列表查询项
 export const streetListSearchItem = [
@@ -354,6 +339,61 @@ export const addPlanFormRule = {
         if (value.length === 0) {
           // eslint-disable-next-line
           callback('请输入参考价格')
+        }
+        callback(errors)
+      }
+    }
+  ]
+}
+
+export const userSearchItem = [ // 管理员查询名下用户参数项
+  { label: '账号', key: 'name', width: '100px', typ: 'ipt', placeholder: '账号' },
+  { label: '手机', key: 'mobile', width: '100px', typ: 'ipt', placeholder: '手机' },
+  { label: '地址', key: 'address', width: '100px', typ: 'ipt', placeholder: '地址' }
+]
+
+export const adminUserAddItem = [   // 新增管理员表单项
+  { label: '用户名', key: 'name', width: '300', typ: 'ipt', placeholder: '用户名' },
+  { label: '手机号', key: 'mobile', width: '300', typ: 'ipt', placeholder: '手机号' },
+  { label: '地址', key: 'address', width: '300', typ: 'ipt', placeholder: '地址' },
+  { label: '密码', key: 'password', width: '300', typ: 'psd', placeholder: '密码' },
+  { label: '确认密码', key: 'confirmPassword', width: '300', typ: 'confirmpsd', placeholder: '确认密码' },
+  { label: '用户类型', key: 'typ', width: '300', typ: 'opt', placeholder: '用户类型', options: adminType }
+]
+
+export const adminUserFromRule = {
+  name: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  mobile: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator (rule, value, callback) {
+        var errors = []
+        if (value === '') {
+          // eslint-disable-next-line
+          callback('该项为必填项')
+        } else if (!(/^1[0-9]{10}$/.test(value))) {
+          // eslint-disable-next-line
+          callback('请填写正确的手机号')
+        }
+        callback(errors)
+      }
+    }
+  ],
+  address: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
+  typ: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator (rule, value, callback, source, options) {
+        var errors = []
+        if (value.length === 0) {
+          // eslint-disable-next-line
+          callback('请选择用户类型')
         }
         callback(errors)
       }

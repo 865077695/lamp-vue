@@ -1,14 +1,32 @@
 <template>
   <div>
     <Form ref="formData" :model="formData" :rules="formRule" :label-width="80">
-      <!-- 普通输入框 -->
       <div class="formItem" v-for="item in formItems" :key="item.key" >
+      <!-- 普通输入框 -->
         <template v-if="item.typ === 'ipt'">
           <FormItem 
             :label="item.label" 
             :prop="item.key"
             >
               <Input v-model="formData[item.key]" :placeholder="item.placeholder" :style="`width:${item.width}px;`"></Input>
+          </FormItem>
+        </template>
+        <!-- 密码 -->
+        <template v-if="item.typ === 'psd'">
+          <FormItem 
+            :label="item.label" 
+            :prop="item.key"
+            >
+              <Input v-model="formData[item.key]" type="password" :placeholder="item.placeholder" :style="`width:${item.width}px;`"></Input>
+          </FormItem>
+        </template>
+        <!-- 确认密码 -->
+        <template v-if="item.typ === 'confirmpsd'">
+          <FormItem 
+            :label="item.label" 
+            :prop="item.key"
+            >
+              <Input v-model="formData[item.key]" type="password" :placeholder="item.placeholder" :style="`width:${item.width}px;`"></Input>
           </FormItem>
         </template>
         <!-- 数值 -->
@@ -125,6 +143,7 @@ export default {
   data () {
     return {
       polesListOptions1: [],
+      validatePassword: '',
       formValidate: {
         name: '',
         mail: '',
