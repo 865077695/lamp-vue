@@ -96,7 +96,6 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.lampInfo = res.data
-            console.log(this.lampInfo)
           }
         })
     },
