@@ -15,8 +15,8 @@
       width="920"
       class-name="vertical-center-modal"
       @on-cancel="closeModal">
+      <!-- :lampInfo="lampInfo"    -->
       <ModalContent 
-      :lampInfo="lampInfo"   
       ></ModalContent>
       <div class="footer" slot="footer"></div>
     </Modal>
@@ -94,7 +94,8 @@ export default {
       http({ url: '/index/poleInfo', params: { id: lampId } })
         .then(res => {
           if (res.code === 200) {
-            this.lampInfo = res.data
+            this.lampInfo = res.data.poleAndDevicesData
+            bus.$emit('getPoleInfoEnd', this.lampInfo)
           }
         })
     },
@@ -198,11 +199,11 @@ export default {
   position: relative;
   height: 100%;
   box-sizing: border-box;
-  z-index: 999
+  z-index: 999;
 }
 .title {
   text-align: center;
-  color:brown;
+  color: brown;
   font-size: 16px;
 }
 .notice {
