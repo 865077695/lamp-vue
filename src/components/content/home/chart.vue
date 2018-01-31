@@ -10,7 +10,7 @@
             <Icon type="information-circled"></Icon>
             报警通知
         </p>
-        <a href="#" slot="extra" @click.prevent="changeLimit">
+        <a href="#" slot="extra" @click.prevent="changeLimit" title="更多">
             <Icon type="more"></Icon>
         </a>
         <ul>
