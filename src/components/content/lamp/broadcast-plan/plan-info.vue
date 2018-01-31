@@ -344,7 +344,7 @@ export default {
           if (res.code === 200) {   // 提交成功将backupInfo重置
             this.$Message.success('修改完成!')
             this.backupInfo = JSON.parse(JSON.stringify(this.planInfo))
-          }else if(res.code === 400){
+          } else if (res.code === 400) {
             this.$Message.error('参数填写不完整')
           }
         })
