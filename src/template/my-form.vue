@@ -44,7 +44,7 @@
             :label="item.label" 
             :prop="item.key"
             >
-              <Select v-model="formData[item.key]" :placeholder="item.placeholder" @on-change="changeOpt" :style="`width:${item.width}px;`">
+              <Select v-model="formData[item.key]" clearable :placeholder="item.placeholder" @on-change="changeOpt" :style="`width:${item.width}px;`">
                 <Option v-for="option in item.options" :key="option.value" :value="option.value">{{option.label}}</Option>
             </Select>
           </FormItem>

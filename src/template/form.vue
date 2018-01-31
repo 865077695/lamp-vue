@@ -17,7 +17,7 @@
         </div>
         <div class="g-ipt">
           <template v-if="item.typ === 'opt'">
-            <Select v-model="formData[item.key]" :style="'width:' + item.width">
+            <Select v-model="formData[item.key]" :style="'width:' + item.width" clearable>
                 <Option v-for="option in item.options" :value="option.value" :key="option.value">{{ option.label }}</Option>
             </Select>
           </template>
