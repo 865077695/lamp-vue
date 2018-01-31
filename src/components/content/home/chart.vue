@@ -80,7 +80,6 @@ export default {
 }
 .notify {
   width: 240px;
-  min-height: 230px;
   max-height: 250px;
 }
 </style>

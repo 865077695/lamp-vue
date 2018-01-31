@@ -1,13 +1,12 @@
 <template>
   <div class="map-view">
+    <h3 class="title">路灯实时状态监测</h3>
     <ECharts style='width:100%;height:100%' :options='polar' :auto-resize="true" @click="handleClick"></ECharts>
-    <Row class="notice" :gutter="16">
-      <Col span="6">
+    <div class="notice" style="width:300px">
         <Select v-model="street" @on-change="streetChange" style="width:100%" size="large">
           <Option v-for="item in streetList" :value="item.id" :key="item.id">{{ item.name }}</Option>
         </Select>
-      </Col>
-    </Row>
+    </div>
     <Box class="chart"  
     :polesCountsList="polesCountsList"
     ></Box>
@@ -130,13 +129,6 @@ export default {
       },
       polesCountsList: [],  // 路灯统计数据列表
       polar: {
-        title: {
-          text: '路灯实时状态监测',
-          left: 'center',
-          textStyle: {
-            color: 'darkred'
-          }
-        },
         action: {
         },
         tooltip: {
@@ -206,6 +198,12 @@ export default {
   position: relative;
   height: 100%;
   box-sizing: border-box;
+  z-index: 999
+}
+.title {
+  text-align: center;
+  color:brown;
+  font-size: 16px;
 }
 .notice {
   position: absolute !important;

@@ -82,16 +82,17 @@ export default {
       },
       planList: [],
       columns: [
-        { title: '计划id', key: 'id' },
-        { title: '计划名称', key: 'name' },
-        { title: '开始日期', key: 'startDate' },
-        { title: '结束日期', key: 'endDate' },
-        { title: '开始时间', key: 'playBegin' },
-        { title: '结束时间', key: 'playEnd' },
-        { title: '描述', key: 'notes' },
+        { title: '计划id', key: 'id', width: 80 },
+        { title: '计划名称', key: 'name', width: 150 },
+        { title: '开始日期', key: 'startDate', width: 150 },
+        { title: '结束日期', key: 'endDate', width: 150 },
+        { title: '开始时间', key: 'playBegin', width: 90 },
+        { title: '结束时间', key: 'playEnd', width: 90 },
+        { title: '描述', key: 'notes',width: 200 },
         {
           title: '状态',
           key: 'status',
+          width: 70,
           render: (h, params) => {
             let text = getStatusText(params.row.status, broadcastPlan.status)
             return text
@@ -100,6 +101,7 @@ export default {
         {
           title: '循环',
           key: 'iscycle',
+          width: 70,
           render: (h, params) => {
             let text = getStatusText(params.row.iscycle, broadcastPlan.iscycle)
             return text
@@ -108,17 +110,19 @@ export default {
         {
           title: '播报类型',
           key: 'typ',
+          width: 90,
           render: (h, params) => {
             let text = getStatusText(params.row.typ, broadcastPlan.resourceType)
             return text
           }
         },
-        { title: '修改人', key: 'modifyId' },
-        { title: '修改时间', key: 'modifyTime' },
+        { title: '修改人', key: 'modifyId', width: 140 },
+        { title: '修改时间', key: 'modifyTime', width: 170 },
         {
           title: '操作',
           key: 'action',
-          width: 260,
+          fixed: 'right',
+          width: 140,
           render: (h, params) => {
             return h('div', [
               h('Button', {

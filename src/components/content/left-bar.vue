@@ -2,7 +2,6 @@
   <Menu theme="dark" :active-name="$route.path" @on-select="changeMenu">
     <div class="logo">
       <img src="@/assets/logo.png" width="50%">
-      <p class="title">智能路灯管理系统</p>
     </div>
     <MenuItem name="/home" style="font-size: 16px;margin-bottom:20px">
       <Icon type="home"></Icon>
@@ -18,7 +17,7 @@
       <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="large"/>
       <div style="text-align:center;padding-right: 20px;">
         <p>{{userInfo.name}}</p>
-        <p style="color: #aaa">{{userInfo.mobile}}</p>
+        <p style="color: rgb(167, 171, 187)">{{userInfo.mobile}}</p>
       </div>
       <div class="quit" @click="quit">
         <Icon type="power"></Icon>

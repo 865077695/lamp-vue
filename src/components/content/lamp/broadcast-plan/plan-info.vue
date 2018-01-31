@@ -86,11 +86,18 @@
               </p>
               <div>
                 <div v-if="sourceList.length === 0">请先在上方选择资源类型</div>
-                <FormItem prop="mediaids" label="媒体资源" v-if="sourceList.length>0">
-                  <RadioGroup v-model="planInfo.mediaids">
-                    <Radio :label="item.id" v-for="item in sourceList" :key="item.id">{{item.name}}</Radio>
-                  </RadioGroup>
-                </FormItem>
+                <template v-if="sourceList.length>0">
+                  <FormItem prop="mediaids" label="媒体资源">
+                    <RadioGroup v-model="planInfo.mediaids">
+                      <Radio :label="item.id" v-for="item in sourceList" :key="item.id">{{item.name}}</Radio>
+                    </RadioGroup>
+                  </FormItem>
+                </template>
+                <template v-if="typ && sourceList.length === 0">
+                  <div>
+                    无资源，请先通过FTP上传资源
+                  </div>
+                </template>
               </div>
               
             </Card>
@@ -171,6 +178,34 @@ export default {
         endDate: [
           { required: true, type: 'date', message: '该项为必填项', trigger: 'change' }
         ],
+        typ: [
+          {
+            required: true,
+            trigger: 'change',
+            validator (rule, value, callback) {
+              var errors = []
+              if (value === '') {
+                // eslint-disable-next-line
+                callback('该项为必填项')
+              }
+              callback(errors)
+            }
+          }
+        ],
+        mediaids: [
+          {
+            required: true,
+            trigger: 'change',
+            validator (rule, value, callback) {
+              var errors = []
+              if (value === '') {
+                // eslint-disable-next-line
+                callback('该项为必填项')
+              }
+              callback(errors)
+            }
+          }
+        ],
         playBegin: [
           { required: true, type: 'date', message: '该项为必填项', trigger: 'change' }
         ],
@@ -232,6 +267,7 @@ export default {
       this.planInfo[key] = $event
     },
     mediaTypeChange () {            // 修改/添加资源时切换资源类型
+      this.planInfo.mediaids = null
       this.getSourceList(this.typ)
     },
     getPlanInfo () {    // 获取计划详情
@@ -308,6 +344,8 @@ export default {
           if (res.code === 200) {   // 提交成功将backupInfo重置
             this.$Message.success('修改完成!')
             this.backupInfo = JSON.parse(JSON.stringify(this.planInfo))
+          }else if(res.code === 400){
+            this.$Message.error('参数填写不完整')
           }
         })
     }

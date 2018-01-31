@@ -3,7 +3,7 @@
     <!-- 搜索 -->
     <Form ref="queryMediaParams" :model="queryMediaParams" :label-width="80" inline>
         <FormItem label="资源名称" prop="name">
-            <Input v-model="queryMediaParams.name" placeholder="Enter your name"></Input>
+            <Input v-model="queryMediaParams.name" placeholder="资源名称"></Input>
         </FormItem>
         <FormItem>
             <Button type="primary" @click="query('queryMediaParams')">查询</Button>
