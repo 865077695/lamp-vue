@@ -218,7 +218,7 @@ export default {
 .chart {
   display: flex;
   position: absolute;
-  padding-top: 20px;
+  padding-top: 30px;
   margin-right: 30px;
   right: 0;
   top: 0;
