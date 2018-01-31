@@ -2,7 +2,7 @@
   <div id="a">
     <Tag checkable color="green" style="margin-bottom: 10px;">{{title}}</Tag>
     <div v-if="$route.query.id !== null">
-      计划id: {{$route.query.id}}
+      <!-- 计划id: {{$route.query.id}} -->
     </div>
     <Row :gutter="8">
       <Form ref="planInfo" :model="planInfo" :rules="ruleValidate" :label-width="80">
