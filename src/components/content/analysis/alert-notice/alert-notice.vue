@@ -8,6 +8,7 @@
         ref="searchForm"
         :formItems="msgListSearchItem"
         :formData="msgSearchParams" 
+        @validaok="searchOk"
         ></my-form>
       <Button @click="doValida('searchForm')" type="primary" style="height: 32px;">搜索</Button>
     </div>
@@ -20,7 +21,7 @@
 <script>
 import MyForm from '@/template/my-form'
 import MyPage from '@/template/page'
-import { dev } from '@/data/options'
+import { dev, msgTyp } from '@/data/options'
 import { getStatusText } from '@/common/_func'
 import { msgListSearchItem } from '@/data/formItems'
 import http from '@/common/http'
@@ -59,7 +60,18 @@ export default {
           }
         },
         { title: '设备编号', key: 'deviceSn' },
-        { title: '消息内容', key: 'content' },
+        {
+          title: '消息内容',
+          key: 'content',
+          render: (h, params) => {
+            let text = getStatusText(params.row.messageTyp, msgTyp)
+            if (params.row.message === 5) { // 如果是能耗上报
+              text += params.row.content
+            }
+            return text
+          }
+
+        },
         {
           title: '消息状态',
           key: 'status',
@@ -91,12 +103,14 @@ export default {
                     })
                 }
               }
+              // eslint-disable-next-line
             }, [h('span', {
               slot: 'open'
             }, '未看'),
-              h('span', {
-                slot: 'close'
-              }, '已看')])
+            // eslint-disable-next-line
+            h('span', {
+              slot: 'close'
+            }, '已看')])
           }
         }
       ]
@@ -106,6 +120,13 @@ export default {
     this.getMsgList()
   },
   methods: {
+    searchOk () { // 搜索数据格式验证通过
+      this.msgSearchParams.currentPage = 1 // 搜索时重置页码为1
+      this.getMsgList()
+    },
+    doValida (formName) { // 触发对应formName的子组件进行表单验证，验证成功之后会调用@valida绑定的函数
+      this.$refs[formName].handleValida()
+    },
     pageChange () {
       this.getMsgList()
     },

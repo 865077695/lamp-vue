@@ -78,3 +78,13 @@ export const msgStatus = [
   { label: '已看', value: 1 },
   { label: '未看', value: 0 }
 ]
+
+// 消息类型
+export const msgTyp = [
+  { label: '入网', value: 0 },
+  { label: '失联', value: 1 },
+  { label: '故障', value: 2 },
+  { label: '开灯', value: 3 },
+  { label: '关灯', value: 4 },
+  { label: '功率', value: 5 }
+]

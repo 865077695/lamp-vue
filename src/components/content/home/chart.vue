@@ -15,7 +15,7 @@
         </a>
         <ul>
             <li v-for="item in notifyData" :key="item.id">
-                <Alert type="success">{{item.content}}</Alert>
+                <Alert type="success">{{item.poleName}}:{{item.deviceTyp | optionToText}}{{item.content}}</Alert>
             </li>
         </ul>
     </Card>
@@ -27,7 +27,8 @@
 
 <script>
 import bus from '@/eventBus'
-import { chartData } from '@/data/options'
+import { chartData, msgTyp } from '@/data/options'
+import { getStatusText } from '@/common/_func'
 export default {
   name: 'chart',
   data () {
@@ -64,7 +65,15 @@ export default {
     })
     bus.$on('setNotice', (params) => {
       this.notifyData = params
+      console.log(this.notifyData)
     })
+  },
+  filters: {
+    optionToText: function (value) {
+      console.log(value)
+      let text = getStatusText(value, msgTyp)
+      return text
+    }
   }
 }
 </script>
