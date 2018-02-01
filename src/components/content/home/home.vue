@@ -58,6 +58,7 @@ export default {
       }, 180000)
     },
     closeModal () {
+      bus.$emit('destoryPlayer')
       clearInterval(this.s1)
     },
     streetChange (street) { // 街道切换时，重新获取该街道的灯杆列表和数据统计

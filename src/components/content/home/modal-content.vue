@@ -9,7 +9,9 @@
       <span v-else><Tag color="yellow">未知</Tag></span>
     </p>
     <div class="content">
-      <div id="player" style="width:640px; height:480px;"></div>
+      <div id="player" style="width:640px; height:480px;">
+        <span v-if="!hasLive" style="color:#fff;">{{playerContent}}</span>
+      </div>
       <div class="status">
         <div class="item direction" style="padding: 10px 20px">
           <div class="top">
@@ -133,19 +135,26 @@ export default {
   data () {
     return {
       loading: false,
+      hasLive: false,
+      playerContent: '接入中...',
       lampInfoPoles: {},      // 路灯基础信息
       lampDevInfo: [],         // 路灯上设备数据
       lampInfo: {},           // 保存lampInfo数据
-      devInfo: {}            // 保存状态数据
+      devInfo: {},            // 保存状态数据
+      tcPlayer: null
     }
   },
   created () {
     bus.$on('getPoleInfoEnd', lampInfo => {
-      console.log(111)
+      console.log('on')
       this.lampInfo = lampInfo
       this.lampInfoPoles = this.lampInfo.poles
       this.lampDevInfo = this.lampInfo.deviceDataDTOList
+      this.playerContent = '此灯杆无监控视频'
       this.devInfo = this.setDevInfo(this.lampDevInfo)
+    })
+    bus.$on('destoryPlayer', () => {
+      this.destoryPlayer()
     })
   },
   methods: {
@@ -161,6 +170,7 @@ export default {
       let devInfo = {}
       info.map(item => {
         if (item.typ === 3) {   // 摄像头
+          this.hasLive = true
           devInfo.url = item.url
           this.setPlayer(devInfo.url)   // 调播放器
         } else if (item.typ === 0) {  // 灯控
@@ -178,7 +188,8 @@ export default {
       return devInfo
     },
     setPlayer (url) {    // 调用播放器
-      window.tcPlayer = new TcPlayer('player', {
+      // eslint-disable-next-line
+      this.tcPlayer = new TcPlayer('player', {
         'rtmp': url,
         'autoplay': true,
         'width': '640',
@@ -188,6 +199,16 @@ export default {
           '2048': '失败，请重试'
         }
       })
+    },
+    destoryPlayer () {
+      // eslint-disable-next-line
+      if (this.tcPlayer !== null) {
+        this.hasLive = false
+        // eslint-disable-next-line
+        document.getElementById('player').removeChild(this.tcPlayer.el)   // 移除播放器
+      }
+      this.tcPlayer = null                                              // 重置tcPlayer
+      this.playerContent = '接入中...'
     }
   },
   beforeDestory () {
@@ -207,6 +228,10 @@ export default {
 }
 #player {
   flex: 1 0 640px;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .status {
   flex: 1 0 200px;
