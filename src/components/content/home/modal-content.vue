@@ -222,7 +222,7 @@ export default {
 #player-container {
   position: relative;
   flex: 1 0 640px;
-  background: #000;
+  background: #495060;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -230,7 +230,7 @@ export default {
 #player {
   width: 100%;
   height: 100%;
-  background: #000;
+  background: #495060;
 }
 #player .message {
   position: absolute;
