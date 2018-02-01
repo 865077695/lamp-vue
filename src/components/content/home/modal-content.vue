@@ -1,13 +1,6 @@
 <template>
   <div class="modal-content">
     <p style="font-size: 24px;">灯杆名称：{{lampInfoPoles.name?lampInfoPoles.name:'-'}}（#{{lampInfoPoles.id?lampInfoPoles.id:'-'}}）</p>
-    <p style="color:#878383">灯杆状态：
-      <span v-if="lampInfoPoles.status === 0"><Tag color="red">失联</Tag></span>
-      <span v-else-if="lampInfoPoles.status === 1"><Tag color="blue">关闭</Tag></span>
-      <span v-else-if="lampInfoPoles.status === 2"><Tag color="green">开启</Tag></span>
-      <span v-else-if="lampInfoPoles.status === -1"><Tag color="yellow">损坏</Tag></span>
-      <span v-else><Tag color="yellow">未知</Tag></span>
-    </p>
     <div class="content">
       <div id="player-container">
         <div id="player" v-if="hasLive"></div>
