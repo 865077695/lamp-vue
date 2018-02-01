@@ -15,6 +15,8 @@ axios.interceptors.response.use(function (res) {
   let status = res.data.code
   if (status === 5000) {  // 未登录
     router.push({ path: '/sign' })
+  } else if (status === 500) {  // 服务器错误
+    iView.Message.error('服务器错误，请联系管理员')
   }
   return res.data
 }, function (err) {
