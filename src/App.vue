@@ -25,4 +25,15 @@ body,
 .anchorBL{display:none;}
 
 .darkColor{color: rgb(139, 131, 131)}
+/* 播放器样式 */
+#player .prism-ErrorMessage {
+  height: 0;
+  width: 0;
+  display: none;
+}
+#player .prism-auto-stream-selector {
+  height: 0;
+  width: 0;
+  display: none;
+}
 </style>

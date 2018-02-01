@@ -9,8 +9,9 @@
       <span v-else><Tag color="yellow">未知</Tag></span>
     </p>
     <div class="content">
-      <div id="player" style="width:640px; height:480px;">
-        <span v-if="!hasLive" style="color:#fff;">{{playerContent}}</span>
+      <div id="player-container">
+        <div id="player" v-if="hasLive"></div>
+        <span class="message" v-if="!hasLive" style="color:#fff;">{{playerContent}}</span>
       </div>
       <div class="status">
         <div class="item direction" style="padding: 10px 20px">
@@ -141,7 +142,8 @@ export default {
       lampDevInfo: [],         // 路灯上设备数据
       lampInfo: {},           // 保存lampInfo数据
       devInfo: {},            // 保存状态数据
-      tcPlayer: null
+      aliPlayer: null,
+      s: null                 // 存放定时器
     }
   },
   created () {
@@ -150,7 +152,7 @@ export default {
       this.lampInfoPoles = this.lampInfo.poles
       this.lampDevInfo = this.lampInfo.deviceDataDTOList
       this.playerContent = '此灯杆无监控视频'
-      this.devInfo = this.setDevInfo(this.lampDevInfo)
+      this.devInfo = this.d(this.lampDevInfo)
     })
     bus.$on('destoryPlayer', () => {
       this.destoryPlayer()
@@ -165,7 +167,7 @@ export default {
           }
         })
     },
-    setDevInfo (info) {   // 保存状态数据
+    d (info) {   // 保存状态数据
       let devInfo = {}
       info.map(item => {
         if (item.typ === 0) {  // 灯控
@@ -176,10 +178,12 @@ export default {
         } else if (item.typ === 2) {    // 广播
           devInfo.broadcastStatus = item.status
           devInfo.broadcastCurrentPlan = item.currentPlan
-        } else if (item.typ === 3) {   // 摄像头
+        } else if (item.typ === 3 && this.aliPlayer === null) {   // 摄像头
           this.hasLive = true
           devInfo.url = item.url
-          this.setPlayer(devInfo.url)   // 调播放器
+          this.s = setTimeout(() => {
+            this.setPlayer(devInfo.url)   // 调播放器
+          }, 0)
         } else if (item.typ === 4) {      // 充电桩
           devInfo.power = item.status
         }
@@ -188,25 +192,21 @@ export default {
     },
     setPlayer (url) {    // 调用播放器
       // eslint-disable-next-line
-      this.tcPlayer = new TcPlayer('player', {
-        'rtmp': url,
-        'autoplay': true,
-        'width': '640',
-        'height': '480',
-        'wording': {
-          '2032': '失败，请重试',
-          '2048': '失败，请重试'
-        }
+      this.aliPlayer = new Aliplayer({
+        id: 'player',
+        width: '640',
+        height: '480',
+        source: url
       })
     },
     destoryPlayer () {
+      clearTimeout(this.s)
       // eslint-disable-next-line
-      if (this.tcPlayer !== null) {
+      if (this.aliPlayer !== null) {
         this.hasLive = false
-        // eslint-disable-next-line
-        document.getElementById('player').removeChild(this.tcPlayer.el)   // 移除播放器
+        document.getElementById('player').innerHTML = null
       }
-      this.tcPlayer = null                                              // 重置tcPlayer
+      this.aliPlayer = null
       setTimeout(() => {    // modal关闭后将文本初始化为接入中...
         this.playerContent = '接入中...'
       }, 500)
@@ -224,12 +224,21 @@ export default {
   display: flex;
   justify-content: flex-start;
 }
-#player {
+#player-container {
+  position: relative;
   flex: 1 0 640px;
   background: #000;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+#player {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+#player .message {
+  position: absolute;
 }
 .status {
   flex: 1 0 200px;

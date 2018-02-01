@@ -15,7 +15,6 @@
       width="920"
       class-name="vertical-center-modal"
       @on-cancel="closeModal">
-      <!-- :lampInfo="lampInfo"    -->
       <ModalContent 
       ></ModalContent>
       <div class="footer" slot="footer"></div>
