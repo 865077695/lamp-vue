@@ -65,12 +65,10 @@ export default {
     })
     bus.$on('setNotice', (params) => {
       this.notifyData = params
-      console.log(this.notifyData)
     })
   },
   filters: {
     optionToText: function (value) {
-      console.log(value)
       let text = getStatusText(value, msgTyp)
       return text
     }
