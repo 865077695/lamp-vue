@@ -168,11 +168,7 @@ export default {
     setDevInfo (info) {   // 保存状态数据
       let devInfo = {}
       info.map(item => {
-        if (item.typ === 3) {   // 摄像头
-          this.hasLive = true
-          devInfo.url = item.url
-          this.setPlayer(devInfo.url)   // 调播放器
-        } else if (item.typ === 0) {  // 灯控
+        if (item.typ === 0) {  // 灯控
           devInfo.status = item.status
         } else if (item.typ === 1) {    // 空气检测
           devInfo.pm10 = item.pm10
@@ -180,6 +176,10 @@ export default {
         } else if (item.typ === 2) {    // 广播
           devInfo.broadcastStatus = item.status
           devInfo.broadcastCurrentPlan = item.currentPlan
+        } else if (item.typ === 3) {   // 摄像头
+          this.hasLive = true
+          devInfo.url = item.url
+          this.setPlayer(devInfo.url)   // 调播放器
         } else if (item.typ === 4) {      // 充电桩
           devInfo.power = item.status
         }
