@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:656b89d79f6ff5314cf1e5306688064e$ -->
+<TextureAtlas imagePath="defaultSkin.png">
+    <SubTexture name="bigPlayDown" x="2" y="94" width="90" height="90"/>
+    <SubTexture name="bigPlayOver" x="94" y="2" width="90" height="90"/>
+    <SubTexture name="bigPlayUp" x="2" y="2" width="90" height="90"/>
+    <SubTexture name="clarityBgDown" x="186" y="87" width="48" height="30"/>
+    <SubTexture name="clarityBgOver" x="186" y="55" width="48" height="30"/>
+    <SubTexture name="clarityBgUp" x="186" y="23" width="48" height="30"/>
+    <SubTexture name="followDisabled" x="186" y="215" width="28" height="25"/>
+    <SubTexture name="followDown" x="156" y="215" width="28" height="25"/>
+    <SubTexture name="followOver" x="225" y="210" width="28" height="25"/>
+    <SubTexture name="followUp" x="225" y="183" width="28" height="25"/>
+    <SubTexture name="fullScreenDisabled" x="115" y="286" width="22" height="22"/>
+    <SubTexture name="fullScreenDown" x="34" y="218" width="30" height="30"/>
+    <SubTexture name="fullScreenOver" x="2" y="218" width="30" height="30"/>
+    <SubTexture name="fullScreenUp" x="124" y="190" width="30" height="30"/>
+    <SubTexture name="liveicon" x="186" y="2" width="56" height="19"/>
+    <SubTexture name="muteDown" x="94" y="158" width="33" height="30"/>
+    <SubTexture name="muteOver" x="199" y="151" width="33" height="30"/>
+    <SubTexture name="muteUp" x="164" y="151" width="33" height="30"/>
+    <SubTexture name="normalScreenDown" x="92" y="190" width="30" height="30"/>
+    <SubTexture name="normalScreenOver" x="193" y="183" width="30" height="30"/>
+    <SubTexture name="normalScreenUp" x="161" y="183" width="30" height="30"/>
+    <SubTexture name="pauseDisabled" x="60" y="264" width="27" height="30"/>
+    <SubTexture name="pauseDown" x="121" y="254" width="27" height="30"/>
+    <SubTexture name="pauseOver" x="92" y="254" width="27" height="30"/>
+    <SubTexture name="pauseUp" x="208" y="269" width="27" height="30"/>
+    <SubTexture name="playDisabled" x="179" y="242" width="27" height="30"/>
+    <SubTexture name="playDown" x="150" y="242" width="27" height="30"/>
+    <SubTexture name="playOver" x="31" y="250" width="27" height="30"/>
+    <SubTexture name="playUp" x="2" y="250" width="27" height="30"/>
+    <SubTexture name="replayDown" x="121" y="222" width="27" height="30"/>
+    <SubTexture name="replayOver" x="92" y="222" width="27" height="30"/>
+    <SubTexture name="replayUp" x="216" y="237" width="27" height="30"/>
+    <SubTexture name="setDown" x="34" y="186" width="30" height="30"/>
+    <SubTexture name="setOver" x="2" y="186" width="30" height="30"/>
+    <SubTexture name="setUp" x="129" y="158" width="30" height="30"/>
+    <SubTexture name="volMaxDown" x="129" y="126" width="33" height="30"/>
+    <SubTexture name="volMaxOver" x="94" y="126" width="33" height="30"/>
+    <SubTexture name="volMaxUp" x="199" y="119" width="33" height="30"/>
+    <SubTexture name="volMinDown" x="164" y="119" width="33" height="30"/>
+    <SubTexture name="volMinOver" x="129" y="94" width="33" height="30"/>
+    <SubTexture name="volMinUp" x="94" y="94" width="33" height="30"/>
+    <SubTexture name="zoom100Down" x="54" y="296" width="24" height="24"/>
+    <SubTexture name="zoom100Over" x="89" y="286" width="24" height="24"/>
+    <SubTexture name="zoom100Up" x="176" y="274" width="24" height="24"/>
+    <SubTexture name="zoom50Down" x="150" y="274" width="24" height="24"/>
+    <SubTexture name="zoom50Over" x="28" y="282" width="24" height="24"/>
+    <SubTexture name="zoom50Up" x="2" y="282" width="24" height="24"/>
+    <SubTexture name="zoom75Down" x="66" y="238" width="24" height="24"/>
+    <SubTexture name="zoom75Over" x="66" y="212" width="24" height="24"/>
+    <SubTexture name="zoom75Up" x="66" y="186" width="24" height="24"/>
+</TextureAtlas>

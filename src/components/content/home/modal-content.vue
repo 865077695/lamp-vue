@@ -192,6 +192,7 @@ export default {
         width: '640',
         height: '480',
         source: url
+        // skinRes: 'http://127.0.0.1:5500/lib/aliplayer/defaultSkin' // 使用自己服务器的皮肤
       })
     },
     destoryPlayer () {
