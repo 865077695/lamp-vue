@@ -182,7 +182,6 @@ export default {
         } else if (item.typ === 3 && this.aliPlayer === null) {   // 摄像头
           this.hasLive = true
           this.cameraId = item.id
-          console.log(this.cameraId)
           devInfo.url = item.url
           this.s = setTimeout(() => {
             this.setPlayer(devInfo.url)   // 调播放器
