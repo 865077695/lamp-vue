@@ -146,7 +146,6 @@ export default {
   },
   created () {
     bus.$on('getPoleInfoEnd', lampInfo => {
-      console.log('on')
       this.lampInfo = lampInfo
       this.lampInfoPoles = this.lampInfo.poles
       this.lampDevInfo = this.lampInfo.deviceDataDTOList
@@ -210,9 +209,6 @@ export default {
       this.tcPlayer = null                                              // 重置tcPlayer
       this.playerContent = '接入中...'
     }
-  },
-  beforeDestory () {
-    console.log('des')
   }
 }
 </script>
