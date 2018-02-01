@@ -4,6 +4,7 @@
  * @param {method, type, data, params}
  * data为post请求数据，params为get请求数据
  */
+import iView from 'iview'
 import axios from 'axios'
 import config from '../config'
 import router from '@/router'
@@ -17,7 +18,7 @@ axios.interceptors.response.use(function (res) {
   }
   return res.data
 }, function (err) {
-  console.log(err)
+  iView.Message.error('请求超时，请重试')
   return Promise.reject(err)
 })
 
@@ -28,7 +29,7 @@ export default ({ url, method = 'GET', type = 'json', data = {}, params = {} }) 
   responseType: type,
   data,
   params,
-  timeout: 3000,
+  timeout: 6000,
   withCredentials: true,
   headers: {
     'Content-type': 'application/json'
