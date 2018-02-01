@@ -76,7 +76,7 @@ export default {
       let seletctedStreet = this.streetList.filter(item => {
         return streetId === item.id
       })
-      http({ url: '/index/polesList', data: { streetId } })
+      http({ url: '/index/polesList', params: { streetId } })
         .then(res => {
           let poleList = []
           if (res.code === 200) {
@@ -87,7 +87,7 @@ export default {
             this.polar.series[0].data = poleList  // 更新地图显示信息
             this.polar.bmap.center = [seletctedStreet[0].longitude, seletctedStreet[0].latitude]
           } else if (res.code === 500) {
-            this.$router.push({ path: '/sign' })
+            this.$Message.error('服务器异常，请联系管理员')
           }
         })
     },
@@ -106,6 +106,8 @@ export default {
           if (res.code === 200) {
             this.polesCountsList = res.data.polesCountsList
             bus.$emit('setChart', this.polesCountsList) // 统计数据获取完成之后，通知组件开始渲染
+          } else if (res.code === 500) {
+            this.$Message.error('服务器异常，请联系管理员')
           }
         })
       http({ url: '/device/queryMessageList', method: 'POST', data: { streetId, pageSize: 4 } })
