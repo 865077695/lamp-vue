@@ -143,6 +143,7 @@ export default {
       lampInfo: {},           // 保存lampInfo数据
       devInfo: {},            // 保存状态数据
       aliPlayer: null,
+      cameraId: null,         // 摄像头id
       s: null                 // 存放定时器
     }
   },
@@ -152,7 +153,7 @@ export default {
       this.lampInfoPoles = this.lampInfo.poles
       this.lampDevInfo = this.lampInfo.deviceDataDTOList
       this.playerContent = '此灯杆无监控视频'
-      this.devInfo = this.d(this.lampDevInfo)
+      this.devInfo = this.setDevInfo(this.lampDevInfo)
     })
     bus.$on('destoryPlayer', () => {
       this.destoryPlayer()
@@ -160,14 +161,14 @@ export default {
   },
   methods: {
     moveIpc (direction) { // 移动ipc
-      http({ url: 'index/ipcMove', method: 'POST', data: { direction, id: this.lampInfoPoles.id } })
+      http({ url: 'index/ipcMove', method: 'POST', data: { direction, id: this.cameraId } })
         .then(res => {
           if (res.code === 200) {
             this.$Message.success('操作成功')
           }
         })
     },
-    d (info) {   // 保存状态数据
+    setDevInfo (info) {   // 保存状态数据
       let devInfo = {}
       info.map(item => {
         if (item.typ === 0) {  // 灯控
@@ -180,6 +181,8 @@ export default {
           devInfo.broadcastCurrentPlan = item.currentPlan
         } else if (item.typ === 3 && this.aliPlayer === null) {   // 摄像头
           this.hasLive = true
+          this.cameraId = item.id
+          console.log(this.cameraId)
           devInfo.url = item.url
           this.s = setTimeout(() => {
             this.setPlayer(devInfo.url)   // 调播放器
