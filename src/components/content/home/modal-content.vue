@@ -207,7 +207,9 @@ export default {
         document.getElementById('player').removeChild(this.tcPlayer.el)   // 移除播放器
       }
       this.tcPlayer = null                                              // 重置tcPlayer
-      this.playerContent = '接入中...'
+      setTimeout(() => {    // modal关闭后将文本初始化为接入中...
+        this.playerContent = '接入中...'
+      }, 500)
     }
   }
 }
