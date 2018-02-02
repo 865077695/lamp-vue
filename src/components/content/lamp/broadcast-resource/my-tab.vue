@@ -195,6 +195,7 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.$Message.success('删除成功')
+            this.getMediaList({ currentPage: 1 })
           }
         })
     },

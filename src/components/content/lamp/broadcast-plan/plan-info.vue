@@ -117,7 +117,7 @@
                     :value="checkAll"
                     @click.prevent.native="handleCheckAll">全选</Checkbox>
             </div>
-            <CheckboxGroup v-model="planInfo.deviceids" @on-change="checkAllGroupChange">
+            <CheckboxGroup class="allevList" v-model="planInfo.deviceids" @on-change="checkAllGroupChange">
                 <Checkbox v-for="item in allDevices" :key="item.id" :label="item.id" style="display: block">{{item.name}}</Checkbox>
             </CheckboxGroup>
           </template>
@@ -304,7 +304,7 @@ export default {
         })
     },
     getAllDevices () {    // 获取所有设备列表
-      http({ url: 'devices/list', method: 'POST' })
+      http({ url: 'devices/list', method: 'POST', data: { is_page: 1 } })
         .then(res => {
           if (res.code === 200) {
             this.allDevices = res.data.content
@@ -368,5 +368,8 @@ export default {
 </script>
 
 <style>
-
+.allevList {
+  max-height: 454px;
+  overflow: auto;
+}
 </style>
