@@ -319,7 +319,7 @@ export default {
         })
     },
     getAllDevices () {    // 获取所有设备列表
-      http({ url: 'devices/list', method: 'POST', data: { is_page: 1 } })
+      http({ url: 'devices/list', method: 'POST', data: { is_page: 1, typ: 'radio' } })
         .then(res => {
           if (res.code === 200) {
             this.allDevices = res.data.content
