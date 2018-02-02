@@ -281,7 +281,6 @@ export default {
       this.planInfo[key] = $event
     },
     mediaTypeChange () {            // 修改/添加资源时切换资源类型
-      console.log('mediaTypeChange')
       if (this.typ === 1) { // 音频
         this.videoBackup = this.mediaids
         this.mediaids = this.audioBackup
