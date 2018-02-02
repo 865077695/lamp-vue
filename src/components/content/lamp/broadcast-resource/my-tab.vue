@@ -20,11 +20,12 @@
             <FormItem label="资源名称" prop="name">
                 <Input v-model="addMediaParams.name" placeholder="输入资源名称"></Input>
             </FormItem>
-            <FormItem label="资源" prop="file_name">
+            <FormItem label="资源" prop="file_name" v-if="templist.length !== 0">
                 <RadioGroup v-model="addMediaParams.file_name">
                     <Radio v-for="item in templist" :key="item.fileName" :label="item.fileName"></Radio>
                 </RadioGroup>
             </FormItem>
+            <p style="padding-left: 80px;" v-if="templist.length === 0">请先通过FTP上传媒体资源</p>
         </Form>
       </div>
       <div slot="footer">
