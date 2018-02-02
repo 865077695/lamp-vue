@@ -88,7 +88,7 @@
                 <div v-if="sourceList.length === 0">请先在上方选择资源类型</div>
                 <template v-if="sourceList.length>0">
                   <FormItem prop="mediaids" label="媒体资源">
-                    <RadioGroup v-model="planInfo.mediaids">
+                    <RadioGroup v-model="mediaids">
                       <Radio :label="item.id" v-for="item in sourceList" :key="item.id">{{item.name}}</Radio>
                     </RadioGroup>
                   </FormItem>
@@ -127,13 +127,11 @@
       <Col :offset="18" :span="6" style="text-align: right;margin-top: 20px">
           <FormItem>
               <Button type="primary" :loading="submiting" @click="handleSubmit('planInfo')">提交</Button>
-              <Button type="ghost" @click="handleReset('planInfo')" style="margin-left: 8px">重置</Button>
+              <Button type="ghost" @click="handleReset('planInfo')" style="margin-left: 8px">取消</Button>
           </FormItem>
       </Col>
-              
     </Form>
     </Row>
-     
   </div>
 </template>
 
@@ -151,15 +149,18 @@ export default {
       deviceList: [],     // 已选设备
       allDevices: [],     // 所有设备(接收后台数据，包含各种字段)
       sourceList: [],     // 所有资源（两种类型都存在此字段内）
+      mediaids: null,
+      videoBackup: null,  // 备份音频选中项
+      audioBackup: null,  // 备份视频选中项
       planInfo: {
         id: null,
         name: null,
-        iscycle: null,
+        iscycle: 0,
         startDate: null,
         endDate: null,
         playBegin: null,
         playEnd: null,
-        status: null,
+        status: 0,
         typ: null,
         notes: null,
         mediaids: null,
@@ -167,7 +168,6 @@ export default {
       },
       indeterminate: false,
       checkAll: false,
-      backupInfo: {},
       ruleValidate: {
         name: [
           { required: true, message: '该项为必填项', trigger: 'blur' }
@@ -275,14 +275,21 @@ export default {
       }
     },
     handleReset (name) {
-      this.planInfo = JSON.parse(JSON.stringify(this.backupInfo))
+      this.$router.push({path: '/lamp/broadcast-plan'})
     },
     dateChange ($event, key) {    // 格式化日期时间
       this.planInfo[key] = $event
     },
     mediaTypeChange () {            // 修改/添加资源时切换资源类型
       console.log('mediaTypeChange')
-      // this.planInfo.mediaids = null
+      if (this.typ === 1) { // 音频
+        this.videoBackup = this.mediaids
+        this.mediaids = this.audioBackup
+      } else if (this.typ === 2) {
+        this.audioBackup = this.mediaids
+        this.mediaids = this.videoBackup
+      }
+      // this.mediaids = null
       this.getSourceList(this.typ)
     },
     getPlanInfo () {    // 获取计划详情
@@ -290,7 +297,6 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.planInfo = res.data
-            this.backupInfo = JSON.parse(JSON.stringify(this.planInfo)) // 备份数据以作重置
           }
         })
     },
@@ -298,7 +304,12 @@ export default {
       http({ url: 'plan/medialist', method: 'POST', data: { id: this.id } })
         .then(res => {
           if (res.code === 200) {
-            this.mediaList = res.data
+            this.mediaids = res.data[0].id
+            if (res.data[0].typ === 1) {  // 选中的是音频,备份一下
+              this.audioBackup = res.data[0].id
+            } else {
+              this.videoBackup = res.data[0].id
+            }
           }
         })
     },
@@ -337,7 +348,6 @@ export default {
     addPlanBySource () {     // 提交基本信息修改
       this.submiting = true
       let data = {
-        // id: this.id,
         name: this.planInfo.name,
         iscycle: this.planInfo.iscycle,
         startDate: formmatDate(this.planInfo.startDate),
@@ -347,7 +357,7 @@ export default {
         status: this.planInfo.status,
         typ: this.planInfo.typ,
         notes: this.planInfo.notes,
-        mediaids: String(this.planInfo.mediaids),
+        mediaids: String(this.mediaids),
         deviceids: String(this.planInfo.deviceids)
       }
       if (this.$route.query.id !== null) {      // 如果不是新增,
@@ -357,8 +367,9 @@ export default {
         .then(res => {
           this.submiting = false
           if (res.code === 200) {   // 提交成功将backupInfo重置
-            this.$Message.success('修改完成!')
+            this.$Message.success('完成!')
             this.backupInfo = JSON.parse(JSON.stringify(this.planInfo))
+            this.$router.push({ path: '/lamp/broadcast-plan' })
           } else if (res.code === 400) {
             this.$Message.error('参数填写不完整')
           }

@@ -2,9 +2,9 @@
 <div>
   <TopBar class="topbar"></TopBar>
   <div class="container">
-    <keep-alive include="StreetAdmin">
+    <!-- <keep-alive include="StreetAdmin"> -->
       <router-view/>
-    </keep-alive>
+    <!-- </keep-alive> -->
   </div>
 </div>
   
