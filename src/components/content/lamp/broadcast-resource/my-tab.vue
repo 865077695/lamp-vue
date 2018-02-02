@@ -75,7 +75,7 @@ export default {
       columns: [
         { title: '资源id', key: 'id' },
         { title: '文件名称', key: 'name' },   // TODO: 需要加入修改文件名功能
-        { title: '文件url', key: 'url' },
+        // { title: '文件url', key: 'url' },
         { title: '创建人', key: 'user_name' },
         {
           title: '操作',
