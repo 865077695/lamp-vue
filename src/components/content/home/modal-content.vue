@@ -57,75 +57,6 @@ import http from '@/common/http'
 import bus from '@/eventBus'
 export default {
   name: 'model',
-  props: {
-    // lampInfo: {
-    //   type: Object,
-    //   // required: true,
-    //   default: function () {
-    //     return {
-    //       'poles': {
-    //         'modifyId': null,
-    //         'modifyTime': null,
-    //         'id': 1,
-    //         'streetId': 1,
-    //         'poleSn': '0',
-    //         'name': 'XX灯杆',
-    //         'latitude': '',
-    //         'longitude': '',
-    //         'status': 0
-    //       },
-    //       'deviceDataDTOList': [
-    //         {
-    //           'id': 1,
-    //           'sn': '33333',
-    //           'name': '灯控1',
-    //           'status': 1,
-    //           'typ': 0,
-    //           'url': null
-    //         },
-    //         {
-    //           'id': 2,
-    //           'sn': '44444',
-    //           'name': '空气检测',
-    //           'status': 1,
-    //           'typ': 1,
-    //           'url': null,
-    //           'hd': null,
-    //           'tp': null,
-    //           'pm10': 100,
-    //           'pm25': 200,
-    //           'rawpm25': null
-    //         },
-    //         {
-    //           'id': 3,
-    //           'sn': '5555',
-    //           'name': '广播',
-    //           'status': 1,
-    //           'typ': 2,
-    //           'url': null,
-    //           'currentPlan': '当前播报的这个计划哦'
-    //         },
-    //         {
-    //           'id': 4,
-    //           'sn': '666',
-    //           'name': '摄像头',
-    //           'status': 1,
-    //           'typ': 3,
-    //           'url': 'rtmp://192.168.2.132/hyipc/livestream'
-    //         },
-    //         {
-    //           'id': 5,
-    //           'sn': '666',
-    //           'name': '充电桩',
-    //           'status': 1,
-    //           'typ': 4,
-    //           'url': ''
-    //         }
-    //       ]
-    //     }
-    //   }
-    // }
-  },
   data () {
     return {
       loading: false,
@@ -195,7 +126,7 @@ export default {
         // skinRes: 'http://127.0.0.1:5500/lib/aliplayer/defaultSkin' // 使用自己服务器的皮肤
       })
     },
-    destoryPlayer () {
+    destoryPlayer () {    // 销毁播放器
       clearTimeout(this.s)
       // eslint-disable-next-line
       if (this.aliPlayer !== null) {
