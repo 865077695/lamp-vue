@@ -230,7 +230,6 @@ export default {
     }
   },
   created () {
-    // this.$route.query.id = null
     if (this.$route.query.id !== null) {
       this.getPlanInfo()        // 获取计划详情
       this.getMediaList()       // 获取计划已选媒体资源列表
