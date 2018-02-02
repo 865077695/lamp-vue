@@ -206,6 +206,20 @@ export default {
             }
           }
         ],
+        deviceids: [
+          {
+            required: true,
+            trigger: 'change',
+            validator (rule, value, callback) {
+              var errors = []
+              if (value === '') {
+                // eslint-disable-next-line
+                callback('该项为必填项')
+              }
+              callback(errors)
+            }
+          }
+        ],
         playBegin: [
           { required: true, type: 'date', message: '该项为必填项', trigger: 'change' }
         ],
@@ -228,7 +242,7 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.planUpdate()
+          this.addPlanBySource()
         } else {
           this.$Message.error('参数格式有误!')
         }
@@ -267,7 +281,8 @@ export default {
       this.planInfo[key] = $event
     },
     mediaTypeChange () {            // 修改/添加资源时切换资源类型
-      this.planInfo.mediaids = null
+      console.log('mediaTypeChange')
+      // this.planInfo.mediaids = null
       this.getSourceList(this.typ)
     },
     getPlanInfo () {    // 获取计划详情
@@ -319,7 +334,7 @@ export default {
           }
         })
     },
-    planUpdate () {     // 提交基本信息修改
+    addPlanBySource () {     // 提交基本信息修改
       this.submiting = true
       let data = {
         // id: this.id,
