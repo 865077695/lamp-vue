@@ -1,5 +1,5 @@
 <template>
-  <div class="sign">
+  <div class="sign" @keyup.enter="handleSubmit('userData')">
     <h2 style="text-align: center;line-height: 50px;">欢迎登录智能路灯管理系统</h2>
     <Form ref="userData" :model="userData" :rules="ruleInline">
         <FormItem prop="name">
