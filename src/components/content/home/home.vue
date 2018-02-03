@@ -139,7 +139,7 @@ export default {
             return `${name}：损坏`
           } else if (params.data[3] === 20) {
             return `${name}：失联`
-          } else if (params.data[3] === -1) {
+          } else if (params.data[3] === 0) {
             return `${name}：关闭`
           } else if (params.data[3] === 1) {
             return `${name}:开启`
@@ -151,7 +151,7 @@ export default {
           pieces: [
             { value: 10, label: '损坏', color: '#da932c' },     // 10 损坏
             { value: 20, label: '失联', color: '#d65b4a' },     // 20 失联
-            { value: -1, label: '关闭', color: '#0e77d0' },     // -1 关闭
+            { value: 0, label: '关闭', color: '#0e77d0' },     // 0 关闭
             { value: 1, label: '开启', color: '#19be6b' }     // 1 开启
           ],
           calculable: true,

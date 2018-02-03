@@ -52,7 +52,7 @@ export default {
         total += item.cou
       })
       this.chartData.map(item => {
-        if (item.status === 0) {
+        if (item.status === 100) {
           item.count = total
         } else {
           params.map(i => {
