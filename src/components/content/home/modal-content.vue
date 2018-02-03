@@ -108,7 +108,7 @@ export default {
           this.cameraId = item.id
           devInfo.url = item.url
           this.s = setTimeout(() => {
-            this.setPlayer(devInfo.url)   // 调播放器
+            this.setPlayer(devInfo.url)   // 先写入播放器容器再调播放器
           }, 0)
         } else if (item.typ === 4) {      // 充电桩
           devInfo.power = item.status
