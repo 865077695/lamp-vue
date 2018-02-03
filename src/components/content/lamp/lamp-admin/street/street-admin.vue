@@ -73,7 +73,7 @@ export default {
         {
           title: '操作',
           key: 'action',
-          width: 200,
+          width: 260,
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -100,7 +100,21 @@ export default {
                     this.$router.push({ path: '/lamp-admin', query: { id: params.row.id } })
                   }
                 }
-              }, '灯杆管理')
+              }, '灯杆管理'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginLeft: '20px'
+                },
+                on: {
+                  click: () => {
+                    this.$router.push({ path: '/lamp-group', query: { ...params.row } })
+                  }
+                }
+              }, '分组设置')
             ])
           }
         }

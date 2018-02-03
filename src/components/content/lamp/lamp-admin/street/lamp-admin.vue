@@ -94,7 +94,7 @@ export default {
         {
           title: '操作',
           key: 'action',
-          width: 260,
+          width: 200,
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -123,21 +123,7 @@ export default {
                     this.$router.push({ path: '/device-admin', query: { ...params.row } })
                   }
                 }
-              }, '设备管理'),
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginLeft: '20px'
-                },
-                on: {
-                  click: () => {
-                    this.$router.push({ path: '/lamp-group', query: { ...params.row } })
-                  }
-                }
-              }, '分组设置')
+              }, '设备管理')
             ])
           }
         }

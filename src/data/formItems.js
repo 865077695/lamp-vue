@@ -141,10 +141,10 @@ export const lampGroupSearchItem = [
 
 // 添加分组设置表单数据项
 export const addLampGroupItem = [
-  { label: '分组名称', key: 'name', width: 100, typ: 'ipt', placeholder: '分组名称' },
-  { label: '开灯时间', key: 'timeOn', width: 100, typ: 'time', placeholder: '开灯时间' },
-  { label: '关灯时间', key: 'timeOff', width: 100, typ: 'time', placeholder: '关灯时间' },
-  { label: '备注', key: 'notes', width: 100, typ: 'text', placeholder: '备注' },
+  { label: '分组名称', key: 'name', width: 539, typ: 'ipt', placeholder: '分组名称' },
+  { label: '开灯时间', key: 'timeOn', width: 160, typ: 'time', placeholder: '开灯时间' },
+  { label: '关灯时间', key: 'timeOff', width: 160, typ: 'time', placeholder: '关灯时间' },
+  { label: '备注', key: 'notes', width: 539, typ: 'text', placeholder: '备注' },
   { label: '所控灯杆', key: 'poles', width: 100, typ: 'asynCheckbox', placeholder: '所控灯杆' }
 ]
 
@@ -157,9 +157,6 @@ export const addLampGroupFormRule = {
     { required: true, message: '该项为必填项', trigger: 'blur' }
   ],
   timeOff: [
-    { required: true, message: '该项为必填项', trigger: 'blur' }
-  ],
-  notes: [
     { required: true, message: '该项为必填项', trigger: 'blur' }
   ],
   poles: [

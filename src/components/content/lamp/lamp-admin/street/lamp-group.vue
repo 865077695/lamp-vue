@@ -15,7 +15,7 @@
       <Button @click="add" type="success" style="height: 32px; margin-left: 10px">添加</Button>
     </div>
     
-      <Modal v-model="addModal" width="360">
+      <Modal v-model="addModal" width="720">
         <p slot="header">
             <span>{{addText}}</span>
         </p>
@@ -115,11 +115,12 @@ export default {
   },
   created () {
     this.getlampGroupsList()
-    http({
+    http({      // 获取该街道所有灯杆
       url: '/pole/polesList',
       method: 'POST',
       data: {
         currentPage: 1,
+        pageSize: 111111,
         streetId: this.$route.query.id   // 灯杆id
       }
     })
