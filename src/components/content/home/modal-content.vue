@@ -29,12 +29,12 @@
         </div>
         <div class="item">
           <span class="item-label">充电桩：</span>
-          <span v-if="devInfo.power === 1"><Tag color="blue">待机</Tag></span>
-          <span v-else-if="devInfo.power === 2"><Tag color="green">充电</Tag></span>
+          <span v-if="devInfo.power === 0"><Tag color="blue">待机</Tag></span>
+          <span v-else-if="devInfo.power === 1"><Tag color="green">充电</Tag></span>
           <span v-else-if="devInfo.power === 3"><Tag color="yellow">充满</Tag></span>
-          <span v-else-if="devInfo.power === 4"><Tag color="red">故障</Tag></span>
+          <span v-else-if="devInfo.power === 10"><Tag color="red">故障</Tag></span>
           <span v-else-if="devInfo.power === 5"><Tag color="red">预约</Tag></span>
-          <span v-else-if="devInfo.power === 6"><Tag color="red">离线</Tag></span>
+          <span v-else-if="devInfo.power === 20"><Tag color="red">离线</Tag></span>
           <span v-else><Tag color="red">未知</Tag></span>
         </div>
         <div class="item"><span class="item-label">Pm10：</span>{{devInfo.pm10?devInfo.pm10: '-'}}</div>

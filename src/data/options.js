@@ -4,6 +4,11 @@ export const streetLampContrTypeOptions = [
   { label: '全部', value: 'all' }
 ]
 
+export const polesOptions = [
+  { label: '正常', value: 0 },
+  { label: '不正常', value: 1 }
+]
+
 // 设备相关
 export const dev = {
   typeOptions: [    // 设备类型
@@ -24,12 +29,12 @@ export const dev = {
     { label: '失联', value: 20 }
   ],
   powerStatus: [    // 充电桩状态
-    { label: '待机', value: 1 },
-    { label: '充电', value: 2 },
+    { label: '待机', value: 0 },
+    { label: '充电', value: 1 },
     { label: '充满', value: 3 },
-    { label: '故障', value: 4 },
     { label: '预约', value: 5 },
-    { label: '离线', value: 6 }
+    { label: '故障', value: 10 },
+    { label: '离线', value: 20 }
   ]
 }
 
