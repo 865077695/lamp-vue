@@ -18,6 +18,7 @@
       <ModalContent 
       ></ModalContent>
       <div class="footer" slot="footer"></div>
+      <Spin size="large" fix v-if="loadingPoleInfo"></Spin>
     </Modal>
   </div>
 </template>
@@ -50,6 +51,7 @@ export default {
   methods: {
     handleClick (a) {
       this.modal = true
+      this.loadingPoleInfo = true
       let lampId = a.data[2].id
       this.getPoleInfo(lampId)
       this.s1 = setInterval(() => {
@@ -91,9 +93,12 @@ export default {
     getPoleInfo (lampId) {                // 获取灯杆详细信息
       http({ url: '/index/poleInfo', params: { id: lampId } })
         .then(res => {
-          if (res.code === 200) {
+          if (res.code === 200) {         // 成功关闭加载中动画
+            this.loadingPoleInfo = false
             this.lampInfo = res.data.poleAndDevicesData
             bus.$emit('getPoleInfoEnd', this.lampInfo)
+          } else {
+            this.modal = false            // 失败关闭modal
           }
         })
     },
@@ -116,6 +121,7 @@ export default {
   },
   data () {
     return {
+      loadingPoleInfo: false, // modal数据加载动画
       s: null,        // 定时器
       s1: null,       // modal框数据定时器
       bmap: bmap,
