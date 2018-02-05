@@ -311,11 +311,15 @@ export default {
           }
         })
     },
-    getDeviceList () {  // 获取计划已选设备列表
+    getDeviceList () {  // 获取计划已选设备列表，并将其赋值给已选设备
       http({ url: 'plan/deviceslist', method: 'POST', data: { id: this.id } })
         .then(res => {
           if (res.code === 200) {
             this.deviceList = res.data
+            let checkenDeviceList = res.data.map(item => {
+              return item.id
+            })
+            this.planInfo.deviceids = checkenDeviceList
           }
         })
     },
