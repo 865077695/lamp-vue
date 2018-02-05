@@ -5,8 +5,8 @@ export const streetLampContrTypeOptions = [
 ]
 
 export const polesOptions = [
-  { label: '正常', value: 0 },
-  { label: '不正常', value: 1 }
+  { label: '无效', value: 0 },
+  { label: '有效', value: 1 }
 ]
 
 // 设备相关

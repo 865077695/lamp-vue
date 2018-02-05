@@ -66,7 +66,7 @@ export default {
         pole_id: this.$route.query.id,
         typ: null,
         name: null,
-        status: null,
+        status: 1,
         sn: null,
         volume: null,
         version: null,
@@ -167,7 +167,7 @@ export default {
         data.typ = this.addDevData.typ
         data.name = this.addDevData.name
         data.sn = this.addDevData.sn
-        data.status = this.addDevData.status
+        data.status = 1
         data.url = this.addDevData.url
         data.volume = this.addDevData.volume
         data.version = this.addDevData.version

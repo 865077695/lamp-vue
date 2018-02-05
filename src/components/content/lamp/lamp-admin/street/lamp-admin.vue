@@ -42,7 +42,7 @@
 <script>
 import MyForm from '@/template/my-form'
 import MyPage from '@/template/page'
-import { lampStatus } from '@/data/options'
+import { polesOptions } from '@/data/options'
 import { getStatusText } from '@/common/_func'
 import { lampListSearchItem, addLampItem, addLampFormRule } from '@/data/formItems'
 import http from '@/common/http'
@@ -71,7 +71,7 @@ export default {
         poleSn: null,
         name: null,
         latitude: null,
-        status: null,
+        status: 1,
         longitude: null
       },
       lampsList: [],
@@ -85,7 +85,7 @@ export default {
           title: '灯杆状态',
           key: 'status',
           render: (h, params) => {
-            let text = getStatusText(params.row.status, lampStatus)
+            let text = getStatusText(params.row.status, polesOptions)
             return text
           }
         },
