@@ -165,8 +165,6 @@ export default {
           if (res.code === 200) {
             this.streetsList = res.data.streetsList
             this.totalPage = res.data.totalPage
-          } else {
-            this.$router.push({ path: '/sign' })
           }
         })
     }

@@ -88,8 +88,6 @@ export default {
             this.polar.series[0].data = this.powerData.map(item => {
               return item.light_energy
             })
-          } else {
-            this.$router.push({ path: '/sign' })
           }
         })
     },

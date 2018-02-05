@@ -186,8 +186,6 @@ export default {
         if (res.code === 200) {
           this.streetList = res.data.streetsList
           this.street = this.streetList[0].id     // 默认为第一个街道
-        } else {
-          this.$router.push({ path: '/sign' })
         }
       })
   },

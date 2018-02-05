@@ -132,8 +132,6 @@ export default {
           })
           this.addLampGroupItem[3].options = options
           bus.$emit('setPolesListOptions1', this.addLampGroupItem[3].options)
-        } else {
-          this.$router.push({ path: '/sign' })
         }
       })
   },
@@ -200,8 +198,6 @@ export default {
           if (res.code === 200) {
             this.lightGroupList = res.data.lightGroupList
             this.totalPage = res.data.totalPage
-          } else {
-            this.$router.push({ path: '/sign' })
           }
         })
     },

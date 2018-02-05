@@ -138,8 +138,6 @@ export default {
           if (res.code === 200) {
             this.msgList = res.data.result || []
             this.totalPage = res.data.totalPage
-          } else {
-            this.$router.push({ path: '/sign' })
           }
         })
     }

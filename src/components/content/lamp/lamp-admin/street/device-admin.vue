@@ -202,8 +202,6 @@ export default {
           this.tableLoading = false
           if (res.code === 200) {
             this.devList = res.data.content
-          } else {
-            this.$router.push({ path: '/sign' })
           }
         })
     }

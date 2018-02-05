@@ -201,8 +201,6 @@ export default {
           if (res.code === 200) {
             this.lampsList = res.data.polesList
             this.totalPage = res.data.totalPage
-          } else {
-            this.$router.push({ path: '/sign' })
           }
         })
     }
