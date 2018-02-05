@@ -88,7 +88,7 @@
                 <div v-if="sourceList.length === 0">请先在上方选择资源类型</div>
                 <template v-if="sourceList.length>0">
                   <FormItem prop="mediaids" label="媒体资源">
-                    <RadioGroup v-model="mediaids">
+                    <RadioGroup v-model="planInfo.mediaids" @on-change="radiochange">
                       <Radio :label="item.id" v-for="item in sourceList" :key="item.id">{{item.name}}</Radio>
                     </RadioGroup>
                   </FormItem>
@@ -149,7 +149,6 @@ export default {
       deviceList: [],     // 已选设备
       allDevices: [],     // 所有设备(接收后台数据，包含各种字段)
       sourceList: [],     // 所有资源（两种类型都存在此字段内）
-      mediaids: null,
       videoBackup: null,  // 备份音频选中项
       audioBackup: null,  // 备份视频选中项
       planInfo: {
@@ -193,12 +192,14 @@ export default {
           }
         ],
         mediaids: [
+          // { required: true, message: 'Please select gender', trigger: 'change' }
           {
             required: true,
             trigger: 'change',
             validator (rule, value, callback) {
+              console.log(value)
               var errors = []
-              if (value === '') {
+              if (value === null) {
                 // eslint-disable-next-line
                 callback('该项为必填项')
               }
@@ -236,6 +237,9 @@ export default {
         }
       })
     },
+    radiochange ($event) {
+      console.log($event)
+    },
     handleCheckAll () {
       if (this.indeterminate) {
         this.checkAll = false
@@ -270,13 +274,13 @@ export default {
     },
     mediaTypeChange () {            // 修改/添加资源时切换资源类型
       if (this.typ === 1) { // 音频
-        this.videoBackup = this.mediaids
-        this.mediaids = this.audioBackup
+        this.videoBackup = this.planInfo.mediaids
+        this.planInfo.mediaids = this.audioBackup
       } else if (this.typ === 2) {
-        this.audioBackup = this.mediaids
-        this.mediaids = this.videoBackup
+        this.audioBackup = this.planInfo.mediaids
+        this.planInfo.mediaids = this.videoBackup
       }
-      // this.mediaids = null
+      // this.planInfo.mediaids = null
       this.getSourceList(this.typ)
     },
     getPlanInfo () {    // 获取计划详情
@@ -291,7 +295,7 @@ export default {
       http({ url: 'plan/medialist', method: 'POST', data: { id: this.id } })
         .then(res => {
           if (res.code === 200) {
-            this.mediaids = res.data[0].id
+            this.planInfo.mediaids = res.data[0].id
             if (res.data[0].typ === 1) {  // 选中的是音频,备份一下
               this.audioBackup = res.data[0].id
             } else {
@@ -348,7 +352,7 @@ export default {
         status: this.planInfo.status,
         typ: this.planInfo.typ,
         notes: this.planInfo.notes,
-        mediaids: String(this.mediaids),
+        mediaids: this.planInfo.mediaids,
         deviceids: String(this.planInfo.deviceids)
       }
       if (this.$route.query.id !== null) {      // 如果不是新增,
