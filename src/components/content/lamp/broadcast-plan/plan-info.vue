@@ -274,7 +274,7 @@ export default {
       }
     },
     handleReset (name) {
-      this.$router.push({path: '/lamp/broadcast-plan'})
+      this.$router.push({ path: '/lamp/broadcast-plan' })
     },
     dateChange ($event, key) {    // 格式化日期时间
       this.planInfo[key] = $event
