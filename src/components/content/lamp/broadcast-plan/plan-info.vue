@@ -207,18 +207,7 @@ export default {
           }
         ],
         deviceids: [
-          {
-            required: true,
-            trigger: 'change',
-            validator (rule, value, callback) {
-              var errors = []
-              if (value === '') {
-                // eslint-disable-next-line
-                callback('该项为必填项')
-              }
-              callback(errors)
-            }
-          }
+          { required: true, type: 'array', message: '该项为必选项', trigger: 'change' }
         ],
         playBegin: [
           { required: true, type: 'date', message: '该项为必填项', trigger: 'change' }
