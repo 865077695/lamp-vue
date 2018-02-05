@@ -21,7 +21,7 @@ const add0 = function (val) {
 }
 export const formmatDate = (date) => {    // 格式化日期格式
   let time = new Date(date)
-  return `${time.getFullYear()}-${add0(time.getMonth() + 1)}-${add0(time.getDay())} ${add0(time.getHours())}:${add0(time.getMinutes())}:${add0(time.getSeconds())}`
+  return `${time.getFullYear()}-${add0(time.getMonth() + 1)}-${add0(time.getDate())} ${add0(time.getHours())}:${add0(time.getMinutes())}:${add0(time.getSeconds())}`
 }
 
 export const formmatTime = (date) => {    // 格式化时间格式
