@@ -19,13 +19,13 @@
                   <Row>
                       <Col span="11">
                           <FormItem prop="startDate">
-                              <DatePicker type="date" placeholder="开始日期" v-model="planInfo.startDate" @on-change="dateChange($event,'startDate')" format="yyyy-MM-dd HH:mm:ss"></DatePicker>
+                              <DatePicker type="datetime" placeholder="开始日期" v-model="planInfo.startDate" @on-change="dateChange($event,'startDate')" format="yyyy-MM-dd HH:mm:ss"></DatePicker>
                           </FormItem>
                       </Col>
                       <Col span="2" style="text-align: center">-</Col>
                       <Col span="11">
                           <FormItem prop="endDate">
-                              <DatePicker type="date" placeholder="结束日期" v-model="planInfo.endDate" @on-change="dateChange($event,'endDate')" format="yyyy-MM-dd HH:mm:ss"></DatePicker>
+                              <DatePicker type="datetime" placeholder="结束日期" v-model="planInfo.endDate" @on-change="dateChange($event,'endDate')" format="yyyy-MM-dd HH:mm:ss"></DatePicker>
                           </FormItem>
                       </Col>
                   </Row>
