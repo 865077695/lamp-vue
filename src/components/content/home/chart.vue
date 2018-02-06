@@ -48,7 +48,6 @@ export default {
       this.chartData.map(item => {
         item.count = 0
       })
-      console.log(params)
       let total = 0
       params.map(item => {
         total += item.cou
