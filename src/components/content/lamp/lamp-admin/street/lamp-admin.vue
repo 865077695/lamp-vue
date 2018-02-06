@@ -225,7 +225,7 @@ export default {
         })
     },
     delete (id) {   // TODO
-      http({ url: '', params: { id } })
+      http({ url: 'pole/polesDelete', params: { id } })
         .then(res => {
           if (res.code === 200) {
             this.$Message.success('删除成功')

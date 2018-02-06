@@ -217,7 +217,7 @@ export default {
       // http({ url: 'poleGroup/poleGroupsInfo' ,params: })
     },
     delete (id) {   // TODO
-      http({ url: '', params: { id } })
+      http({ url: 'poleGroup/poleGroupsDelete', params: { id } })
         .then(res => {
           if (res.code === 200) {
             this.$Message.success('删除成功')
