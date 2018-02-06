@@ -74,7 +74,7 @@ export default {
       mediaInfo: null,             // 媒体资源详细信息
       columns: [
         { title: '资源id', key: 'id' },
-        { title: '文件名称', key: 'name' },   // TODO: 需要加入修改文件名功能
+        { title: '文件名称', key: 'name' },
         // { title: '文件url', key: 'url' },
         { title: '创建人', key: 'user_name' },
         {

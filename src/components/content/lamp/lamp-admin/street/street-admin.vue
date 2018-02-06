@@ -97,7 +97,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({ path: '/lamp-admin', query: { id: params.row.id } })
+                    this.$router.push({ path: '/lamp-admin', query: { id: params.row.id, name: params.row.name } })
                   }
                 }
               }, '灯杆管理'),

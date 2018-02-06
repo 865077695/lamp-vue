@@ -1,7 +1,7 @@
 // 灯杆列表
 <template>
   <div>
-    街道：{{$route.query.id}}
+    <p style="line-height: 38px;font-size: 16px;">{{$route.query.name}}</p>
     <!-- 搜索 -->
     <div class="search">
       <my-form
@@ -19,7 +19,7 @@
         <p slot="header">
             <span>{{addText}}</span>
         </p>
-        <div style="height: 400px;">
+        <div style="height: 200px;">
           <my-form 
             ref="addForm"
             :formItems="addLampItem"
@@ -76,11 +76,10 @@ export default {
       },
       lampsList: [],
       columns: [
-        { title: '灯杆Id', key: 'id' },
         { title: '灯杆编号', key: 'poleSn' },
         { title: '灯杆名称', key: 'name' },
-        { title: '经度', key: 'longitude' },
-        { title: '纬度', key: 'latitude' },
+        { title: '经度', key: 'longitude', width: 100 },
+        { title: '纬度', key: 'latitude', width: 100 },
         {
           title: '灯杆状态',
           key: 'status',
@@ -89,12 +88,12 @@ export default {
             return text
           }
         },
-        { title: '修改人', key: 'modifyId' },
-        { title: '修改时间', key: 'modifyTime' },
+        { title: '修改人', key: 'modifyName' },
+        { title: '修改时间', key: 'modifyTime', width: 160 },
         {
           title: '操作',
           key: 'action',
-          width: 200,
+          width: 230,
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -120,10 +119,31 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({ path: '/device-admin', query: { ...params.row } })
+                    this.$router.push({ path: '/device-admin', query: { ...params.row, streetName: this.$route.query.name } })
                   }
                 }
-              }, '设备管理')
+              }, '设备管理'),
+              h('Poptip', {
+                props: {
+                  confirm: true,
+                  title: '您确定要删除这条数据吗?',
+                  transfer: true
+                },
+                on: {
+                  'on-ok': () => {
+                    this.delete(params.row.id)
+                  }
+                }
+              }, [h('Button', {
+                style: {
+                  margin: '0 10px'
+                },
+                props: {
+                  type: 'error',
+                  placement: 'top',
+                  size: 'small'
+                }
+              }, '删除')])
             ])
           }
         }
@@ -201,6 +221,15 @@ export default {
           if (res.code === 200) {
             this.lampsList = res.data.polesList
             this.totalPage = res.data.totalPage
+          }
+        })
+    },
+    delete (id) {   // TODO
+      http({ url: '', params: { id } })
+        .then(res => {
+          if (res.code === 200) {
+            this.$Message.success('删除成功')
+            this.getlampsList()
           }
         })
     }

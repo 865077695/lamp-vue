@@ -194,5 +194,9 @@ export default {
 .item-label {
   font-size: 14px;
 }
+.ivu-tag {
+  cursor: default;
+}
+.ivu-tag:hover{}
 </style>
 

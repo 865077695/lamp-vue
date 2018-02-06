@@ -1,25 +1,17 @@
 // 设备管理
 <template>
   <div>
-    灯杆：{{$route.query.streetId}}(街道)-{{$route.query.id}}(灯杆)
+    <p style="line-height: 38px;font-size: 16px;">灯杆：【{{$route.query.streetName}}】-【{{$route.query.name}}】</p>
     <!-- 搜索 -->
     <div class="search">
-      <!-- <my-form
-      class="searchForm"
-        ref="searchForm"
-        :formItems="devSearchItem"
-        :formData="devSearchParams" 
-        @validaok="searchOk"
-        ></my-form>
-      <Button @click="doValida('searchForm')" type="primary" style="height: 32px;">搜索</Button> -->
-      <Button @click="add" type="success" style="height: 32px; margin-left: 10px">添加</Button>
+      <Button @click="add" type="success" style="height: 32px; margin-left: 10px">添加设备</Button>
     </div>
     
       <Modal v-model="addModal" width="360">
         <p slot="header">
             <span>{{addText}}</span>
         </p>
-        <div style="height: 400px;">
+        <div style="height: 300px;">
           <my-form 
             ref="addForm"
             :formItems="addDevItem"
@@ -74,8 +66,8 @@ export default {
       },
       devList: [],
       columns: [
-        { title: '设备id', key: 'id' },
         { title: '设备名称', key: 'name' },
+        { title: '设备编号', key: 'sn' },
         {
           title: '设备类型',
           key: 'typ',
@@ -92,10 +84,7 @@ export default {
             return text
           }
         },
-        { title: '设备编号', key: 'sn' },
-        { title: '音量大小', key: 'volume' },
         { title: '设备版本', key: 'version' },
-        { title: '视频流', key: 'url' },
         {
           title: '操作',
           key: 'action',
@@ -149,6 +138,7 @@ export default {
   },
   created () {
     this.getdevList()
+    console.log(this.$route.query)
   },
   methods: {
     doValida (formName) { // 触发对应formName的子组件进行表单验证，验证成功之后会调用@valida绑定的函数
@@ -190,6 +180,7 @@ export default {
       this.addModal = true
     },
     cancel () { // 取消添加
+      console.log('cancel')
       this.addDevData = {
         streetId: this.$route.query.id   // 灯杆id
       }

@@ -1,4 +1,4 @@
-import { dev, broadcastPlan, adminType, lampStatus, msgStatus } from './options'
+import { dev, broadcastPlan, adminType, msgStatus } from './options'
 // , polesOptions
 export const devAddItem = [ // 添加设备表单项
   { label: '灯杆Id', key: 'pole_id', width: '100px', typ: 'ipt' },
@@ -7,7 +7,7 @@ export const devAddItem = [ // 添加设备表单项
   { label: '网络类型', key: 'net_type', width: '100px', placeholder: '请选择', options: dev.netTypeOptions, typ: 'opt' },
   { label: '设备状态', key: 'name', width: '100px', placeholder: '请选择', options: dev.statusOptions, typ: 'opt' },
   { label: '设备编号', key: 'sn', width: '100px', placeholder: '设备编号', typ: 'ipt' },
-  { label: '音量大小', key: 'volume', width: '100px', placeholder: '音量大小', typ: 'ipt' },
+  { label: '音量', key: 'volume', width: '100px', placeholder: '音量', typ: 'ipt' },
   { label: '设备版本', key: 'version', width: '100px', placeholder: '设备版本', typ: 'ipt' }
 ]
 
@@ -91,16 +91,16 @@ export const addStreetFormRule = {
 // 查询灯杆列表查询项
 export const lampListSearchItem = [
   { label: '灯杆编号', key: 'poleSn', width: 100, typ: 'ipt', placeholder: '灯杆编号' },
-  { label: '灯杆名称', key: 'name', width: 100, typ: 'ipt', placeholder: '灯杆名称' },
-  { label: '灯杆状态', key: 'status', width: 100, typ: 'opt', placeholder: '灯杆状态', options: lampStatus }
+  { label: '灯杆名称', key: 'name', width: 100, typ: 'ipt', placeholder: '灯杆名称' }
+  // { label: '灯杆状态', key: 'status', width: 100, typ: 'opt', placeholder: '灯杆状态', options: polesOptions }
 ]
 
 // 添加灯杆表单数据项
 export const addLampItem = [
-  { label: '灯杆编号', key: 'poleSn', width: 100, typ: 'ipt', placeholder: '' },
-  { label: '灯杆名称', key: 'name', width: 100, typ: 'ipt', placeholder: '' },
-  { label: '纬度', key: 'latitude', width: 100, typ: 'ipt', placeholder: '' },
-  { label: '经度', key: 'longitude', width: 100, typ: 'ipt', placeholder: '' }
+  { label: '灯杆编号', key: 'poleSn', width: 200, typ: 'ipt', placeholder: '' },
+  { label: '灯杆名称', key: 'name', width: 200, typ: 'ipt', placeholder: '' },
+  { label: '纬度', key: 'latitude', width: 200, typ: 'ipt', placeholder: '' },
+  { label: '经度', key: 'longitude', width: 200, typ: 'ipt', placeholder: '' }
   // { label: '状态', key: 'status', width: 100, typ: 'opt', placeholder: '', options: polesOptions }
 ]
 
@@ -118,20 +118,6 @@ export const addLampFormRule = {
   longitude: [
     { required: true, message: '该项为必填项', trigger: 'blur' }
   ]
-  // status: [
-  //   {
-  //     required: true,
-  //     trigger: 'blur',
-  //     validator (rule, value, callback, source, options) {
-  //       var errors = []
-  //       if (value.length === 0) {
-  //         // eslint-disable-next-line
-  //         callback('请输入参考价格')
-  //       }
-  //       callback(errors)
-  //     }
-  //   }
-  // ]
 }
 
 // 查询灯杆分组列表查询项
@@ -159,9 +145,6 @@ export const addLampGroupFormRule = {
   timeOff: [
     { required: true, message: '该项为必填项', trigger: 'blur' }
   ],
-  notes: [
-    { required: true, message: '该项为必填项', trigger: 'blur' }
-  ],
   poles: [
     {
       required: true,
@@ -170,7 +153,7 @@ export const addLampGroupFormRule = {
         var errors = []
         if (value.length === 0) {
           // eslint-disable-next-line
-          callback('请输入参考价格')
+          callback('请选择所控灯杆')
         }
         callback(errors)
       }
@@ -185,14 +168,14 @@ export const devSearchItem = [
 
 // 添加设备表单项
 export const addDevItem = [
-  { label: '设备类型', key: 'typ', width: 100, typ: 'opt', placeholder: '设备类型', options: dev.typeOptions },
-  { label: '设备名称', key: 'name', width: 100, typ: 'ipt', placeholder: '设备名称' },
-  // { label: '网络类型', key: 'net_type', width: 100, typ: 'opt', placeholder: '网络类型' },
-  // { label: '设备状态', key: 'status', width: 100, typ: 'opt', placeholder: '设备状态', options: dev.statusOptions },
-  { label: '设备编号', key: 'sn', width: 100, typ: 'ipt', placeholder: '设备编号' },
-  { label: '音量大小', key: 'volume', width: 100, typ: 'num', placeholder: '音量大小' },
-  { label: '设备版本', key: 'version', width: 100, typ: 'ipt', placeholder: '设备版本' },
-  { label: '视频流url', key: 'url', width: 100, typ: 'ipt', placeholder: '视频流url' }
+  { label: '设备类型', key: 'typ', width: 200, typ: 'opt', placeholder: '设备类型', options: dev.typeOptions },
+  { label: '设备名称', key: 'name', width: 200, typ: 'ipt', placeholder: '设备名称' },
+  // { label: '网络类型', key: 'net_type', width: 200, typ: 'opt', placeholder: '网络类型' },
+  // { label: '设备状态', key: 'status', width: 200, typ: 'opt', placeholder: '设备状态', options: dev.statusOptions },
+  { label: '设备编号', key: 'sn', width: 200, typ: 'ipt', placeholder: '设备编号' },
+  { label: '音量', key: 'volume', width: 200, typ: 'num', placeholder: '音量' },
+  { label: '设备版本', key: 'version', width: 200, typ: 'ipt', placeholder: '设备版本' },
+  { label: '扩展属性', key: 'url', width: 200, typ: 'text', placeholder: '扩展属性' }
 ]
 
 // 添加设备表单验证数据项
@@ -203,9 +186,9 @@ export const addDevFormRule = {
       trigger: 'blur',
       validator (rule, value, callback, source, options) {
         var errors = []
-        if (value.length === 0) {
+        if (value === null) {
           // eslint-disable-next-line
-          callback('请输入参考价格')
+          callback('该项为必填项')
         }
         callback(errors)
       }
@@ -222,7 +205,7 @@ export const addDevFormRule = {
         var errors = []
         if (value.length === 0) {
           // eslint-disable-next-line
-          callback('请输入参考价格')
+          callback('该项为必填项')
         }
         callback(errors)
       }
@@ -307,7 +290,7 @@ export const addPlanFormRule = {
         var errors = []
         if (value.length === 0) {
           // eslint-disable-next-line
-          callback('请输入参考价格')
+          callback('该项为必填项')
         }
         callback(errors)
       }
@@ -321,7 +304,7 @@ export const addPlanFormRule = {
         var errors = []
         if (value.length === 0) {
           // eslint-disable-next-line
-          callback('请输入参考价格')
+          callback('该项为必填项')
         }
         callback(errors)
       }
@@ -338,7 +321,7 @@ export const addPlanFormRule = {
         var errors = []
         if (value.length === 0) {
           // eslint-disable-next-line
-          callback('请输入参考价格')
+          callback('该项为必填项')
         }
         callback(errors)
       }

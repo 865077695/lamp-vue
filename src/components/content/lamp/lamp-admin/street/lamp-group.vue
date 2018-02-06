@@ -1,18 +1,10 @@
 // 灯杆分组
 <template>
   <div>
-    街道：{{$route.query.id}}
+    <p style="line-height: 38px;font-size: 16px;">街道：{{$route.query.name}}</p>
     <!-- 搜索 -->
     <div class="search">
-      <!-- <my-form
-      class="searchForm"
-        ref="searchForm"
-        :formItems="lampGroupSearchItem"
-        :formData="lampGroupSearchParams" 
-        @validaok="searchOk"
-        ></my-form>
-      <Button @click="doValida('searchForm')" type="primary" style="height: 32px;">搜索</Button> -->
-      <Button @click="add" type="success" style="height: 32px; margin-left: 10px">添加</Button>
+      <Button @click="add" type="success" style="height: 32px; margin-left: 10px">添加分组</Button>
     </div>
     
       <Modal v-model="addModal" width="720">
@@ -65,20 +57,18 @@ export default {
       addLampGroupData: {
         streetId: this.$route.query.id,
         poles: [],
-        notes: null,
+        notes: '',
         timeOn: null,
         timeOff: null,
         name: null
       },
       lightGroupList: [],
       columns: [
-        { title: '分组id', key: 'id' },
         { title: '分组名称', key: 'name' },
         { title: '开灯时间', key: 'timeOn' },
         { title: '关灯时间', key: 'timeOff' },
         { title: '备注', key: 'notes' },
-        { title: '所属街道', key: 'streetId' },
-        { title: '修改人', key: 'modifyId' },
+        { title: '修改人', key: 'modifyName' },
         { title: '修改时间', key: 'modifyTime' },
         {
           title: '操作',
@@ -93,7 +83,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.addText = '修改'
+                    this.addText = '分组设置'
                     http({ url: 'poleGroup/poleGroupsInfo', params: { id: params.row.id } })
                       .then(res => {
                         if (res.code === 200) {
@@ -106,7 +96,28 @@ export default {
                       })
                   }
                 }
-              }, '编辑')
+              }, '编辑'),
+              h('Poptip', {
+                props: {
+                  confirm: true,
+                  title: '您确定要删除这条数据吗?',
+                  transfer: true
+                },
+                on: {
+                  'on-ok': () => {
+                    this.delete(params.row.id)
+                  }
+                }
+              }, [h('Button', {
+                style: {
+                  margin: '0 10px'
+                },
+                props: {
+                  type: 'error',
+                  placement: 'top',
+                  size: 'small'
+                }
+              }, '删除')])
             ])
           }
         }
@@ -145,15 +156,16 @@ export default {
     },
     addOk () {  // 添加数据格式验证通过
       this.adding = true
+      this.addText = '新增分组'
       let url = ''
       let data = {}
-      if (this.addText === '新增') {
+      if (this.addText === '新增分组') {
         url = 'poleGroup/poleGroupsAdd'
         this.addLampGroupData.poles = this.addLampGroupData.poles.map(item => {
           return { id: item }
         })
         data = this.addLampGroupData
-      } else if (this.addText === '修改') {
+      } else if (this.addText === '分组设置') {
         url = 'poleGroup/poleGroupsEdit'
         data.name = this.addLampGroupData.name
         data.id = this.addLampGroupData.id
@@ -203,6 +215,15 @@ export default {
     },
     getlampGroupInfo () {   // 获取某个分组详情
       // http({ url: 'poleGroup/poleGroupsInfo' ,params: })
+    },
+    delete (id) {   // TODO
+      http({ url: '', params: { id } })
+        .then(res => {
+          if (res.code === 200) {
+            this.$Message.success('删除成功')
+            this.getlampGroupsList()
+          }
+        })
     }
   }
 }

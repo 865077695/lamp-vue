@@ -84,10 +84,10 @@ export default {
       columns: [
         { title: '计划id', key: 'id', width: 80 },
         { title: '计划名称', key: 'name', width: 150 },
-        { title: '开始日期', key: 'startDate', width: 150 },
-        { title: '结束日期', key: 'endDate', width: 150 },
-        { title: '开始时间', key: 'playBegin', width: 90 },
-        { title: '结束时间', key: 'playEnd', width: 90 },
+        { title: '开始日期', key: 'startDate', width: 190 },
+        { title: '结束日期', key: 'endDate', width: 190 },
+        { title: '开始时间', key: 'playBegin', width: 120 },
+        { title: '结束时间', key: 'playEnd', width: 120 },
         {
           title: '状态',
           key: 'status',
@@ -115,7 +115,6 @@ export default {
             return text
           }
         },
-        { title: '修改人', key: 'modifyId', width: 140 },
         { title: '修改时间', key: 'modifyTime', width: 170 },
         { title: '描述', key: 'notes', width: 200 },
         {

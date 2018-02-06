@@ -45,7 +45,7 @@
 <script>
 import { userSearchItem, adminUserAddItem, adminUserFromRule } from '@/data/formItems'
 import { getStatusText } from '@/common/_func'
-import { adminType } from '@/data/options'
+import { adminTyp } from '@/data/options'
 import MyForm from '@/template/my-form'
 import MyPage from '@/template/page'
 import http from '@/common/http'
@@ -87,13 +87,14 @@ export default {
           title: '用户类型',
           key: 'typ',
           render: (h, params) => {
-            let text = getStatusText(params.row.typ, adminType)
+            let text = getStatusText(params.row.typ, adminTyp)
             return text
           }
         },
         {
           title: '操作',
           key: 'action',
+          width: 160,
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -111,7 +112,28 @@ export default {
                     this.addModal = true
                   }
                 }
-              }, '编辑')
+              }, '编辑'),
+              h('Poptip', {
+                props: {
+                  confirm: true,
+                  title: '您确定要删除这条数据吗?',
+                  transfer: true
+                },
+                on: {
+                  'on-ok': () => {
+                    this.delete(params.row.id)
+                  }
+                }
+              }, [h('Button', {
+                style: {
+                  margin: '0 10px'
+                },
+                props: {
+                  type: 'error',
+                  placement: 'top',
+                  size: 'small'
+                }
+              }, '删除')])
             ])
           }
         }
@@ -198,6 +220,15 @@ export default {
           if (res.code === 200) {
             this.userList = res.data.result
             this.totalPage = res.data.totalPage
+          }
+        })
+    },
+    delete (id) {
+      http({ url: '/admin/users/delUser', params: { userId: id } })
+        .then(res => {
+          if (res.code === 200) {
+            this.$Message.success('删除成功')
+            this.update()
           }
         })
     }

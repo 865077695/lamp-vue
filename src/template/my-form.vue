@@ -218,5 +218,6 @@ export default {
 .formItem {
   float: left;
   margin-right: 20px;
+  height: 50px;
 }
 </style>
