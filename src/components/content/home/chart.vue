@@ -19,9 +19,6 @@
             </li>
         </ul>
     </Card>
-    <!-- <div class="notify">
-      <p v-for="item in notifyData" :key="item.id">灯杆{{item.poleName}}：{{item.content}}</p>
-    </div> -->
   </div>
 </template>
 
@@ -47,6 +44,11 @@ export default {
   },
   created () {
     bus.$on('setChart', (params) => {
+      // 重置count
+      this.chartData.map(item => {
+        item.count = 0
+      })
+      console.log(params)
       let total = 0
       params.map(item => {
         total += item.cou
