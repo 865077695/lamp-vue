@@ -96,6 +96,8 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.streetList = res.data.streetsList
+            this.streetList = [{ id: 0, name: '所有街道' }, ...this.streetList]
+            console.log(this.streetList)
             this.powerSearchParams.streetid = this.streetList[0].id // 默认第一个
           }
         })
