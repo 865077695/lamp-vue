@@ -5,7 +5,7 @@
  */
 import config from '@/config'
 export const getStatusText = (typ, options) => {    // 传入当前类型和类型配置数组，返回类型码对应的文字
-  let label
+  let label = '未知'
   options.map(item => {
     if (item.value === typ) {
       label = item.label

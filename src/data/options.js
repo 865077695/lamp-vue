@@ -35,6 +35,19 @@ export const dev = {
     { label: '预约', value: 5 },
     { label: '故障', value: 10 },
     { label: '离线', value: 20 }
+  ],
+  lampStatus: [     // 灯控状态
+    { label: '关闭', value: 0 },
+    { label: '开启', value: 1 },
+    { label: '故障', value: 10 },
+    { label: '失联', value: 20 }
+  ],
+  broadcastStatus: [    // 广播状态
+    { label: '在线', value: 1 },
+    { label: '运行中', value: 2 },
+    { label: '锁定', value: 3 },
+    { label: '离线', value: 4 },
+    { label: '下载', value: 5 }
   ]
 }
 

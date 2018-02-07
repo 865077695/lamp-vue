@@ -32,18 +32,19 @@
           <span v-if="devInfo.power === 0"><Tag color="blue">待机</Tag></span>
           <span v-else-if="devInfo.power === 1"><Tag color="green">充电</Tag></span>
           <span v-else-if="devInfo.power === 3"><Tag color="yellow">充满</Tag></span>
-          <span v-else-if="devInfo.power === 10"><Tag color="red">故障</Tag></span>
           <span v-else-if="devInfo.power === 5"><Tag color="red">预约</Tag></span>
+          <span v-else-if="devInfo.power === 10"><Tag color="red">故障</Tag></span>
           <span v-else-if="devInfo.power === 20"><Tag color="red">离线</Tag></span>
           <span v-else><Tag color="red">未知</Tag></span>
         </div>
         <div class="item"><span class="item-label">Pm10：</span>{{devInfo.pm10?devInfo.pm10: '-'}}</div>
         <div class="item"><span class="item-label">Pm25： </span>{{devInfo.pm25?devInfo.pm25: '-'}}</div>
         <div class="item"><span class="item-label">广播状态：</span>
-          <span v-if="devInfo.broadcastStatus === 0"><Tag color="blue">关闭</Tag></span>
-          <span v-else-if="devInfo.broadcastStatus === 1"><Tag color="green">开启</Tag></span>
-          <span v-else-if="devInfo.broadcastStatus === 10"><Tag color="yellow">故障</Tag></span>
-          <span v-else-if="devInfo.broadcastStatus === 20"><Tag color="red">失联</Tag></span>
+          <span v-if="devInfo.broadcastStatus === 1"><Tag color="blue">在线</Tag></span>
+          <span v-else-if="devInfo.broadcastStatus === 2"><Tag color="green">运行中</Tag></span>
+          <span v-else-if="devInfo.broadcastStatus === 3"><Tag color="yellow">锁定</Tag></span>
+          <span v-else-if="devInfo.broadcastStatus === 4"><Tag color="red">离线</Tag></span>
+          <span v-else-if="devInfo.broadcastStatus === 5"><Tag color="blue">下载</Tag></span>
           <span v-else><Tag color="red">未知</Tag></span>
         </div>
         <div class="item"><span class="item-label" :title="devInfo.broadcastCurrentPlan?devInfo.broadcastCurrentPlan:'无'">当前播报计划：</span><br><Tag color="blue">{{devInfo.broadcastCurrentPlan?devInfo.broadcastCurrentPlan:'无'}}</Tag></div>
