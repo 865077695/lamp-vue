@@ -46,7 +46,7 @@
           <span v-else-if="devInfo.broadcastStatus === 20"><Tag color="red">失联</Tag></span>
           <span v-else><Tag color="red">未知</Tag></span>
         </div>
-        <div class="item"><span class="item-label">当前播报计划：</span><br><Tag color="blue">{{devInfo.broadcastCurrentPlan?devInfo.broadcastCurrentPlan:'无'}}</Tag></div>
+        <div class="item"><span class="item-label" :title="devInfo.broadcastCurrentPlan?devInfo.broadcastCurrentPlan:'无'">当前播报计划：</span><br><Tag color="blue">{{devInfo.broadcastCurrentPlan?devInfo.broadcastCurrentPlan:'无'}}</Tag></div>
       </div>
     </div>
   </div>
@@ -197,6 +197,7 @@ export default {
 .ivu-tag {
   cursor: default;
 }
-.ivu-tag:hover{}
+.ivu-tag:hover {
+}
 </style>
 
