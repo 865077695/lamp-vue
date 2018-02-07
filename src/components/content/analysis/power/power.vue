@@ -10,26 +10,28 @@
           </FormItem>
           <FormItem class="form-item" label="时间">
               <FormItem prop="month">
-                  <DatePicker :value="powerSearchParams.month" @on-change="dateOnChange($event)" format="yyyy-MM"></DatePicker>
+                <y-m></y-m>
               </FormItem>
           </FormItem>
       </Form>
       <div>
-        <ECharts style='width:100%;height:500px' :options='polar' :auto-resize="true"></ECharts>
+        <ECharts id="powerChart" :options='polar' ref="powerChart" :auto-resize="true"></ECharts>
       </div>
   </div>
 </template>
 
 <script>
+import bus from '@/eventBus'
 import ECharts from 'vue-echarts/components/ECharts.vue'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/component/tooltip'
 
 import MyForm from '@/template/my-form'
 import http from '@/common/http'
+import YM from './datepicker'
 export default {
   name: 'Power',
-  components: { MyForm, ECharts },
+  components: { MyForm, ECharts, YM },
   data () {
     return {
       powerSearchParams: {
@@ -69,6 +71,10 @@ export default {
   created () {
     this.powerSearchParams.month = this.getLastMonth()   // 初始化时间
     this.getStreetList()    // 获取街道列表
+    bus.$on('powerDataChange', (param) => { // 月份改变
+      this.powerSearchParams.month = param
+      this.getpowerData()
+    })
   },
   methods: {
     streetOnChange ($event) {
@@ -79,9 +85,15 @@ export default {
       this.getpowerData()
     },
     getpowerData () { // 获取能耗数据
+      if (this.$refs.powerChart) {
+        this.$refs.powerChart.showLoading()
+      }
       this.tableLoading = true
       http({ url: 'devices/monthPower', params: this.powerSearchParams })
         .then(res => {
+          if (this.$refs.powerChart) {
+            this.$refs.powerChart.hideLoading()
+          }
           if (res.code === 200) {
             this.powerData = res.data
             this.polar.xAxis.data = this.setxAxis(this.powerData.length)
@@ -97,7 +109,6 @@ export default {
           if (res.code === 200) {
             this.streetList = res.data.streetsList
             this.streetList = [{ id: 0, name: '所有街道' }, ...this.streetList]
-            console.log(this.streetList)
             this.powerSearchParams.streetid = this.streetList[0].id // 默认第一个
           }
         })
@@ -131,5 +142,9 @@ export default {
 .form {
   display: flex;
   justify-content: flex-start;
+}
+#powerChart {
+  width: 100%;
+  height: 500px;
 }
 </style>
