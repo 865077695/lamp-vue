@@ -11,18 +11,18 @@
         </FormItem>
     </Form>
 
-    <Modal v-model="modal" width="360">
+    <Modal v-model="modal" width="400">
       <p slot="header">
           <span>新增</span>
       </p>
-      <div style="min-height: 100px;">
+      <div style="min-height: 100px;max-height: 500px;overflow: auto">
         <Form ref="addMediaParams" :model="addMediaParams" :rules="addRule" :label-width="80" inline>
             <FormItem label="资源名称" prop="name">
                 <Input v-model="addMediaParams.name" placeholder="输入资源名称"></Input>
             </FormItem>
             <FormItem label="资源" prop="file_name" v-if="templist.length !== 0">
                 <RadioGroup v-model="addMediaParams.file_name">
-                    <Radio v-for="item in templist" :key="item.fileName" :label="item.fileName"></Radio>
+                    <Radio class="radio-item" v-for="item in templist" :key="item.fileName" :label="item.fileName"></Radio>
                 </RadioGroup>
             </FormItem>
             <p style="padding-left: 80px;" v-if="templist.length === 0">请先通过FTP上传媒体资源</p>
@@ -219,3 +219,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.radio-item {
+  display: block;
+}
+</style>
+
