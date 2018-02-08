@@ -46,7 +46,7 @@
                   </Row>
               </FormItem>
               <FormItem label="循环播放" prop="iscycle">
-                  <i-switch v-model="planInfo.iscycle" :true-value="1" :false-value="0">
+                  <i-switch v-model="planInfo.iscycle" :true-value="1" :false-value="2">
                       <span slot="open">是</span>
                       <span slot="close">否</span>
                   </i-switch>
@@ -154,7 +154,7 @@ export default {
       planInfo: {
         id: null,
         name: null,
-        iscycle: 0,
+        iscycle: 2,       // 默认2不循环
         startDate: null,
         endDate: null,
         playBegin: null,

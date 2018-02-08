@@ -58,8 +58,8 @@ export const broadcastPlan = {    // 播报计划相关
     { label: '文字', value: 3 }
   ],
   iscycle: [ // 是否循环
-    { label: '是', value: 0 },
-    { label: '否', value: 1 }
+    { label: '是', value: 1 },
+    { label: '否', value: 2 }
   ],
   status: [ // 计划状态
     { label: '开启', value: 1 },
