@@ -1,6 +1,6 @@
 <template>
   <div class="modal-content">
-    <p style="font-size: 24px;">灯杆名称：{{lampInfoPoles.name?lampInfoPoles.name:'-'}}（#{{lampInfoPoles.id?lampInfoPoles.id:'-'}}）</p>
+    <p style="font-size: 24px;">灯杆名称：{{lampInfoPoles.name?lampInfoPoles.name:'未知'}}</p>
     <div class="content">
       <div id="player-container">
         <div id="player" v-if="hasLive"></div>
