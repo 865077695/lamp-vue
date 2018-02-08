@@ -44,7 +44,7 @@ export const planAddItem = [  // 新增播报计划表单项
 ]
 
 export const logSearchItem = [  // 日志列表查询参数项
-  { label: '操作人员', key: 'userId', width: '100px', typ: 'ipt', placeholder: '操作人员编号' },
+  { label: '操作人员', key: 'username', width: '100px', typ: 'ipt', placeholder: '操作人员' },
   { label: '开始日期', key: 'beginTime', width: '200px', typ: 'date' },
   { label: '结束日期', key: 'endTime', width: '200px', typ: 'date' }
 ]

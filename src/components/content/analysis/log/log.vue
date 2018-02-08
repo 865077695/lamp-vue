@@ -32,7 +32,7 @@ export default {
       logList: [],
       columns: [
         { title: '日志id', key: 'id', width: 100 },
-        { title: '操作人id', key: 'userId', width: 100 },
+        { title: '操作人', key: 'username', width: 100 },
         { title: '日志类型', key: 'typ', width: 100 },
         { title: '操作时间', key: 'time' },
         { title: '请求url', key: 'url' },
@@ -54,7 +54,7 @@ export default {
     update () {
       this.tableLoading = true
       const data = {
-        userId: this.searchParams.userId,
+        username: this.searchParams.username,
         beginTime: this.searchParams.beginTime,
         endTime: this.searchParams.endTime,
         currentPage: this.searchParams.currentPage
