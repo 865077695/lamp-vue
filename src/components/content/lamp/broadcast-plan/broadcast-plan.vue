@@ -47,7 +47,7 @@ import { getStatusText } from '@/common/_func'
 import { planListSearchItem, addPlanItem, addPlanFormRule } from '@/data/formItems'
 import http from '@/common/http'
 export default {
-  name: 'StreetAdmin',
+  name: 'BroadcastPlan',
   components: { MyForm, MyPage },
   data () {
     return {
@@ -161,6 +161,9 @@ export default {
         }
       ]
     }
+  },
+  activated () {
+    this.getplanList()
   },
   created () {
     this.getplanList()

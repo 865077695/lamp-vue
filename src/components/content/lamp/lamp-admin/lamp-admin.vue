@@ -1,5 +1,5 @@
 <template>
-<div>
+<div>aaaaaaaaaaaaa
   <div style="display: flex;justify-content: flex-start">
     <div style="line-height: 36px;width: 50px;margin-right:20px;">名称：</div>
     <div style="width: 250px;margin-right:20px;"><Input v-model="streetName" size="large" placeholder="街道名称"></Input></div>
@@ -138,6 +138,9 @@ export default {
         { streetId: 10, streetName: '天府大道南二段12号', address: '江苏扬州统治区', controlType: '单灯控制', currentMode: '手动模式', lampCount: '887' }
       ]
     }
+  },
+  activated () {
+    console.log(1)
   },
   methods: {
     doSearch () {

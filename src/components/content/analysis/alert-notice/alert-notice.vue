@@ -26,7 +26,7 @@ import { getStatusText } from '@/common/_func'
 import { msgListSearchItem } from '@/data/formItems'
 import http from '@/common/http'
 export default {
-  name: 'StreetAdmin',
+  name: 'AlertNotice',
   components: { MyForm, MyPage },
   data () {
     return {

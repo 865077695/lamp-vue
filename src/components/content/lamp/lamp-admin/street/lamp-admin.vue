@@ -153,6 +153,9 @@ export default {
   created () {
     this.getlampsList()
   },
+  activated () {
+    this.getlampsList()
+  },
   methods: {
     doValida (formName) { // 触发对应formName的子组件进行表单验证，验证成功之后会调用@valida绑定的函数
       this.$refs[formName].handleValida()

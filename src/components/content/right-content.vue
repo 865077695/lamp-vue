@@ -2,9 +2,9 @@
 <div>
   <TopBar class="topbar"></TopBar>
   <div class="container">
-    <!-- <keep-alive include="StreetAdmin"> -->
+    <keep-alive :include="['StreetAdmin', 'BroadcastPlan', 'LampGroup', 'StreetAdmin']">
       <router-view/>
-    <!-- </keep-alive> -->
+    </keep-alive>
   </div>
 </div>
   
@@ -13,7 +13,7 @@
 <script>
 import TopBar from './top-bar'
 export default {
-  name: 'Main',
+  name: 'RightContent',
   components: { TopBar }
 }
 </script>

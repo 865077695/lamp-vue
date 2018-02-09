@@ -37,7 +37,7 @@ import { getStatusText } from '@/common/_func'
 import { dev } from '@/data/options'
 import http from '@/common/http'
 export default {
-  name: 'LampGroup',
+  name: 'DeviceAdmin',
   components: { MyForm },
   data () {
     return {

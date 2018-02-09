@@ -57,7 +57,7 @@
 import http from '@/common/http'
 import bus from '@/eventBus'
 export default {
-  name: 'model',
+  name: 'HomeModel',
   data () {
     return {
       loading: false,

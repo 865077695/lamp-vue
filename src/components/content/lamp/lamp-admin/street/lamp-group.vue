@@ -124,6 +124,9 @@ export default {
       ]
     }
   },
+  activated () {
+    this.getlampGroupsList()
+  },
   created () {
     this.getlampGroupsList()
     http({      // 获取该街道所有灯杆

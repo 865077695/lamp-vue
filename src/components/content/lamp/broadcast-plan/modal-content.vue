@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: 'ModalContent',
+  name: 'BroadcastPlanModal',
   props: {
     planInfo: Object
   },
