@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import { routes } from './routes'
 import iView from 'iview'
+import bus from '@/eventBus'
 // Vue.use(iView)
 Vue.use(Router)
 
@@ -11,6 +12,7 @@ export default router
 
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
+  bus.$emit('routerChange', to.name)
   next()
 })
 

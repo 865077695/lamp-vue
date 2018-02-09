@@ -18,9 +18,9 @@ export const appRoutes = [
     path: '/lamp',
     component: Main,
     name: 'lamp',
-    title: '路灯管理',
+    title: '街道管理',
     children: [
-      { path: 'street-admin', name: '路灯管理', title: '路灯管理', icon: 'android-bulb', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/street-admin'], resolve) } },
+      { path: 'street-admin', name: '街道管理', title: '街道管理', icon: 'android-bulb', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/street-admin'], resolve) } },
       // { path: 'broadcast-admin', name: '播报设备管理', title: '播报设备管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-device/broadcast-device'], resolve) } },
       { path: 'broadcast-resource', name: '播报资源管理', title: '播报资源管理', icon: 'android-folder', component: resolve => { require(['@/components/content/lamp/broadcast-resource/broadcast-resource'], resolve) } },
       { path: 'broadcast-plan', name: '播报计划管理', title: '播报计划管理', icon: 'ios-list', component: resolve => { require(['@/components/content/lamp/broadcast-plan/broadcast-plan'], resolve) } }
