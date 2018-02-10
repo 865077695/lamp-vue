@@ -339,8 +339,6 @@ export const adminUserAddItem = [   // 新增管理员表单项
   { label: '用户名', key: 'name', width: '300', typ: 'ipt', placeholder: '用户名' },
   { label: '手机号', key: 'mobile', width: '300', typ: 'ipt', placeholder: '手机号' },
   { label: '地址', key: 'address', width: '300', typ: 'ipt', placeholder: '地址' },
-  { label: '密码', key: 'password', width: '300', typ: 'psd', placeholder: '密码' },
-  { label: '确认密码', key: 'confirmPassword', width: '300', typ: 'confirmpsd', placeholder: '确认密码' },
   { label: '用户类型', key: 'typ', width: '300', typ: 'opt', placeholder: '用户类型', options: adminType }
 ]
 
