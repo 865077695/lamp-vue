@@ -17,7 +17,6 @@
       <MyPage :_totalPage="totalPage" @pageChange="pageChange" :_currentPage.sync="searchParams.currentPage"></MyPage>
     </div>
 
-
     <Modal v-model="addModal" width="500">
       <p slot="header">
           <Icon type="information-circled"></Icon>
@@ -38,6 +37,26 @@
       </div>
     </Modal>
 
+    <Modal v-model="editpsdModal" width="400">
+      <p slot="header">
+          <Icon type="information-circled"></Icon>
+          <span>修改密码</span>
+      </p>
+      <div style="height:100px">
+        <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="80">
+          <FormItem label="密码" prop="passwd">
+              <Input type="password" style="width: 250px;" v-model="formCustom.passwd"></Input>
+          </FormItem>
+          <FormItem label="确认密码" prop="passwdCheck">
+              <Input type="password" style="width: 250px;" v-model="formCustom.passwdCheck"></Input>
+          </FormItem>
+        </Form>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <Button type="primary" size="large" :loading="adding" @click="handleSubmit('formCustom')">提交</Button>
+        <Button type="default" size="large" @click="cancelEditPsd">取消</Button>
+      </div>
+    </Modal>
 
 </div>
 </template>
@@ -54,7 +73,28 @@ export default {
   name: 'UserAdmin',
   components: { MyForm, MyPage },
   data () {
+    const validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.formCustom.passwdCheck !== '') {
+          // 对第二个密码框单独验证
+          this.$refs.formCustom.validateField('passwdCheck')
+        }
+        callback()
+      }
+    }
+    const validatePassCheck = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.formCustom.passwd) {
+        callback(new Error('两次输入不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
+      editpsdModal: false,
       addModal: false,
       adding: false,
       tableLoading: false,
@@ -62,6 +102,19 @@ export default {
       totalPage: null,
       adminUserFromRule,
       modalTitle: '新增',
+      editId: null,
+      formCustom: {
+        passwd: '',
+        passwdCheck: ''
+      },
+      ruleCustom: {
+        passwd: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        passwdCheck: [
+          { validator: validatePassCheck, trigger: 'blur' }
+        ]
+      },
       searchParams: {
         currentPage: 1,
         name: null,
@@ -74,8 +127,6 @@ export default {
         name: null,
         mobile: null,
         address: null,
-        password: null,
-        confirmPassword: null,
         typ: null
       },
       columns: [
@@ -94,7 +145,7 @@ export default {
         {
           title: '操作',
           key: 'action',
-          width: 160,
+          width: 240,
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -112,7 +163,22 @@ export default {
                     this.addModal = true
                   }
                 }
-              }, '编辑'),
+              }, '修改信息'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.editpsdModal = true
+                    this.editId = params.row.id
+                  }
+                }
+              }, '修改密码'),
               h('Poptip', {
                 props: {
                   confirm: true,
@@ -151,6 +217,15 @@ export default {
     addOk () {
       this.ok()
     },
+    handleSubmit (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.passwordEdit()
+        } else {
+          this.$Message.error('参数格式有误!')
+        }
+      })
+    },
     doValida (formName) { // 触发对应formName的子组件进行表单验证，验证成功之后会调用@valida绑定的函数
       this.$refs[formName].handleValida()
     },
@@ -169,8 +244,6 @@ export default {
         name: this.adminUserAddData.name,
         mobile: this.adminUserAddData.mobile,
         address: this.adminUserAddData.address,
-        password: md5(this.adminUserAddData.password),
-        confirmPassword: md5(this.adminUserAddData.confirmPassword),
         typ: this.adminUserAddData.typ
       }
       if (this.modalTitle === '新建') {
@@ -202,6 +275,13 @@ export default {
     },
     cancel () {
       this.addModal = false
+      this.formCustom = {
+        passwd: null,
+        passwdCheck: null
+      }
+    },
+    cancelEditPsd () {
+      this.editpsdModal = false
     },
     pageChange () {
       this.update()
@@ -229,6 +309,24 @@ export default {
           if (res.code === 200) {
             this.$Message.success('删除成功')
             this.update()
+          }
+        })
+    },
+    passwordEdit () {
+      const data = {
+        id: this.editId,
+        newPassword: md5(this.formCustom.passwd),
+        confirmPassword: md5(this.formCustom.passwdCheck)
+      }
+      http({ url: '/admin/users/passwordEdit', method: 'POST', data })
+        .then(res => {
+          if (res.code === 200) {
+            this.$Message.success('修改成功')
+            this.editpsdModal = false
+            this.formCustom = {
+              passwd: null,
+              passwdCheck: null
+            }
           }
         })
     }

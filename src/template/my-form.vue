@@ -102,7 +102,7 @@
             :label="item.label" 
             :prop="item.key"
             >
-              <Input v-model="formData[item.key]" type="textarea" :style="`width:${item.width}px;`" :autosize="{minRows: 2,maxRows: 5}" placeholder="备注..."></Input>
+              <Input v-model="formData[item.key]" type="textarea" :style="`width:${item.width}px;`" :rows="4" :placeholder="item.placeholder"></Input>
           </FormItem>
         </template>
       </div>
@@ -204,6 +204,9 @@ export default {
       this.$emit('add')
     },
     onChange ($event, key) {
+      console.log($event)
+      console.log(key)
+      console.log(this.formData)
       this.formData[key] = $event
     },
     changeOpt ($event) {

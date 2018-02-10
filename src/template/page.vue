@@ -37,7 +37,7 @@ export default {
   },
   data () {
     return {
-      bePage: null    // 跳往第几页
+      bePage: 1    // 跳往第几页
     }
   },
   methods: {
@@ -60,6 +60,9 @@ export default {
     countChange ($event) {
       this.bePage = parseInt($event)
     }
+  },
+  created () {
+    this._currentPage = 1
   },
   computed: {
     isFirst: function () {

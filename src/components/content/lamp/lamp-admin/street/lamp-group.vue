@@ -11,7 +11,7 @@
         <p slot="header">
             <span>{{addText}}</span>
         </p>
-        <div style="height: 400px;">
+        <div style="min-height: 300px;overflow: auto;">
           <my-form 
             ref="addForm"
             :formItems="addLampGroupItem"

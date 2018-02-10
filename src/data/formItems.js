@@ -33,8 +33,8 @@ export const planSearchItem = [ // 播报计划列表查询项
 
 export const planAddItem = [  // 新增播报计划表单项
   { label: '计划名称', key: 'name', width: '300px', typ: 'ipt' },
-  { label: '开始日期', key: 'startDate', width: '300px', typ: 'date' },
-  { label: '结束日期', key: 'endDate', width: '300px', typ: 'date' },
+  { label: '开始日期', key: 'startDate', width: '300px', typ: 'date1' },
+  { label: '结束日期', key: 'endDate', width: '300px', typ: 'date1' },
   { label: '开始时间', key: 'playBegin', width: '300px', typ: 'time' },
   { label: '结束时间', key: 'playEnd', width: '300px', typ: 'time' },
   { label: '播报类型', key: 'typ', width: '300px', options: broadcastPlan.resourceType, typ: 'opt' },
@@ -130,8 +130,8 @@ export const addLampGroupItem = [
   { label: '分组名称', key: 'name', width: 539, typ: 'ipt', placeholder: '分组名称' },
   { label: '开灯时间', key: 'timeOn', width: 160, typ: 'time', placeholder: '开灯时间' },
   { label: '关灯时间', key: 'timeOff', width: 160, typ: 'time', placeholder: '关灯时间' },
-  { label: '备注', key: 'notes', width: 539, typ: 'text', placeholder: '备注' },
-  { label: '所控灯杆', key: 'poles', width: 100, typ: 'asynCheckbox', placeholder: '所控灯杆' }
+  { label: '所控灯杆', key: 'poles', width: 100, typ: 'asynCheckbox', placeholder: '所控灯杆' },
+  { label: '备注', key: 'notes', width: 539, typ: 'text', placeholder: '备注' }
 ]
 
 // 添加分组表单验证数据项

@@ -15,34 +15,18 @@
       <Button @click="add" type="success" style="height: 32px; margin-left: 10px">添加</Button>
     </div>
     
-      <Modal v-model="addModal" width="360">
-        <p slot="header">
-            <span>{{addText}}</span>
-        </p>
-        <div style="height: 400px;">
-          <my-form 
-            ref="addForm"
-            :formItems="addPlanItem"
-            :formData="addPlanData"
-            :formRule="addPlanFormRule"
-            @validaok="addOk"
-          ></my-form>
-        </div>
-        <div slot="footer">
-            <Button type="primary" size="large" :loading="adding" @click="doValida('addForm')">提交</Button>
-            <Button type="default" size="large" @click="cancel">取消</Button>
-        </div>
-      </Modal>
-
       <Table class="table" :loading="tableLoading" border :columns="columns" :data="planList"></Table>
       <my-page :_totalPage="totalPage" @pageChange="pageChange" :_currentPage.sync="planSearchParams.currentPage"></my-page>
   </div>
 </template>
 
 <script>
+// eslint-disable-next-line
+import { formmatDate } from '@/common/_func'
 import MyForm from '@/template/my-form'
 import MyPage from '@/template/page'
 import { broadcastPlan } from '@/data/options'
+// eslint-disable-next-line
 import { getStatusText } from '@/common/_func'
 import { planListSearchItem, addPlanItem, addPlanFormRule } from '@/data/formItems'
 import http from '@/common/http'
@@ -173,62 +157,19 @@ export default {
       this.$refs[formName].handleValida()
     },
     searchOk () { // 搜索数据格式验证通过
+      console.log(this.planSearchParams.startDate)
+      if (this.planSearchParams.startDate) {
+        console.log(1)
+        this.planSearchParams.startDate = formmatDate(this.planSearchParams.startDate)
+      }
+      if (this.planSearchParams.endDate) {
+        this.planSearchParams.endDate = formmatDate(this.planSearchParams.endDate)
+      }
       this.planSearchParams.currentPage = 1 // 搜索时重置页码为1
       this.getplanList()
     },
-    addOk () {  // 添加数据格式验证通过
-      this.adding = true
-      let url = ''
-      let data = {}
-      if (this.addText === '新增') {
-        url = 'plan/add'
-        data = this.addPlanData
-      } else if (this.addText === '修改') {
-        url = 'pole/update'
-        data.streetId = this.addPlanData.streetId
-        data.id = this.addPlanData.id
-        data.poleSn = this.addPlanData.poleSn
-        data.name = this.addPlanData.name
-        data.latitude = this.addPlanData.latitude
-        data.status = this.addPlanData.status
-        data.longitude = this.addPlanData.longitude
-      }
-      http({ url, method: 'POST', data })
-        .then(res => {
-          if (res.code === 200) {
-            this.adding = false
-            this.addModal = false
-            this.$Message.success('成功')
-            this.addPlanData = {    // 初始化添加选项数据
-              name: null,
-              startDate: null,
-              endDate: null,
-              playBegin: null,
-              playEnd: null,
-              typ: null,
-              iscycle: null,
-              status: null
-            }
-            this.getplanList()
-          }
-        })
-    },
     add () {  // 点击添加按钮
-      // this.addModal = true
       this.$router.push({ path: '/plan-info', query: { id: null } })
-    },
-    cancel () { // 取消添加
-      this.addPlanData = {  // 初始化添加选项数据
-        name: null,
-        startDate: null,
-        endDate: null,
-        playBegin: null,
-        playEnd: null,
-        typ: null,
-        iscycle: null,
-        status: null
-      }
-      this.addModal = false
     },
     pageChange () {
       this.getplanList()
@@ -241,8 +182,6 @@ export default {
           if (res.code === 200) {
             this.planList = res.data.content
             this.totalPage = res.data.totalPage
-          } else {
-            this.$router.push({ path: '/plan-info/, query: {id: nullsign' })
           }
         })
     },

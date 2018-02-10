@@ -22,9 +22,13 @@ body,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.anchorBL{display:none;}
+.anchorBL {
+  display: none;
+}
 
-.darkColor{color: rgb(139, 131, 131)}
+.darkColor {
+  color: rgb(139, 131, 131);
+}
 /* 播放器样式 */
 #player .prism-ErrorMessage {
   height: 0;
@@ -35,5 +39,8 @@ body,
   height: 0;
   width: 0;
   display: none;
+}
+.formItem {
+  height: auto !important;
 }
 </style>

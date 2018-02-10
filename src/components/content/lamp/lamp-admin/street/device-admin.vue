@@ -11,7 +11,7 @@
         <p slot="header">
             <span>{{addText}}</span>
         </p>
-        <div style="height: 300px;">
+        <div style="min-height: 350px;overflow: auto">
           <my-form 
             ref="addForm"
             :formItems="addDevItem"
@@ -100,7 +100,7 @@ export default {
                   click: () => {
                     this.addText = '修改'
                     this.addDevData = params.row
-                    this.add()
+                    this.addModal = true
                   }
                 }
               }, '编辑'),
@@ -170,14 +170,24 @@ export default {
             this.addModal = false
             this.$Message.success('成功')
             this.addDevData = {
-              streetId: this.$route.query.id   // 灯杆id
+              pole_id: this.$route.query.id,
+              typ: null,
+              name: null,
+              status: 1,
+              sn: null,
+              volume: null,
+              version: null,
+              url: null
             }
             this.getdevList()
+          } else {
+            this.adding = false
           }
         })
     },
     add () {  // 点击添加按钮
       this.addModal = true
+      this.addText = '新增'
     },
     cancel () { // 取消添加
       console.log('cancel')
@@ -185,6 +195,16 @@ export default {
         streetId: this.$route.query.id   // 灯杆id
       }
       this.addModal = false
+      this.addDevData = {
+        pole_id: this.$route.query.id,
+        typ: null,
+        name: null,
+        status: 1,
+        sn: null,
+        volume: null,
+        version: null,
+        url: null
+      }
     },
     getdevList () { // 获取设备列表
       this.tableLoading = true

@@ -149,14 +149,14 @@ export default {
     pageChange () {
       this.getMediaList()
     },
-    getMediaList (params = {}) {     // 获取媒体列表数据
+    getMediaList (params = { currentPage: 1 }) {     // 获取媒体列表数据
       this.tableLoading = true
       let data = {
         typ: this.typ,
         currentPage: this.queryMediaParams.currentPage,
         name: this.queryMediaParams.name
       }
-      http({ url: 'media/list', method: 'POST', data: { ...data, ...params } })
+      http({ url: 'media/list', method: 'POST', data: { ...params, ...data } })
         .then(res => {
           this.tableLoading = false
           if (res.code === 200) {
