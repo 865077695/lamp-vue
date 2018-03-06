@@ -93,7 +93,7 @@
             :label="item.label" 
             :prop="item.key"
             >
-              <TimePicker :value="formData[item.key]" @on-change="onChange($event, item.key)" :style="`width:${item.width}px;`" :placeholder="item.placeholder" style="width: 100px" format="HH:mm:ss"></TimePicker>（时：分）
+              <TimePicker :value="formData[item.key]" @on-change="onChange($event, item.key)" :style="`width:${item.width}px;`" :placeholder="item.placeholder" style="width: 100px" format="HH:mm:ss"></TimePicker>（时：分：秒）
           </FormItem>
         </template>
         <!-- 文本框 -->
@@ -204,9 +204,6 @@ export default {
       this.$emit('add')
     },
     onChange ($event, key) {
-      console.log($event)
-      console.log(key)
-      console.log(this.formData)
       this.formData[key] = $event
     },
     changeOpt ($event) {

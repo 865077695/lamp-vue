@@ -11,6 +11,9 @@ export default {
   name: 'YM',
   methods: {
     change ($event) {
+      if($event.length === 0){      // 为空时，能耗为0
+        $event = ['2000','01']
+      }
       let data = this.formatterDate($event)
       bus.$emit('powerDataChange', data)
     },

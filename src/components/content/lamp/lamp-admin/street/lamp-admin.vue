@@ -58,7 +58,7 @@ export default {
       addLampItem,
       addLampFormRule,
       totalPage: null,
-      addText: '新增',
+      addText: '添加灯杆',
       lampSearchParams: {
         name: null,
         currentPage: 1,
@@ -168,7 +168,7 @@ export default {
       this.adding = true
       let url = ''
       let data = {}
-      if (this.addText === '新增') {
+      if (this.addText === '添加灯杆') {
         url = 'pole/polesAdd'
         data = this.addLampData
       } else if (this.addText === '修改') {

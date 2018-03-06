@@ -1,4 +1,4 @@
-// 编辑计划
+// 新增计划
 <template>
   <div id="a">
     <Tag checkable color="green" style="margin-bottom: 10px;">{{title}}</Tag>
@@ -198,6 +198,7 @@ export default {
             required: true,
             trigger: 'change',
             validator (rule, value, callback) {
+              (value)
               var errors = []
               if (value === null) {
                 // eslint-disable-next-line

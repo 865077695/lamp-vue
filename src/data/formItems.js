@@ -61,7 +61,7 @@ export const addStreetItem = [
   { label: '心跳间隔', key: 'heartbeat', width: 100, typ: 'ipt', placeholder: '单位秒' },
   { label: '纬度', key: 'latitude', width: 100, typ: 'ipt', placeholder: '纬度' },
   { label: '经度', key: 'longitude', width: 100, typ: 'ipt', placeholder: '经度' },
-  { label: '能耗上报时间', key: 'reporttime', width: 100, typ: 'time', placeholder: '能耗上报时间' },
+  { label: '能耗上报时间', key: 'reporttime', width: 100, typ: 'time1', placeholder: '能耗上报时间' },
   // { label: '控制类型', key: 'typ', width: 100, typ: 'opt', placeholder: '' },
   { label: '定损功率', key: 'power', width: 100, typ: 'ipt', placeholder: '单位：瓦' }
 ]

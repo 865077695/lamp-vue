@@ -13,7 +13,7 @@
 
     <Modal v-model="modal" width="400">
       <p slot="header">
-          <span>新增</span>
+          <span>添加资源</span>
       </p>
       <div style="min-height: 100px;max-height: 500px;overflow: auto">
         <Form ref="addMediaParams" :model="addMediaParams" :rules="addRule" :label-width="80" inline>

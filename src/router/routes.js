@@ -52,7 +52,8 @@ const otherRoutes = {
     { path: 'device-admin', name: '设备管理', title: '设备管理', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/device-admin'], resolve) } },
     { path: 'street-edit', name: '街道信息编辑', title: '街道信息编辑', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/street-edit'], resolve) } },
     { path: 'lamp-group', name: '分组设置', title: '分组设置', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/lamp-group'], resolve) } },
-    { path: 'plan-info', name: '计划详情', title: '计划详情', component: resolve => { require(['@/components/content/lamp/broadcast-plan/plan-info'], resolve) } }
+    { path: 'plan-info', name: '计划详情', title: '计划详情', component: resolve => { require(['@/components/content/lamp/broadcast-plan/plan-info'], resolve) } },
+    { path: 'add-plan', name: '添加计划', title: '添加计划', component: resolve => { require(['@/components/content/lamp/broadcast-plan/add-plan'], resolve) } }
     // { path: 'device-info', name: '设备详情', title: '设备详情', component: resolve => { require(['@/components/content/lamp/broadcast-device/device-info'], resolve) } }
   ]
 }

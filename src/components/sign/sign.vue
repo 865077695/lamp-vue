@@ -3,12 +3,12 @@
     <h2 style="text-align: center;line-height: 50px;">欢迎登录智能路灯管理系统</h2>
     <Form ref="userData" :model="userData" :rules="ruleInline">
         <FormItem prop="name">
-            <Input type="text" v-model="userData.name" placeholder="Username">
+            <Input type="text" v-model="userData.name" placeholder="用户名">
                 <Icon type="ios-person-outline" slot="prepend"></Icon>
             </Input>
         </FormItem>
         <FormItem prop="password">
-            <Input type="password" v-model="userData.password" placeholder="Password">
+            <Input type="password" v-model="userData.password" placeholder="密码">
                 <Icon type="ios-locked-outline" slot="prepend"></Icon>
             </Input>
         </FormItem>

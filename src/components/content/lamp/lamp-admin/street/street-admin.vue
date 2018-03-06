@@ -17,7 +17,7 @@
     
       <Modal v-model="addModal" width="360">
         <p slot="header">
-            <span>新增</span>
+            <span>添加街道</span>
         </p>
         <div style="height: 400px;">
           <my-form 

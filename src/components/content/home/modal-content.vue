@@ -26,6 +26,16 @@
           <span v-else-if="devInfo.status === 10"><Tag color="yellow">故障</Tag></span>
           <span v-else-if="devInfo.status === 20"><Tag color="red">失联</Tag></span>
           <span v-else><Tag color="red">未知</Tag></span>
+          <i-switch v-if="devInfo.status === 0 || devInfo.status === 1"
+          style="display: inline-block"
+           :value="devInfo.status"
+              :true-value="1"
+              :false-value="0"
+              @on-change="toggleLightStatus($event)"
+              :disabled="toggleLight && (devInfo.status === 10 || devInfo.status === 20)">
+              <span slot="open">开</span>
+              <span slot="close">关</span>
+          </i-switch>
         </div>
         <div class="item">
           <span class="item-label">充电桩：</span>
@@ -54,93 +64,125 @@
 </template>
 
 <script>
-import http from '@/common/http'
-import bus from '@/eventBus'
+import http from "@/common/http";
+import bus from "@/eventBus";
 export default {
-  name: 'HomeModel',
-  data () {
+  name: "HomeModel",
+  data() {
     return {
       loading: false,
       hasLive: false,
-      playerContent: '接入中...',
-      lampInfoPoles: {},      // 路灯基础信息
-      lampDevInfo: [],         // 路灯上设备数据
-      lampInfo: {},           // 保存lampInfo数据
-      devInfo: {},            // 保存状态数据
+      playerContent: "接入中...",
+      toggleLight: true, // 路灯状态更新中
+      lampInfoPoles: {}, // 路灯基础信息
+      lampDevInfo: [], // 路灯上设备数据
+      lampInfo: {}, // 保存lampInfo数据
+      devInfo: {}, // 保存状态数据
       aliPlayer: null,
-      cameraId: null,         // 摄像头id
-      s: null                 // 存放定时器
-    }
+      cameraId: null, // 摄像头id
+      LightId: null, // 灯控设备id
+      s: null // 存放定时器
+    };
   },
-  created () {
-    bus.$on('getPoleInfoEnd', lampInfo => {
-      this.lampInfo = lampInfo
-      this.lampInfoPoles = this.lampInfo.poles
-      this.lampDevInfo = this.lampInfo.deviceDataDTOList
-      this.playerContent = '此灯杆无监控视频'
-      this.devInfo = this.setDevInfo(this.lampDevInfo)
-    })
-    bus.$on('destoryPlayer', () => {
-      this.destoryPlayer()
-    })
+  created() {
+    bus.$on("getPoleInfoEnd", lampInfo => {
+      this.lampInfo = lampInfo;
+      this.lampInfoPoles = this.lampInfo.poles;
+      this.lampDevInfo = this.lampInfo.deviceDataDTOList;
+      this.playerContent = "此灯杆无监控视频";
+      this.devInfo = this.setDevInfo(this.lampDevInfo);
+    });
+    bus.$on("destoryPlayer", () => {
+      this.destoryPlayer();
+    });
   },
   methods: {
-    moveIpc (direction) { // 移动ipc
-      http({ url: 'index/ipcMove', method: 'POST', data: { direction, id: this.cameraId } })
-        .then(res => {
-          if (res.code === 200) {
-            this.$Message.success('操作成功')
-          }
-        })
-    },
-    setDevInfo (info) {   // 保存状态数据
-      let devInfo = {}
-      info.map(item => {
-        if (item.typ === 0) {  // 灯控
-          devInfo.status = item.status
-        } else if (item.typ === 1) {    // 空气检测
-          devInfo.pm10 = item.pm10
-          devInfo.pm25 = item.pm25
-        } else if (item.typ === 2) {    // 广播
-          devInfo.broadcastStatus = item.status
-          devInfo.broadcastCurrentPlan = item.currentPlan
-        } else if (item.typ === 3 && this.aliPlayer === null) {   // 摄像头
-          this.hasLive = true
-          this.cameraId = item.id
-          devInfo.url = item.url
-          this.s = setTimeout(() => {
-            this.setPlayer(devInfo.url)   // 先写入播放器容器再调播放器
-          }, 0)
-        } else if (item.typ === 4) {      // 充电桩
-          devInfo.power = item.status
+    moveIpc(direction) {
+      // 移动ipc
+      http({
+        url: "index/ipcMove",
+        method: "POST",
+        data: { direction, id: this.cameraId }
+      }).then(res => {
+        if (res.code === 200) {
+          this.$Message.success("操作成功");
         }
-      })
-      return devInfo
+      });
     },
-    setPlayer (url) {    // 调用播放器
+    toggleLightStatus(val) {
+      http({
+        url: "/devices/updateLightStatus",
+        method: "POST",
+        data: {
+          id: this.devInfo.lightId,
+          sn: this.devInfo.lightSn,
+          status: val
+        }
+      }).then(res => {
+        if (res.code === 200) {
+          this.devInfo.status = val;
+        }
+      });
+    },
+    setDevInfo(info) {
+      // 保存状态数据
+      let devInfo = {};
+      info.map(item => {
+        if (item.typ === 0) {
+          // 灯控
+          devInfo.status = item.status;
+          devInfo.lightId = item.id;
+          devInfo.lightSn = item.sn;
+        } else if (item.typ === 1) {
+          // 空气检测
+          devInfo.pm10 = item.pm10;
+          devInfo.pm25 = item.pm25;
+        } else if (item.typ === 2) {
+          // 广播
+          devInfo.broadcastStatus = item.status;
+          devInfo.broadcastCurrentPlan = item.currentPlan;
+        } else if (item.typ === 3 && this.aliPlayer === null) {
+          // 摄像头
+          this.hasLive = true;
+          this.cameraId = item.id;
+          devInfo.url = item.url;
+          this.s = setTimeout(() => {
+            this.setPlayer(devInfo.url); // 先写入播放器容器再调播放器
+          }, 0);
+        } else if (item.typ === 4) {
+          // 充电桩
+          devInfo.power = item.status;
+        }
+      });
+      return devInfo;
+    },
+    setPlayer(url) {
+      // 调用播放器
       // eslint-disable-next-line
       this.aliPlayer = new Aliplayer({
-        id: 'player',
-        width: '640',
-        height: '480',
+        id: "player",
+        width: "640",
+        height: "480",
         source: url
         // skinRes: 'http://127.0.0.1:5500/lib/aliplayer/defaultSkin' // 使用自己服务器的皮肤
-      })
+      });
     },
-    destoryPlayer () {    // 销毁播放器
-      clearTimeout(this.s)
+    destoryPlayer() {
+      // 销毁播放器
+      clearTimeout(this.s);
       // eslint-disable-next-line
       if (this.aliPlayer !== null) {
-        this.hasLive = false
-        document.getElementById('player').innerHTML = null
+        this.hasLive = false;
+        document.getElementById("player").innerHTML = null;
       }
-      this.aliPlayer = null
-      setTimeout(() => {    // modal关闭后将文本初始化为接入中...
-        this.playerContent = '接入中...'
-      }, 500)
+      this.aliPlayer = null;
+      setTimeout(() => {
+        // modal关闭后将文本初始化为接入中...
+        this.playerContent = "接入中...";
+      }, 500);
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -169,7 +211,7 @@ export default {
   position: absolute;
 }
 .status {
-  flex: 1 0 200px;
+  flex: 1 0 230px;
   padding: 0 10px;
 }
 .direction {

@@ -158,7 +158,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.modalTitle = '编辑'
+                    this.modalTitle = '修改人员信息'
                     this.adminUserAddData = params.row
                     this.addModal = true
                   }
@@ -234,7 +234,7 @@ export default {
       this.update()
     },
     add () {
-      this.modalTitle = '新建'
+      this.modalTitle = '添加人员'
       this.addModal = true
       this.adminUserAddData = {}
     },
@@ -246,7 +246,7 @@ export default {
         address: this.adminUserAddData.address,
         typ: this.adminUserAddData.typ
       }
-      if (this.modalTitle === '新建') {
+      if (this.modalTitle === '添加人员') {
         http({ url: '/admin/users/usersAdd', method: 'POST', data })
           .then(res => {
             this.adding = false
@@ -258,7 +258,7 @@ export default {
             }
             this.update()
           })
-      } else if (this.modalTitle === '编辑') {
+      } else if (this.modalTitle === '修改人员信息') {
         data.id = this.adminUserAddData.id
         http({ url: '/admin/users/usersEdit', method: 'POST', data })
           .then(res => {

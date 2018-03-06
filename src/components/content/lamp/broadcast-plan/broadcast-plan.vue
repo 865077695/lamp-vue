@@ -157,9 +157,7 @@ export default {
       this.$refs[formName].handleValida()
     },
     searchOk () { // 搜索数据格式验证通过
-      console.log(this.planSearchParams.startDate)
       if (this.planSearchParams.startDate) {
-        console.log(1)
         this.planSearchParams.startDate = formmatDate(this.planSearchParams.startDate)
       }
       if (this.planSearchParams.endDate) {
@@ -169,7 +167,7 @@ export default {
       this.getplanList()
     },
     add () {  // 点击添加按钮
-      this.$router.push({ path: '/plan-info', query: { id: null } })
+      this.$router.push({ path: '/add-plan', query: { id: null } })
     },
     pageChange () {
       this.getplanList()

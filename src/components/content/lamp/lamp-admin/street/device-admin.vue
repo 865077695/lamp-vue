@@ -47,7 +47,7 @@ export default {
       devSearchItem,
       addDevItem,
       addDevFormRule,
-      addText: '新增',
+      addText: '添加设备',
       devSearchParams: {
         pole_id: this.$route.query.id,   // 灯杆id
         typ: null,
@@ -98,7 +98,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.addText = '修改'
+                    this.addText = '编辑设备'
                     this.addDevData = params.row
                     this.addModal = true
                   }
@@ -138,7 +138,6 @@ export default {
   },
   created () {
     this.getdevList()
-    console.log(this.$route.query)
   },
   methods: {
     doValida (formName) { // 触发对应formName的子组件进行表单验证，验证成功之后会调用@valida绑定的函数
@@ -148,10 +147,10 @@ export default {
       this.adding = true
       let url = ''
       let data = {}
-      if (this.addText === '新增') {
+      if (this.addText === '添加设备') {
         url = 'devices/add'
         data = this.addDevData
-      } else if (this.addText === '修改') {
+      } else if (this.addText === '编辑设备') {
         url = 'devices/update'
         data.pole_id = this.addDevData.pole_id
         data.typ = this.addDevData.typ
@@ -187,10 +186,9 @@ export default {
     },
     add () {  // 点击添加按钮
       this.addModal = true
-      this.addText = '新增'
+      this.addText = '添加设备'
     },
     cancel () { // 取消添加
-      console.log('cancel')
       this.addDevData = {
         streetId: this.$route.query.id   // 灯杆id
       }

@@ -49,7 +49,7 @@ export default {
       addLampGroupItem,
       addLampGroupFormRule,
       totalPage: null,
-      addText: '新增',
+      addText: '添加分组',
       lampGroupSearchParams: {
         currentPage: 1,
         streetId: this.$route.query.id   // 灯杆id
@@ -83,7 +83,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.addText = '分组设置'
+                    this.addText = '编辑分组'
                     http({ url: 'poleGroup/poleGroupsInfo', params: { id: params.row.id } })
                       .then(res => {
                         if (res.code === 200) {
@@ -159,16 +159,16 @@ export default {
     },
     addOk () {  // 添加数据格式验证通过
       this.adding = true
-      this.addText = '新增分组'
+      this.addText = '添加分组'
       let url = ''
       let data = {}
-      if (this.addText === '新增分组') {
+      if (this.addText === '添加分组') {
         url = 'poleGroup/poleGroupsAdd'
         this.addLampGroupData.poles = this.addLampGroupData.poles.map(item => {
           return { id: item }
         })
         data = this.addLampGroupData
-      } else if (this.addText === '分组设置') {
+      } else if (this.addText === '编辑分组') {
         url = 'poleGroup/poleGroupsEdit'
         data.name = this.addLampGroupData.name
         data.id = this.addLampGroupData.id
