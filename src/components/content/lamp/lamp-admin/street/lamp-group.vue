@@ -195,7 +195,14 @@ export default {
     },
     add () {  // 点击添加按钮
       this.addModal = true
-      this.addLampGroupData = {}
+      this.addLampGroupData = {
+        streetId: this.$route.query.id,
+        poles: [],
+        notes: '',
+        timeOn: null,
+        timeOff: null,
+        name: null
+      }
     },
     cancel () { // 取消添加
       this.addLampGroupData = {

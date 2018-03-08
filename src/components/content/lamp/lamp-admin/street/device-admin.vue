@@ -187,7 +187,16 @@ export default {
     add () {  // 点击添加按钮
       this.addModal = true
       this.addText = '添加设备'
-      this.addDevData = {}
+      this.addDevData = {
+        pole_id: this.$route.query.id,
+        typ: null,
+        name: null,
+        status: 1,
+        sn: null,
+        volume: null,
+        version: null,
+        url: null
+      }
     },
     cancel () { // 取消添加
       this.addDevData = {
