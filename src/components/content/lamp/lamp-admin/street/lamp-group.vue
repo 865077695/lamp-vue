@@ -57,7 +57,7 @@ export default {
       addLampGroupData: {
         streetId: this.$route.query.id,
         poles: [],
-        notes: '',
+        notes: ' ',
         timeOn: null,
         timeOff: null,
         name: null
@@ -198,7 +198,7 @@ export default {
       this.addLampGroupData = {
         streetId: this.$route.query.id,
         poles: [],
-        notes: '',
+        notes: ' ',
         timeOn: null,
         timeOff: null,
         name: null
