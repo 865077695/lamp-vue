@@ -91,7 +91,7 @@ export default {
                           this.addLampGroupData.poles = this.addLampGroupData.poles.map(item => {
                             return item.id
                           })
-                          this.add()
+                          this.addModal = true
                         }
                       })
                   }
@@ -195,6 +195,7 @@ export default {
     },
     add () {  // 点击添加按钮
       this.addModal = true
+      this.addLampGroupData = {}
     },
     cancel () { // 取消添加
       this.addLampGroupData = {

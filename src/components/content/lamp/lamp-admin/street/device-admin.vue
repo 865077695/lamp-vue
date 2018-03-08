@@ -187,6 +187,7 @@ export default {
     add () {  // 点击添加按钮
       this.addModal = true
       this.addText = '添加设备'
+      this.addDevData = {}
     },
     cancel () { // 取消添加
       this.addDevData = {
