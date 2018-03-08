@@ -25,7 +25,7 @@
           <span v-else-if="devInfo.status === 1"><Tag color="green">开启</Tag></span>
           <span v-else-if="devInfo.status === 10"><Tag color="yellow">故障</Tag></span>
           <span v-else-if="devInfo.status === 20"><Tag color="red">失联</Tag></span>
-          <span v-else><Tag color="red">未知</Tag></span>
+          <span v-else><Tag color="red">无</Tag></span>
           <i-switch v-if="devInfo.status === 0 || devInfo.status === 1"
           style="display: inline-block"
            :value="devInfo.status"
@@ -45,7 +45,7 @@
           <span v-else-if="devInfo.power === 5"><Tag color="red">预约</Tag></span>
           <span v-else-if="devInfo.power === 10"><Tag color="red">故障</Tag></span>
           <span v-else-if="devInfo.power === 20"><Tag color="red">离线</Tag></span>
-          <span v-else><Tag color="red">未知</Tag></span>
+          <span v-else><Tag color="red">无</Tag></span>
         </div>
         <div class="item"><span class="item-label">Pm10：</span>{{devInfo.pm10?devInfo.pm10: '-'}}</div>
         <div class="item"><span class="item-label">Pm25： </span>{{devInfo.pm25?devInfo.pm25: '-'}}</div>
@@ -55,7 +55,7 @@
           <span v-else-if="devInfo.broadcastStatus === 3"><Tag color="yellow">锁定</Tag></span>
           <span v-else-if="devInfo.broadcastStatus === 4"><Tag color="red">离线</Tag></span>
           <span v-else-if="devInfo.broadcastStatus === 5"><Tag color="blue">下载</Tag></span>
-          <span v-else><Tag color="red">未知</Tag></span>
+          <span v-else><Tag color="red">无</Tag></span>
         </div>
         <div class="item"><span class="item-label" :title="devInfo.broadcastCurrentPlan?devInfo.broadcastCurrentPlan:'无'">当前播报计划：</span><br><Tag color="blue">{{devInfo.broadcastCurrentPlan?devInfo.broadcastCurrentPlan:'无'}}</Tag></div>
       </div>
