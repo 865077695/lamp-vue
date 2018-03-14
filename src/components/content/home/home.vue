@@ -12,7 +12,7 @@
     ></Box>
     <Modal
       v-model="modal"
-      width="920"
+      width="1075"
       class-name="vertical-center-modal"
       @on-cancel="closeModal">
       <ModalContent 

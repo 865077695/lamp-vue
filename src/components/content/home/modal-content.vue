@@ -20,6 +20,18 @@
           </div>
         </div>
         <div class="item">
+          焦距：
+          <Button @click="zoomInOut(true)" type="primary" size="small">加</Button>
+          <Button @click="zoomInOut(false)" type="primary" size="small">减</Button>
+        </div>
+        <div class="item">
+          预置点：
+          <Select v-model="prsetName" style="width:60px" size="small" placeholder="">
+            <Option v-for="item in points" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+          <Button type="primary" @click="prsetPoint" size="small" :disabled="!prsetName">Go</Button>
+        </div>
+        <div class="item">
           <span class="item-label">路灯状态：</span>
           <span v-if="devInfo.status === 0"><Tag color="blue">关闭</Tag></span>
           <span v-else-if="devInfo.status === 1"><Tag color="green">开启</Tag></span>
@@ -64,6 +76,40 @@
 </template>
 
 <script>
+const points = [
+  {
+    label: "1",
+    value: "1"
+  },
+  {
+    label: "2",
+    value: "2"
+  },
+  {
+    label: "3",
+    value: "3"
+  },
+  {
+    label: "4",
+    value: "4"
+  },
+  {
+    label: "5",
+    value: "5"
+  },
+  {
+    label: "6",
+    value: "6"
+  },
+  {
+    label: "7",
+    value: "7"
+  },
+  {
+    label: "8",
+    value: "8"
+  }
+];
 import http from "@/common/http";
 import bus from "@/eventBus";
 export default {
@@ -81,6 +127,8 @@ export default {
       aliPlayer: null,
       cameraId: null, // 摄像头id
       LightId: null, // 灯控设备id
+      points,
+      prsetName: null,
       s: null // 存放定时器
     };
   },
@@ -103,6 +151,27 @@ export default {
         url: "index/ipcMove",
         method: "POST",
         data: { direction, id: this.cameraId }
+      }).then(res => {
+        if (res.code === 200) {
+          this.$Message.success("操作成功");
+        }
+      });
+    },
+    zoomInOut(val) {
+      // 焦距调整
+      http({
+        url: "index/zoomInOut",
+        params: { id: this.cameraId, val }
+      }).then(res => {
+        if (res.code === 200) {
+          this.$Message.success("操作成功");
+        }
+      });
+    },
+    prsetPoint() {
+      http({
+        url: "index/ipcMove2preset",
+        params: { id: this.cameraId, prsetName: this.prsetName }
       }).then(res => {
         if (res.code === 200) {
           this.$Message.success("操作成功");
@@ -196,7 +265,8 @@ export default {
 }
 #player-container {
   position: relative;
-  flex: 1 0 640px;
+  /* height: 484px; */
+  flex: 1 0 785px;
   background: #495060;
   display: flex;
   justify-content: center;
