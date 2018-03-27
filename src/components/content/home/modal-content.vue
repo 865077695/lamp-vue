@@ -161,7 +161,7 @@ export default {
       // 焦距调整
       http({
         url: "index/zoomInOut",
-        params: { id: this.cameraId, val }
+        params: { ipcDevId: this.cameraId, zoomIn: val }
       }).then(res => {
         if (res.code === 200) {
           this.$Message.success("操作成功");
@@ -171,7 +171,7 @@ export default {
     prsetPoint() {
       http({
         url: "index/ipcMove2preset",
-        params: { id: this.cameraId, prsetName: this.prsetName }
+        params: { ipcDevId: this.cameraId, prsetName: this.prsetName }
       }).then(res => {
         if (res.code === 200) {
           this.$Message.success("操作成功");
