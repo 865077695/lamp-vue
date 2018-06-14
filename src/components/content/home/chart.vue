@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="item in chartData" class="box" :style="'background: url(/static/img/'+item.bgImg+'.png) top center/100% 100%'" :key="item.status">
+    <div v-for="item in chartData" class="box" :style="'background: url(static/img/'+item.bgImg+'.png) top center/100% 100%'" :key="item.status">
       <p style="color: #e9eaec">{{item.name}}</p>
       <p style="color: #fff;font-size: 26px;letter-spacing: 2px">{{item.count}}</p>
     </div>

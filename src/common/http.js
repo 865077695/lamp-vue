@@ -26,7 +26,7 @@ axios.interceptors.response.use(function (res) {
 
 export default ({ url, method = 'GET', type = 'json', data = {}, params = {} }) => axios({
   url,
-  baseURL: config.baseURL,
+  baseURL,
   method,
   responseType: type,
   data,
