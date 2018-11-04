@@ -55,6 +55,7 @@ export default {
       this.$router.push({ path })
     },
     getUserInfo () {
+      // TODO
       http({ url: '/users/userselfInfo' })
         .then(res => {
           if (res.code === 200) {
