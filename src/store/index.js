@@ -10,12 +10,13 @@ Vue.use(Vuex)
 
 // 定义初始值
 const state = {
-  count: 0
+  count: 0,
+  roleCode: 'addr_admin', // 用户类型: 0 
 }
 
 // 相当于基于state的计算属性
 const getters = {
-  getCount (state) {
+  getCount(state) {
     return state.count
   }
 }
@@ -24,16 +25,22 @@ const getters = {
 const mutations = {
   updateCount: function (state, num) {
     state.count += num
+  },
+  setRoleCode(state, roleCode) {
+    state.roleCode = roleCode
   }
 }
 
 // 同步或异步
 const actions = {
-  updateCount (context, num) {
+  updateCount(context, num) {
     context.commit('updateCount', num)
   }
 }
 
 export default new Vuex.Store({
-  state, mutations, actions, getters
+  state,
+  mutations,
+  actions,
+  getters
 })

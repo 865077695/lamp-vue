@@ -1,23 +1,23 @@
 // 面包屑导航配置
 export default {
   '首页': [],
-  '街道管理': [
-    { label: '街道管理', path: '' }
+  '路灯管理': [
+    { label: '路灯管理', path: '' }
   ],
   '街道信息编辑': [
-    { label: '街道管理', path: '/lamp/street-admin' },
+    { label: '路灯管理', path: '/lamp/street-admin' },
     { label: '街道信息编辑', path: '' }
   ],
   '灯杆管理': [
-    { label: '街道管理', path: '/lamp/street-admin' },
+    { label: '路灯管理', path: '/lamp/street-admin' },
     { label: '灯杆管理', path: '' }
   ],
   '分组设置': [
-    { label: '街道管理', path: '/lamp/street-admin' },
+    { label: '路灯管理', path: '/lamp/street-admin' },
     { label: '分组设置', path: '' }
   ],
   '设备管理': [
-    { label: '街道管理', path: '/lamp/street-admin' },
+    { label: '路灯管理', path: '/lamp/street-admin' },
     { label: '灯杆管理', path: '/lamp-admin' },
     { label: '设备管理', path: '' }
   ],

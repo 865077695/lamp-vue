@@ -4,17 +4,17 @@
       <img src="@/assets/logo.png" width="50%">
     </div>
     <MenuItem name="/home" style="font-size: 16px;margin-bottom:20px">
-      <Icon type="home"></Icon>
-      首页
+    <Icon type="home"></Icon>
+    首页
     </MenuItem>
     <MenuGroup v-for="items in leftBarItems" :key="items.path" :title="items.title">
       <MenuItem v-for="item in items.children" :key="item.path" :name="items.path+'/'+item.path">
-        <Icon :type="item.icon"></Icon>
-        {{item.title}}
+      <Icon :type="item.icon"></Icon>
+      {{item.title}}
       </MenuItem>
     </MenuGroup>
     <div class="avatar" style="color:#fff">
-      <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="large"/>
+      <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="large" />
       <div style="text-align:center;padding-right: 20px;">
         <p>{{userInfo.name}}</p>
         <p style="color: rgb(167, 171, 187)">{{userInfo.mobile}}</p>
@@ -27,54 +27,54 @@
 </template>
 
 <script>
-import { appRoutes } from '../../router/routes'
-import http from '@/common/http'
+import { appRoutes } from "../../router/routes";
+import http from "@/common/http";
 export default {
-  name: 'LeftBar',
-  data () {
+  name: "LeftBar",
+  data() {
     return {
       userInfo: {
         name: null,
         address: null,
         mobile: null
       }
-    }
+    };
   },
   computed: {
     leftBarItems: () => {
+      console.log(appRoutes);
       return appRoutes.filter(item => {
-        return item.children.length > 1
-      })
+        return item.children.length > 1;
+      });
     }
   },
-  created () {
-    this.getUserInfo()
+  created() {
+    this.getUserInfo();
   },
   methods: {
-    changeMenu (path) {
-      this.$router.push({ path })
+    changeMenu(path) {
+      this.$router.push({ path });
     },
-    getUserInfo () {
+    getUserInfo() {
       // TODO
-      http({ url: '/users/userselfInfo' })
-        .then(res => {
-          if (res.code === 200) {
-            this.userInfo = res.data
-          } else {
-            this.$Message.error('获取用户数据失败')
-          }
-        })
+      http({ url: "/users/userselfInfo" }).then(res => {
+        if (res.code === 200) {
+          this.userInfo = res.data;
+          this.$store.commit("setRoleCode", res.data.roleCode);
+        } else {
+          this.$Message.error("获取用户数据失败");
+        }
+      });
     },
-    quit () {
-      http({ url: '/users/logout' })
-        .then(res => {
-          if (res.code === 200) {
-            this.$router.push({ path: '/sign' })
-          }
-        })
+    quit() {
+      http({ url: "/users/logout" }).then(res => {
+        if (res.code === 200) {
+          this.$router.push({ path: "/sign" });
+        }
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>
