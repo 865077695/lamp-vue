@@ -8,7 +8,7 @@
     首页
     </MenuItem>
     <MenuGroup v-for="items in leftBarItems" :key="items.path" :title="items.title">
-      <MenuItem v-for="item in items.children" :key="item.path" :name="items.path+'/'+item.path">
+      <MenuItem v-for="item in items.children" :key="item.path" :name="items.path+'/'+item.path" v-if="!('addr_admin' === $store.state.roleCode && item.addr_admin_hidden)">
       <Icon :type="item.icon"></Icon>
       {{item.title}}
       </MenuItem>
@@ -43,9 +43,11 @@ export default {
   computed: {
     leftBarItems: () => {
       console.log(appRoutes);
-      return appRoutes.filter(item => {
+      const _leftBarItems = appRoutes.filter(item => {
         return item.children.length > 1;
       });
+      console.log(_leftBarItems)
+      return _leftBarItems
     }
   },
   created() {

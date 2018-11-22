@@ -8,6 +8,10 @@ export default {
     { label: '路灯管理', path: '/lamp/street-admin' },
     { label: '街道信息编辑', path: '' }
   ],
+  '街道管理': [
+    { label: '路灯管理', path: '/lamp/street-admin' },
+    { label: '街道管理', path: '' }
+  ],
   '灯杆管理': [
     { label: '路灯管理', path: '/lamp/street-admin' },
     { label: '灯杆管理', path: '' }

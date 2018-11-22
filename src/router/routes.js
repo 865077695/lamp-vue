@@ -20,7 +20,7 @@ export const appRoutes = [
     name: 'lamp',
     title: '路灯管理',
     children: [
-      { path: 'street-admin', name: '路灯管理', title: '路灯管理', icon: 'android-bulb', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/street-admin'], resolve) } },
+      { path: 'street-admin', name: '街道管理', title: '街道管理', icon: 'android-bulb', component: resolve => { require(['@/components/content/lamp/lamp-admin/street/street-admin'], resolve) } },
       // { path: 'broadcast-admin', name: '播报设备管理', title: '播报设备管理', icon: 'document-text', component: resolve => { require(['@/components/content/lamp/broadcast-device/broadcast-device'], resolve) } },
       { path: 'broadcast-resource', name: '播报资源管理', title: '播报资源管理', icon: 'android-folder', component: resolve => { require(['@/components/content/lamp/broadcast-resource/broadcast-resource'], resolve) } },
       { path: 'broadcast-plan', name: '播报计划管理', title: '播报计划管理', icon: 'ios-list', component: resolve => { require(['@/components/content/lamp/broadcast-plan/broadcast-plan'], resolve) } }
@@ -33,9 +33,9 @@ export const appRoutes = [
     title: '统计&用户',
     children: [
       { path: 'power', name: '能耗统计', title: '能耗统计', icon: 'arrow-graph-up-right', component: resolve => { require(['@/components/content/analysis/power/power'], resolve) } },
-      { path: 'log', name: '日志统计', title: '日志统计', icon: 'clipboard', component: resolve => { require(['@/components/content/analysis/log/log'], resolve) } },
+      { path: 'log', name: '日志统计', title: '日志统计', addr_admin_hidden: true , icon: 'clipboard', component: resolve => { require(['@/components/content/analysis/log/log'], resolve) } },
       { path: 'alert-notice', name: '报警消息', title: '报警消息', icon: 'android-alert', component: resolve => { require(['@/components/content/analysis/alert-notice/alert-notice'], resolve) } },
-      { path: 'user-admin', name: '人员管理', title: '人员管理', icon: 'android-contacts', component: resolve => { require(['@/components/content/analysis/user-admin/user-admin'], resolve) } }
+      { path: 'user-admin', name: '人员管理', title: '人员管理', addr_admin_hidden: true, icon: 'android-contacts', component: resolve => { require(['@/components/content/analysis/user-admin/user-admin'], resolve) } }
       // { path: 'area-admin', name: '区域管理', title: '区域管理', icon: 'document-text', component: resolve => { require(['@/components/content/analysis/area-admin'], resolve) } }
     ]
   }
