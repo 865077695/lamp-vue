@@ -246,7 +246,7 @@ export default {
         mobile: this.adminUserAddData.mobile,
         address: this.adminUserAddData.address,
         typ: this.adminUserAddData.typ,
-        role_code: this.adminUserAddData.role_code,
+        roleCode: this.adminUserAddData.role_code,
       }
       if (this.modalTitle === '添加人员') {
         http({ url: '/admin/users/usersAdd', method: 'POST', data })
