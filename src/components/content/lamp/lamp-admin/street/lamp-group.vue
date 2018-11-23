@@ -158,17 +158,20 @@ export default {
       this.getlampGroupsList()
     },
     addOk () {  // 添加数据格式验证通过
+    console.log(this.addText)
       this.adding = true
-      this.addText = '添加分组'
+      // this.addText = '添加分组'
       let url = ''
       let data = {}
       if (this.addText === '添加分组') {
+        console.log('新增')
         url = 'poleGroup/poleGroupsAdd'
         this.addLampGroupData.poles = this.addLampGroupData.poles.map(item => {
           return { id: item }
         })
         data = this.addLampGroupData
       } else if (this.addText === '编辑分组') {
+        console.log('编辑')
         url = 'poleGroup/poleGroupsEdit'
         data.name = this.addLampGroupData.name
         data.id = this.addLampGroupData.id
@@ -180,6 +183,7 @@ export default {
           return { id: item }
         })
       }
+      console.log(url)
       http({ url, method: 'POST', data })
         .then(res => {
           if (res.code === 200) {
@@ -195,6 +199,7 @@ export default {
     },
     add () {  // 点击添加按钮
       this.addModal = true
+      this.addText = '添加分组'
       this.addLampGroupData = {
         streetId: this.$route.query.id,
         poles: [],

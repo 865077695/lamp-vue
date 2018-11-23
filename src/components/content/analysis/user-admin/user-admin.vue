@@ -239,12 +239,14 @@ export default {
       this.adminUserAddData = {}
     },
     ok () {
+      console.log(this.adminUserAddData)
       this.adding = true
       let data = {
         name: this.adminUserAddData.name,
         mobile: this.adminUserAddData.mobile,
         address: this.adminUserAddData.address,
-        typ: this.adminUserAddData.typ
+        typ: this.adminUserAddData.typ,
+        role_code: this.adminUserAddData.role_code,
       }
       if (this.modalTitle === '添加人员') {
         http({ url: '/admin/users/usersAdd', method: 'POST', data })

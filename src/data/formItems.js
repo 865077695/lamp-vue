@@ -145,6 +145,9 @@ export const addLampGroupFormRule = {
   timeOff: [
     { required: true, message: '该项为必填项', trigger: 'blur' }
   ],
+  notes: [
+    { required: true, message: '该项为必填项', trigger: 'blur' }
+  ],
   poles: [
     {
       required: true,
@@ -339,7 +342,8 @@ export const adminUserAddItem = [   // 新增管理员表单项
   { label: '用户名', key: 'name', width: '300', typ: 'ipt', placeholder: '用户名' },
   { label: '手机号', key: 'mobile', width: '300', typ: 'ipt', placeholder: '手机号' },
   { label: '地址', key: 'address', width: '300', typ: 'ipt', placeholder: '地址' },
-  { label: '用户类型', key: 'typ', width: '300', typ: 'opt', placeholder: '用户类型', options: adminType }
+  { label: '用户类型', key: 'typ', width: '300', typ: 'opt', placeholder: '用户类型', options: adminType },
+  { label: '权限', key: 'role_code', width: '300', typ: 'opt', placeholder: '', options: [{label: '超级管理员', value: 'sys_admin'}, {label: '社区管理员', value: 'addr_admin'}] },
 ]
 
 export const adminUserFromRule = {
