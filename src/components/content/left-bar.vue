@@ -62,7 +62,12 @@ export default {
       http({ url: "/users/userselfInfo" }).then(res => {
         if (res.code === 200) {
           this.userInfo = res.data;
-          this.$store.commit("setRoleCode", res.data.roleCode);
+          console.log(this.userInfo)
+          if(this.userInfo.typ === 0){
+          this.$store.commit("setRoleCode", 'sys_admin');
+          }else{
+            this.$store.commit("setRoleCode", 'addr_admin')
+          }
         } else {
           this.$Message.error("获取用户数据失败");
         }
