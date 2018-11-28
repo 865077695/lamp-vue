@@ -40,7 +40,7 @@ export default ({
   responseType: type,
   data,
   params,
-  timeout: 6000,
+  timeout: 20000,
   withCredentials: true,
   headers: {
     'Content-type': 'application/json'

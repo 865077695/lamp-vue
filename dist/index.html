@@ -1,0 +1,26 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><script src=./static/config/index.js></script><script>//兼容 transfer-dom.js中 使用了 dataset 的问题
+
+    if (window.HTMLElement) {
+      if (Object.getOwnPropertyNames(HTMLElement.prototype).indexOf('dataset') === -1) {
+        Object.defineProperty(HTMLElement.prototype, 'dataset', {
+          get: function () {
+            var attributes = this.attributes; //获取节点的所有属性
+            var name = [],
+              value = []; //定义两个数组保存属性名和属性值
+            var obj = {}; //定义一个空对象
+            for (var i = 0; i < attributes.length; i++) { //遍历节点的所有属性
+              if (attributes[i].nodeName.slice(0, 5) == 'data-') { //如果属性名的前面5个字符符合"data-"
+                // 取出属性名的"data-"的后面的字符串放入name数组中
+                name.push(attributes[i].nodeName.slice(5));
+                //取出对应的属性值放入value数组中
+                value.push(attributes[i].nodeValue);
+              }
+            }
+            for (var j = 0; j < name.length; j++) { //遍历name和value数组
+              obj[name[j]] = value[j]; //将属性名和属性值保存到obj中
+            }
+            return obj; //返回对象
+          }
+        });
+      }
+    }</script><script src="http://api.map.baidu.com/api?v=2.0&ak=dylVOdomryCLAeLDPMmMjMPTcR5Rc07D"></script><script src=https://g.alicdn.com/de/prismplayer/2.5.0/aliplayer-flash-min.js></script><title>智能路灯管理系统</title><link href=./static/css/app.8ad838606ae69ae66a8854477d7126b5.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=./static/js/manifest.f4dcf376581054764549.js></script><script type=text/javascript src=./static/js/vendor.f83546f8b86fcbfe5cbf.js></script><script type=text/javascript src=./static/js/app.9d1901f26471545fb023.js></script></body></html>
