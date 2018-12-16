@@ -1,7 +1,7 @@
 <template>
   <Menu theme="dark" :active-name="$route.path" @on-select="changeMenu">
     <div class="logo">
-      <img src="@/assets/logo.png" width="50%">
+      <img src="@/assets/logo.png" width="200px">
     </div>
     <MenuItem name="/home" style="font-size: 16px;margin-bottom:20px">
     <Icon type="home"></Icon>
@@ -86,12 +86,12 @@ export default {
 
 <style scoped>
 img {
-  width: 50%;
+  /* width: 50%; */
   padding: 10px;
 }
 .logo {
   color: rgb(236, 233, 233);
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   padding-left: 20px;
 }
 .title {
